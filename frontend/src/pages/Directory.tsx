@@ -271,6 +271,16 @@ export const Directory: React.FC<DirectoryProps> = ({ onNavigate }) => {
                       <Calendar className="w-3.5 h-3.5" /> Attendance
                     </button>
                   )}
+                  {activeRole === 'admin' && (
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteUser(st.userId?._id, st.userId?.name)}
+                      className="text-rose-600 hover:text-rose-800 p-1 rounded hover:bg-rose-50 transition-colors"
+                      title="Remove Student"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
