@@ -18,7 +18,7 @@ const ParentProfileSchema: Schema = new Schema(
     relation: { type: String, enum: ['father', 'mother', 'guardian'], default: 'father' },
     occupation: { type: String, default: 'Agriculture / Business' },
     alternatePhone: { type: String },
-    address: { type: String, default: 'Awanpora, Salia, Anantnag' },
+    address: { type: String, default: 'Awanpora, Mattan, Anantnag' },
   },
   { timestamps: true }
 );

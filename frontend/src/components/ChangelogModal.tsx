@@ -83,7 +83,7 @@ export const ChangelogModal: React.FC<ChangelogModalProps> = ({ onClose }) => {
 
         <div className="pt-2 border-t border-slate-100 flex items-center justify-between">
           <span className="text-[11px] text-slate-400">
-            Govt Middle School Awanpora • SSA Salia
+            Govt Middle School Awanpora • Zone Mattan
           </span>
           <button
             type="button"

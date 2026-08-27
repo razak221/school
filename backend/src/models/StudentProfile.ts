@@ -33,7 +33,7 @@ const StudentProfileSchema: Schema = new Schema(
     parentUserIds: [{ type: Schema.Types.ObjectId, ref: 'User' }],
     fatherName: { type: String, required: true },
     motherName: { type: String, required: true },
-    address: { type: String, default: 'Awanpora, Salia, Anantnag' },
+    address: { type: String, default: 'Awanpora, Mattan, Anantnag' },
     bloodGroup: { type: String },
     midDayMealOpted: { type: Boolean, default: true },
     ssaCategory: { type: String, default: 'RBA' },

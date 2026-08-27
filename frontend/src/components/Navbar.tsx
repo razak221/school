@@ -73,7 +73,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentTab, setCurrentTab }) => 
                 Govt Middle School Awanpora
               </h1>
               <span className="px-2 py-0.5 text-[9px] font-extrabold uppercase rounded-full bg-blue-50 text-[#0c6780] border border-blue-200">
-                SSA Salia
+                Zone Mattan
               </span>
               <button
                 type="button"
@@ -86,7 +86,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentTab, setCurrentTab }) => 
               </button>
             </div>
             <p className="text-[11px] text-slate-500 font-medium mt-0.5 hidden sm:block">
-              Zone Mattan • District Anantnag, J&K (UDISE: 01050200101)
+              Zone Mattan • District Anantnag, J&K (UDISE: 01061102301)
             </p>
           </div>
         </div>

@@ -145,7 +145,7 @@ router.post('/create', verifyToken, requireRole(['admin']), async (req: Request,
         dob: dob ? new Date(dob) : new Date('2012-05-15'),
         fatherName: fatherName || 'Father Name',
         motherName: motherName || 'Mother Name',
-        address: address || 'Awanpora, Salia, Anantnag',
+        address: address || 'Awanpora, Mattan, Anantnag',
         midDayMealOpted: midDayMealOpted !== false,
         ssaCategory: ssaCategory || 'RBA',
       });
@@ -166,7 +166,7 @@ router.post('/create', verifyToken, requireRole(['admin']), async (req: Request,
         childrenStudentIds: Array.isArray(childrenStudentIds) ? childrenStudentIds : (childrenStudentIds ? [childrenStudentIds] : []),
         relation: relation || 'father',
         occupation: occupation || 'Agriculture / Business',
-        address: address || 'Awanpora, Salia, Anantnag',
+        address: address || 'Awanpora, Mattan, Anantnag',
       });
     }
 

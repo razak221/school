@@ -53,7 +53,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) =>
         <div className="relative z-10 max-w-2xl space-y-2">
           <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-white/10 text-xs font-semibold backdrop-blur-md border border-white/20">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            Govt Middle School Awanpora • SSA Salia (Zone Mattan)
+            Govt Middle School Awanpora • Zone Mattan, Anantnag
           </div>
           <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight">
             Headmaster & Admin ERP Console

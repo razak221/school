@@ -26,9 +26,9 @@ app.get('/api/v1/health', (req: Request, res: Response) => {
   res.json({
     status: 'online',
     institution: 'Govt Middle School Awanpora',
-    zone: 'Salia (Zone Mattan)',
+    zone: 'Zone Mattan',
     district: 'Anantnag',
-    scheme: 'SSA / Samagra Shiksha Abhiyan',
+    scheme: 'Samagra Shiksha / J&K SED',
     timestamp: new Date().toISOString(),
   });
 });
@@ -57,7 +57,7 @@ const startServer = async () => {
       console.log(`=======================================================`);
       console.log(`🚀 GMS Awanpora ERP Backend running on port ${PORT}`);
       console.log(`📍 Endpoint: http://localhost:${PORT}/api/v1/health`);
-      console.log(`🏫 Institution: Govt Middle School Awanpora (SSA Salia)`);
+      console.log(`🏫 Institution: Govt Middle School Awanpora (Zone Mattan)`);
       console.log(`=======================================================`);
     });
   } catch (error) {

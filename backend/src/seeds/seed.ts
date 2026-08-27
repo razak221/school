@@ -28,12 +28,12 @@ export const seedDatabase = async (): Promise<void> => {
     const org = await Organization.create({
       name: 'Govt Middle School Awanpora',
       type: 'school',
-      affiliation: 'SSA (Samagra Shiksha Abhiyan) / J&K SED',
-      zone: 'Salia (Zone Mattan)',
+      affiliation: 'J&K School Education Department',
+      zone: 'Zone Mattan',
       district: 'Anantnag',
       state: 'Jammu & Kashmir',
-      code: 'UDISE-01050200101',
-      address: 'Awanpora, Salia, Mattan, Anantnag, J&K - 192129',
+      code: 'UDISE-01061102301',
+      address: 'Awanpora, Mattan, Anantnag, J&K - 192129',
       phone: '+91-1932-234567',
       email: 'gms.awanpora@jk.gov.in',
       terminology: {
@@ -229,7 +229,7 @@ export const seedDatabase = async (): Promise<void> => {
         parentUserIds: [st.parent],
         fatherName: st.father,
         motherName: st.mother,
-        address: 'Awanpora, Salia, Mattan, Anantnag',
+        address: 'Awanpora, Mattan, Anantnag',
         bloodGroup: 'B+',
         midDayMealOpted: true,
         ssaCategory: st.cat,
@@ -246,7 +246,7 @@ export const seedDatabase = async (): Promise<void> => {
       relation: 'father',
       occupation: 'Agriculture / Horticulture',
       alternatePhone: '+91-9419055599',
-      address: 'Main Chowk, Awanpora, Salia, Anantnag',
+      address: 'Main Chowk, Awanpora, Mattan, Anantnag',
     });
 
     await ParentProfile.create({
@@ -256,7 +256,7 @@ export const seedDatabase = async (): Promise<void> => {
       relation: 'father',
       occupation: 'Retailer & Village Elder',
       alternatePhone: '+91-9419066688',
-      address: 'Near Jamia Masjid, Awanpora, Salia',
+      address: 'Near Jamia Masjid, Awanpora, Mattan',
     });
 
     // 9. Create Attendance Records for Today

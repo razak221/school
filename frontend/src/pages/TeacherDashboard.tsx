@@ -88,7 +88,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ onNavigate }
       <div className="p-6 rounded-2xl bg-gradient-to-r from-[#0c6780] to-[#002147] text-white shadow-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div className="space-y-1">
           <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-white/10 text-xs font-semibold backdrop-blur-md">
-            Teacher Portal • SSA Salia Cadre
+            Teacher Portal • Teaching Faculty
           </div>
           <h2 className="text-2xl font-extrabold">{user?.name}</h2>
           <p className="text-xs text-slate-200">

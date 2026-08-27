@@ -20,7 +20,7 @@ export class AIService {
     const avgPercentage =
       marks.reduce((acc, m) => acc + (m.obtainedMarks / m.maxMarks) * 100, 0) / (marks.length || 1);
 
-    const prompt = `You are a dedicated, encouraging teacher at Govt Middle School Awanpora (Salia, Anantnag, J&K).
+    const prompt = `You are a dedicated, encouraging teacher at Govt Middle School Awanpora (Zone Mattan, Anantnag, J&K).
 Generate a concise, warm, constructive 2-3 sentence report-card remark for student ${studentName} (${gradeLevel}).
 Performance: Overall Average: ${avgPercentage.toFixed(1)}%, Attendance: ${attendancePercentage.toFixed(1)}%.
 Subjects: ${marks.map((m) => `${m.subjectName}: ${m.obtainedMarks}/${m.maxMarks}`).join(', ')}.
@@ -132,17 +132,17 @@ Body: ${body}`;
     schoolContext?: string
   ): Promise<string> {
     const defaultContext = `
-School: Govt Middle School Awanpora (SSA Salia, Zone Mattan, District Anantnag, J&K)
+School: Govt Middle School Awanpora (Zone Mattan, District Anantnag, J&K)
 Classes: 1st to 8th Standard
 Timings: 09:30 AM to 03:30 PM (Summer), 10:00 AM to 03:00 PM (Winter)
 Mid-Day Meal (MDM): Fresh hot nutritious lunch served daily to all students of Classes 1st to 8th under PM-POSHAN.
-Uniform & Textbooks: Free SSA textbooks and uniform allowances provided to all enrolled students.
-Staff: Headmaster (Master cadre), 8 General Line & SSA Teachers, 1 Physical Education Teacher (PET), 2 MDM Cooks.
+Uniform & Textbooks: Free textbooks and uniform allowances provided to all enrolled students under government schemes.
+Staff: Headmaster (Master cadre), 8 General Line & Subject Teachers, 1 Physical Education Teacher (PET), 2 MDM Cooks.
 Examinations: Term 1 (T1), Unit Tests, and Term 2 (T2) Annual Evaluation as per J&K SCERT norms.`;
 
     if (this.apiKey) {
       try {
-        const prompt = `You are the AI Assistant for Govt Middle School Awanpora (Salia, Anantnag, J&K).
+        const prompt = `You are the AI Assistant for Govt Middle School Awanpora (Zone Mattan, Anantnag, J&K).
 Role of user asking: ${userRole}.
 School Context: ${schoolContext || defaultContext}.
 Question: ${question}
@@ -172,13 +172,13 @@ Provide a polite, accurate, concise, and helpful answer in 2-4 sentences.`;
     } else if (qLower.includes('meal') || qLower.includes('mdm') || qLower.includes('food') || qLower.includes('lunch')) {
       return 'Fresh, hygienic Mid-Day Meals (PM-POSHAN) are provided daily free of cost to all enrolled students in Classes 1st through 8th, with daily quality checks performed by the duty teacher.';
     } else if (qLower.includes('uniform') || qLower.includes('book') || qLower.includes('fee')) {
-      return 'Under the SSA (Samagra Shiksha Abhiyan) scheme, all textbooks and uniform allowances are provided free of cost to all eligible students at GMS Awanpora. There are zero tuition fees.';
+      return 'All textbooks and uniform allowances are provided free of cost to all eligible students at GMS Awanpora under government schemes. There are zero tuition fees.';
     } else if (qLower.includes('exam') || qLower.includes('result') || qLower.includes('term')) {
       return 'Examinations are conducted according to the J&K SCERT calendar. Unit tests are held monthly, followed by Term 1 (T1) and Term 2 (T2) assessments. You can view marks on the student/parent portal.';
     } else if (qLower.includes('teacher') || qLower.includes('contact') || qLower.includes('headmaster')) {
       return 'You can contact the Headmaster and faculty of GMS Awanpora via the portal messaging center or visit during parent-teacher interaction hours between 02:30 PM and 03:30 PM on Saturdays.';
     }
 
-    return `Thank you for reaching out to Govt Middle School Awanpora. For details regarding "${question}", please check the notices feed or contact the school office at Salia, Zone Mattan, Anantnag.`;
+    return `Thank you for reaching out to Govt Middle School Awanpora. For details regarding "${question}", please check the notices feed or contact the school office at Zone Mattan, Anantnag.`;
   }
 }

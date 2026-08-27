@@ -163,10 +163,10 @@ export const LoginPage: React.FC<LoginPageProps> = ({ initialAdminMode = false }
         <div className="flex items-center gap-2 font-semibold tracking-wide">
           <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
           <span>Govt Middle School Awanpora</span>
-          <span className="hidden sm:inline text-slate-300">• SSA Salia (Zone Mattan, Dist. Anantnag)</span>
+          <span className="hidden sm:inline text-slate-300">• Zone Mattan, Dist. Anantnag</span>
         </div>
         <div className="flex items-center gap-3">
-          <span className="text-[11px] text-slate-300 font-mono hidden md:inline">UDISE: 01050200101</span>
+          <span className="text-[11px] text-slate-300 font-mono hidden md:inline">UDISE: 01061102301</span>
           {isAdminMode ? (
             <button
               type="button"
@@ -486,7 +486,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ initialAdminMode = false }
 
       {/* Footer */}
       <footer className="text-center py-3 text-[11px] text-slate-500">
-        Govt Middle School Awanpora • Zone Mattan, District Anantnag, Jammu & Kashmir (SSA Salia) • UDISE 01050200101
+        Govt Middle School Awanpora • Zone Mattan, District Anantnag, Jammu & Kashmir • UDISE 01061102301
       </footer>
     </div>
   );

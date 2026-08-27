@@ -15,14 +15,14 @@ export async function syncToSupabase() {
   const org = {
     id: 'a0000000-0000-0000-0000-000000000001',
     name: 'Govt Middle School Awanpora',
-    udise_code: '01050200101',
-    zone: 'Salia (Zone Mattan)',
+    udise_code: '01061102301',
+    zone: 'Zone Mattan',
     district: 'Anantnag',
     state: 'Jammu & Kashmir',
     school_type: 'Middle School (1st to 8th)',
     principal_name: 'Mohammad Ashraf Bhat',
     contact_phone: '+91-9419011122',
-    email: 'gmsawanpora.salia@gmail.com',
+    email: 'gmsawanpora@gmail.com',
     academic_year: '2026-2027',
   };
 

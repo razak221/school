@@ -27,7 +27,7 @@ export const AIAssistant: React.FC = () => {
     {
       id: '1',
       sender: 'ai',
-      text: `Hello ${user?.name || 'there'}! I am the Gemini AI Assistant for Govt Middle School Awanpora (SSA Salia, Zone Mattan, District Anantnag). How can I assist you today regarding school timings, SSA benefits, Mid-Day Meals, homework, or exam results?`,
+      text: `Hello ${user?.name || 'there'}! I am the Gemini AI Assistant for Govt Middle School Awanpora (Zone Mattan, District Anantnag). How can I assist you today regarding school timings, SSA benefits, Mid-Day Meals, homework, or exam results?`,
       timestamp: 'Just now',
     },
   ]);

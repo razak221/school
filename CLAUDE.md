@@ -2,7 +2,7 @@
 
 ## What this is
 A multi-tenant School ERP: role-based portals (Student, Teacher, Parent, Admin/Headmaster) + React Bento Grid web dashboard on a shared Node.js/Express/MongoDB TypeScript backend.
-Tailored for: Govt Middle School Awanpora (SSA Salia, Zone Mattan, District Anantnag, J&K).
+Tailored for: Govt Middle School Awanpora (Zone Mattan, District Anantnag, J&K). UDISE: 01061102301.
 
 ## Stack (locked — ask before changing)
 - Backend: Node.js + Express + TypeScript

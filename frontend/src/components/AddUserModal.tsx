@@ -141,7 +141,7 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({ classes, onClose, on
             </div>
             <div>
               <h3 className="font-extrabold text-sm text-[#002147]">Add New User to Institution</h3>
-              <p className="text-[10px] text-slate-500">Govt Middle School Awanpora (SSA Salia)</p>
+              <p className="text-[10px] text-slate-500">Govt Middle School Awanpora • Zone Mattan</p>
             </div>
           </div>
           <button

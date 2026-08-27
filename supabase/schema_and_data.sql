@@ -1,6 +1,6 @@
 -- ============================================================================
 -- GOVT MIDDLE SCHOOL AWANPORA — SUPABASE POSTGRESQL SCHEMA & INITIAL DATA
--- UDISE Code: 01050200101 | Zone Mattan, Salia, District Anantnag, J&K
+-- UDISE Code: 01061102301 | Zone Mattan, District Anantnag, J&K
 -- Curriculum: J&K SCERT CCE | Scheme: Samagra Shiksha Abhiyan (SSA)
 -- ============================================================================
 
@@ -102,7 +102,7 @@ CREATE TABLE student_profiles (
     dob DATE NOT NULL DEFAULT '2012-05-15',
     father_name VARCHAR(100) NOT NULL,
     mother_name VARCHAR(100) NOT NULL,
-    address TEXT DEFAULT 'Awanpora, Salia, Anantnag',
+    address TEXT DEFAULT 'Awanpora, Mattan, Anantnag',
     blood_group VARCHAR(10) DEFAULT 'O+',
     mid_day_meal_opted BOOLEAN DEFAULT true,
     ssa_category VARCHAR(50) DEFAULT 'RBA',
@@ -116,7 +116,7 @@ CREATE TABLE parent_profiles (
     organization_id UUID REFERENCES organizations(id) ON DELETE CASCADE,
     relation VARCHAR(50) DEFAULT 'father' CHECK (relation IN ('father', 'mother', 'guardian')),
     occupation VARCHAR(100) DEFAULT 'Agriculture / Horticulture',
-    address TEXT DEFAULT 'Awanpora, Salia, Anantnag',
+    address TEXT DEFAULT 'Awanpora, Mattan, Anantnag',
     alternate_phone VARCHAR(50),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
@@ -281,12 +281,12 @@ INSERT INTO organizations (id, name, udise_code, zone, district, principal_name,
 VALUES (
     'a0000000-0000-0000-0000-000000000001',
     'Govt Middle School Awanpora',
-    '01050200101',
-    'Salia (Zone Mattan)',
+    '01061102301',
+    'Zone Mattan',
     'Anantnag',
     'Mohammad Ashraf Bhat',
     '+91-9419011122',
-    'gmsawanpora.salia@gmail.com'
+    'gmsawanpora@gmail.com'
 ) ON CONFLICT (udise_code) DO NOTHING;
 
 -- 4.2 Insert Classes 1 to 8
@@ -327,14 +327,14 @@ ON CONFLICT (user_id) DO NOTHING;
 -- 4.5 Insert Student Profiles
 INSERT INTO student_profiles (id, user_id, organization_id, admission_number, roll_number, class_id, section, gender, father_name, mother_name, address, ssa_category)
 VALUES
-    ('e0000000-0000-0000-0000-000000000001', 'd0000000-0000-0000-0000-000000000007', 'a0000000-0000-0000-0000-000000000001', 'GMS-AWN-2022-084', 1, 'c0000000-0000-0000-0000-000000000008', 'A', 'male', 'Nissar Ahmad Mir', 'Fareeda Begum', 'Awanpora, Salia, Anantnag', 'RBA'),
-    ('e0000000-0000-0000-0000-000000000002', 'd0000000-0000-0000-0000-000000000008', 'a0000000-0000-0000-0000-000000000001', 'GMS-AWN-2024-112', 6, 'c0000000-0000-0000-0000-000000000004', 'A', 'female', 'Nissar Ahmad Mir', 'Fareeda Begum', 'Awanpora, Salia, Anantnag', 'RBA')
+    ('e0000000-0000-0000-0000-000000000001', 'd0000000-0000-0000-0000-000000000007', 'a0000000-0000-0000-0000-000000000001', 'GMS-AWN-2022-084', 1, 'c0000000-0000-0000-0000-000000000008', 'A', 'male', 'Nissar Ahmad Mir', 'Fareeda Begum', 'Awanpora, Mattan, Anantnag', 'RBA'),
+    ('e0000000-0000-0000-0000-000000000002', 'd0000000-0000-0000-0000-000000000008', 'a0000000-0000-0000-0000-000000000001', 'GMS-AWN-2024-112', 6, 'c0000000-0000-0000-0000-000000000004', 'A', 'female', 'Nissar Ahmad Mir', 'Fareeda Begum', 'Awanpora, Mattan, Anantnag', 'RBA')
 ON CONFLICT (user_id) DO NOTHING;
 
 -- 4.6 Insert Parent Profiles
 INSERT INTO parent_profiles (user_id, organization_id, relation, occupation, address)
 VALUES
-    ('d0000000-0000-0000-0000-000000000006', 'a0000000-0000-0000-0000-000000000001', 'father', 'Horticulture & Agriculture', 'Awanpora, Salia, Anantnag')
+    ('d0000000-0000-0000-0000-000000000006', 'a0000000-0000-0000-0000-000000000001', 'father', 'Horticulture & Agriculture', 'Awanpora, Mattan, Anantnag')
 ON CONFLICT (user_id) DO NOTHING;
 
 -- 4.7 Insert PM-POSHAN Mid-Day Meal Daily Log

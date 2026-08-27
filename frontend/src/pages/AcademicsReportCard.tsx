@@ -233,10 +233,10 @@ export const AcademicsReportCard: React.FC = () => {
                     Government of Jammu & Kashmir — School Education Department
                   </div>
                   <h3 className="text-lg md:text-xl font-extrabold text-[#002147]">
-                    Govt Middle School Awanpora (Salia, Zone Mattan, Anantnag)
+                    Govt Middle School Awanpora (Zone Mattan, Anantnag)
                   </h3>
                   <p className="text-xs text-slate-500">
-                    Comprehensive Continuous Evaluation (CCE) • Academic Session 2026-27 (UDISE: 01050200101)
+                    Comprehensive Continuous Evaluation (CCE) • Academic Session 2026-27 (UDISE: 01061102301)
                   </p>
                 </div>
 

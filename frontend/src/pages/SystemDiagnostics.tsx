@@ -108,11 +108,11 @@ export const SystemDiagnostics: React.FC = () => {
           <div className="space-y-3 text-xs">
             <div className="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-200">
               <span className="text-slate-500 font-medium">Institution UDISE Code:</span>
-              <span className="font-mono font-bold text-[#002147]">01050200101</span>
+              <span className="font-mono font-bold text-[#002147]">01061102301</span>
             </div>
             <div className="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-200">
               <span className="text-slate-500 font-medium">Zonal Cluster:</span>
-              <span className="font-bold text-slate-800">SSA Salia (Zone Mattan, Dist. Anantnag)</span>
+              <span className="font-bold text-slate-800">Zone Mattan, District Anantnag</span>
             </div>
             <div className="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-200">
               <span className="text-slate-500 font-medium">Multi-Tenancy Isolation:</span>

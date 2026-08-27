@@ -53,7 +53,7 @@ export const IdCardModal: React.FC<IdCardModalProps> = ({ student, onClose }) =>
                 GOVT MIDDLE SCHOOL AWANPORA
               </h4>
               <p className="text-[9px] text-slate-500 font-medium">
-                SSA Salia • Zone Mattan, District Anantnag (UDISE: 01050200101)
+                Zone Mattan, District Anantnag (UDISE: 01061102301)
               </p>
             </div>
 
