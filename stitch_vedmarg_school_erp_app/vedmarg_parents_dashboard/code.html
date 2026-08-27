@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vedmarg - Parents Dashboard</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Montserrat -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "background": "#f7f9fb",
+                        "primary": "#000a1e",
+                        "outline-variant": "#c4c6cf",
+                        "on-secondary": "#ffffff",
+                        "surface-container": "#eceef0",
+                        "surface-container-high": "#e6e8ea",
+                        "on-tertiary-fixed": "#2f1500",
+                        "tertiary-container": "#371a00",
+                        "inverse-surface": "#2d3133",
+                        "on-secondary-fixed": "#001f29",
+                        "on-surface-variant": "#44474e",
+                        "on-primary-fixed-variant": "#2d476f",
+                        "secondary": "#0c6780",
+                        "on-secondary-container": "#09657f",
+                        "primary-container": "#002147",
+                        "on-secondary-fixed-variant": "#004d62",
+                        "on-error": "#ffffff",
+                        "error-red": "#EF4444",
+                        "inverse-primary": "#aec7f6",
+                        "surface-bright": "#f7f9fb",
+                        "on-tertiary": "#ffffff",
+                        "secondary-fixed": "#baeaff",
+                        "success-green": "#22C55E",
+                        "error": "#ba1a1a",
+                        "tertiary-fixed-dim": "#ffb77d",
+                        "on-tertiary-fixed-variant": "#6e3900",
+                        "surface": "#f7f9fb",
+                        "tertiary": "#160700",
+                        "secondary-container": "#9ae1ff",
+                        "on-surface": "#191c1e",
+                        "surface-variant": "#e0e3e5",
+                        "on-background": "#191c1e",
+                        "on-tertiary-container": "#cf7000",
+                        "surface-tint": "#465f88",
+                        "on-primary": "#ffffff",
+                        "surface-container-low": "#f2f4f6",
+                        "on-error-container": "#93000a",
+                        "tertiary-fixed": "#ffdcc3",
+                        "primary-fixed": "#d6e3ff",
+                        "primary-fixed-dim": "#aec7f6",
+                        "on-primary-container": "#708ab5",
+                        "surface-dim": "#d8dadc",
+                        "outline": "#74777f",
+                        "text-muted": "#64748B",
+                        "inverse-on-surface": "#eff1f3",
+                        "on-primary-fixed": "#001b3d",
+                        "text-main": "#1E293B",
+                        "error-container": "#ffdad6",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-highest": "#e0e3e5",
+                        "secondary-fixed-dim": "#89d0ed",
+                        
+                        "tactical-orange": "#F97316"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "40px",
+                        "margin-mobile": "16px",
+                        "bento-gap": "16px",
+                        "container-max-width": "1440px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Montserrat"],
+                        "headline-lg-mobile": ["Montserrat"],
+                        "body-lg": ["Montserrat"],
+                        "headline-md": ["Montserrat"],
+                        "label-bold": ["Montserrat"],
+                        "stats-display": ["Montserrat"],
+                        "headline-xl": ["Montserrat"],
+                        "body-md": ["Montserrat"],
+                        "body-sm": ["Montserrat"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "label-bold": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                        "stats-display": ["28px", { "lineHeight": "32px", "fontWeight": "700" }],
+                        "headline-xl": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background font-body-md text-on-surface antialiased min-h-screen">
+<!-- TopNavBar (Mobile) -->
+<nav class="md:hidden fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin-mobile h-20 bg-surface-container-lowest shadow-[0px_15px_15px_rgba(0,10,30,0.04)]">
+<div class="flex items-center gap-2">
+<span class="font-headline-md-mobile text-headline-md-mobile text-primary font-bold">Vedmarg</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:bg-surface-container transition-colors p-2 rounded-full relative">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-1 right-1 w-2.5 h-2.5 bg-tactical-orange rounded-full border-2 border-surface-container-lowest"></span>
+</button>
+<img class="w-8 h-8 rounded-full object-cover" data-alt="A small, circular avatar portrait of an Indian parent, Sajendra, looking professional and friendly. The portrait is warmly lit, typical of a modern corporate or educational platform profile picture. Clean, light background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCruseWL_t6_-Xfck6qhATpuRW5-W2QyLsSqWpCTuHmRwUztjDG5JldwfV2pJbmD3kjq1LsL7W9pyiTlVGDm6Gyj2gKpaA8xmO07yAQhF6UOCFXbPkJloyZlkp2BJXH8vcNy_INPUu240MgMlTuujpdWbP4cfX5I871iNgMRsSFJhQ4rs6OuIxpAIvoIYgBpMTRCgI-zw8wXhr_2HM7wdeO5ZHYedx-2w2uhGfLWwjBcKUXzzwl3DDN"/>
+</div>
+</nav>
+<!-- SideNavBar (Desktop) -->
+<nav class="hidden md:flex flex-col fixed left-0 top-0 h-full z-40 py-6 w-72 bg-surface-container-lowest border-r border-outline-variant shadow-sm transition-all duration-200 ease-in-out">
+<div class="px-6 mb-8">
+<div class="font-headline-md text-headline-md text-primary font-bold">Vedmarg ERP</div>
+<div class="text-xs text-on-surface-variant uppercase tracking-wider mt-1">Decision Intelligence</div>
+</div>
+<div class="flex-1 overflow-y-auto flex flex-col gap-1 px-2">
+<!-- Active Tab: Dashboard -->
+<a class="flex items-center gap-3 bg-secondary-container text-on-secondary-container rounded-xl px-4 py-3 mx-2 font-label-bold text-label-bold transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 mx-2 hover:bg-surface-container-high rounded-xl font-label-bold text-label-bold transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="calendar_today">calendar_today</span>
+<span>Attendance</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 mx-2 hover:bg-surface-container-high rounded-xl font-label-bold text-label-bold transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+<span>Fees</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 mx-2 hover:bg-surface-container-high rounded-xl font-label-bold text-label-bold transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="assignment">assignment</span>
+<span>Exams</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 mx-2 hover:bg-surface-container-high rounded-xl font-label-bold text-label-bold transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="schedule">schedule</span>
+<span>Timetable</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 mx-2 hover:bg-surface-container-high rounded-xl font-label-bold text-label-bold transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span>Profile</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 mx-2 hover:bg-surface-container-high rounded-xl font-label-bold text-label-bold transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span>Settings</span>
+</a>
+</div>
+<div class="mt-auto px-4">
+<button class="w-full mb-4 flex items-center justify-center gap-2 bg-primary text-on-primary py-3 rounded-lg font-label-bold text-label-bold hover:bg-primary-container transition-colors">
+                Support
+            </button>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 hover:bg-surface-container-high rounded-xl font-label-bold text-label-bold transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span>Logout</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="pt-24 md:pt-10 pb-20 md:pb-10 md:pl-[320px] px-margin-mobile md:px-margin-desktop max-w-container-max-width mx-auto">
+<!-- Welcome Header -->
+<header class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-1">Welcome, Sajendra</h1>
+<p class="font-body-md text-body-md text-text-muted">Here is the overview for your wards today.</p>
+</div>
+<!-- Reference Image thumbnails (desktop only for layout context, optional) -->
+<div class="hidden lg:flex gap-2 opacity-50 hover:opacity-100 transition-opacity">
+<img alt="Ref 1" class="w-16 h-24 object-cover rounded shadow-sm" src="https://lh3.googleusercontent.com/aida/AEtjO1Vyf_nU1JkAJILC6ktQUW_NqrpopNVQ0GBHvi12O-QqKV6rDzHBNueTrcQHH7u0xN54Fq3UED2apJs6n2Anr3yDX0367jJI5n93rdDlo1HIANb5e8KA3Ds0KL31NBS_W_qq79BzSBTaNg25YwH57d4tz9BxNksTeESqmyjSYczwvOVAgZ9f6mTLjHYDdHE7rlUcv6IovToLcya4C09TmcxMFDwdSYgjxhviaFhogzh-2bP-34d24BaLy4k"/>
+<img alt="Ref 2" class="w-16 h-24 object-cover rounded shadow-sm" src="https://lh3.googleusercontent.com/aida/AEtjO1V28cgsha86dtem3bQotTbMqbpX1vwai07Ow0eAmQajrInSgEHF_Qnv1gJGFjKDTOT7rk-2uRedPJ47sllkEuU1qWTwJ2rFiSWSuGy_YaoPK5F1aCnMcgy9nuLGCY8yv9hpnTP8OjYkbewpqxoknWtLDKl7ncbLp0FOVISdDOZeyrnnyVQctD0x7hqQs_eDrSR6fkqJH2jjSf1SkDHCytd8ut5xuBV2Fta6uSD6IRaf3jmeeXRcpy6213g"/>
+</div>
+</header>
+<!-- Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-bento-gap">
+<!-- Ward 1 Profile Card -->
+<div class="md:col-span-6 bg-surface-container-lowest rounded-xl p-6 md:p-8 shadow-[0px_15px_15px_rgba(0,10,30,0.04)] relative overflow-hidden">
+<div class="absolute top-0 right-0 w-32 h-32 bg-primary-fixed opacity-20 rounded-bl-full -mr-8 -mt-8"></div>
+<div class="flex items-start gap-4 mb-6">
+<img class="w-20 h-20 rounded-lg object-cover shadow-sm" data-alt="A portrait of a young Indian male student, Nitesh, wearing a clean school uniform. He has a neutral, focused expression. The background is a soft, blurred light blue or white, fitting a formal school ID photo aesthetic. High quality, well-lit." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYg6RWsy1xWJNntMTrqjNWJqdsRbtus0ZOY_Wya7GhOSZN4K8h8LnYUwUiZVGRUipxlZFQnZac7G8crXOm4-oLOp9AwZ5Ufxlpmag4sIiLH40nt4m901O_4LRbiMU3xpgreVSVIdt6vT4aD-5aaki9jOa_MOG7YuIF-3hYxq7O1J43hNyBRNzrRrymc4PiwcRXfvbPCyOJuDIj9O67bWumo1QmNz29t3XWQKZTMNslZqNskQaJ-9r4"/>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<div>
+<h2 class="font-headline-md text-headline-md text-primary">Nitesh</h2>
+<p class="font-body-sm text-body-sm text-text-muted">Class X - A | Roll: 42</p>
+</div>
+<span class="inline-flex items-center gap-1 bg-success-green/10 text-success-green px-2 py-1 rounded font-label-bold text-[10px] uppercase">
+<span class="w-2 h-2 rounded-full bg-success-green"></span> Present
+                            </span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4 mb-6">
+<div class="bg-surface p-3 rounded-lg border border-outline-variant/30">
+<div class="text-xs text-text-muted mb-1">Today's Attendance</div>
+<div class="font-stats-display text-stats-display text-primary">8:30 AM</div>
+</div>
+<div class="bg-surface p-3 rounded-lg border border-outline-variant/30">
+<div class="text-xs text-text-muted mb-1">Monthly Avg</div>
+<div class="font-stats-display text-stats-display text-primary">94%</div>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 bg-secondary/10 text-secondary border border-secondary/20 hover:bg-secondary/20 py-2 rounded-lg font-label-bold text-label-bold transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="assignment">assignment</span> Homework
+                    </button>
+<button class="flex-1 bg-surface-container text-on-surface py-2 rounded-lg font-label-bold text-label-bold hover:bg-surface-container-high transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="analytics">analytics</span> Report
+                    </button>
+</div>
+</div>
+<!-- Ward 2 Profile Card -->
+<div class="md:col-span-6 bg-surface-container-lowest rounded-xl p-6 md:p-8 shadow-[0px_15px_15px_rgba(0,10,30,0.04)] relative overflow-hidden">
+<div class="absolute top-0 right-0 w-32 h-32 bg-secondary-fixed opacity-20 rounded-bl-full -mr-8 -mt-8"></div>
+<div class="flex items-start gap-4 mb-6">
+<img class="w-20 h-20 rounded-lg object-cover shadow-sm" data-alt="A portrait of a young Indian female student, Rashmi, wearing a tidy school uniform. She has a bright, attentive expression. The background is a soft, blurred light blue or white, fitting a formal school ID photo aesthetic. High quality, well-lit." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDhRdWkOd4x6MKgIshy8mjXLwMStbGALx5UIAm_PflU98nxfiPCrelN3JNbSwQwM5lPYTgOEZ0TonwRVBOxGBt6zs1fM6VV-Ma9pw8eTPfOpfMyh6A6Ynb2t3R9SHwTcBFhRGgJ-OLIjh_e3DtVGEjcA7S04X5rSVqtc5ffChEYW41H6j-vzw5sath0_PLc0LEx5lzuNShhtUItkNi7fgmTMWD12LPVdXPShpwQ3ddcvK15I38kCGP4"/>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<div>
+<h2 class="font-headline-md text-headline-md text-primary">Rashmi</h2>
+<p class="font-body-sm text-body-sm text-text-muted">Class VIII - B | Roll: 15</p>
+</div>
+<span class="inline-flex items-center gap-1 bg-tactical-orange/10 text-tactical-orange px-2 py-1 rounded font-label-bold text-[10px] uppercase">
+<span class="w-2 h-2 rounded-full bg-tactical-orange"></span> Absent
+                            </span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4 mb-6">
+<div class="bg-surface p-3 rounded-lg border border-outline-variant/30 opacity-75">
+<div class="text-xs text-text-muted mb-1">Today's Attendance</div>
+<div class="font-stats-display text-stats-display text-text-muted">--:--</div>
+</div>
+<div class="bg-surface p-3 rounded-lg border border-outline-variant/30">
+<div class="text-xs text-text-muted mb-1">Monthly Avg</div>
+<div class="font-stats-display text-stats-display text-primary">88%</div>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 bg-secondary/10 text-secondary border border-secondary/20 hover:bg-secondary/20 py-2 rounded-lg font-label-bold text-label-bold transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="assignment">assignment</span> Homework
+                    </button>
+<button class="flex-1 bg-surface-container text-on-surface py-2 rounded-lg font-label-bold text-label-bold hover:bg-surface-container-high transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="analytics">analytics</span> Report
+                    </button>
+</div>
+</div>
+<!-- Finance Summary (Spans full width on desktop) -->
+<div class="md:col-span-12 bg-surface-container-lowest rounded-xl p-6 md:p-8 shadow-[0px_15px_15px_rgba(0,10,30,0.04)] mt-4 border border-outline-variant/20">
+<div class="flex flex-col md:flex-row justify-between md:items-center mb-6 gap-4">
+<div>
+<h3 class="font-headline-md text-headline-md text-primary">Finance Summary</h3>
+<p class="font-body-sm text-body-sm text-text-muted">Academic Year 2023-2024</p>
+</div>
+<button class="bg-tactical-orange text-white px-6 py-2.5 rounded-lg font-label-bold text-label-bold hover:bg-orange-600 transition-colors shadow-sm flex items-center justify-center gap-2 self-start md:self-auto">
+<span class="material-symbols-outlined text-sm" data-icon="account_balance_wallet">account_balance_wallet</span> Pay Online
+                    </button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="flex flex-col">
+<span class="text-sm text-text-muted mb-1 font-semibold uppercase tracking-wide">Total Fee</span>
+<span class="font-stats-display text-stats-display text-primary">₹ 1,20,000</span>
+</div>
+<div class="flex flex-col border-t md:border-t-0 md:border-l border-outline-variant/30 pt-4 md:pt-0 md:pl-6">
+<span class="text-sm text-text-muted mb-1 font-semibold uppercase tracking-wide">Total Paid</span>
+<span class="font-stats-display text-stats-display text-success-green">₹ 80,000</span>
+</div>
+<div class="flex flex-col border-t md:border-t-0 md:border-l border-outline-variant/30 pt-4 md:pt-0 md:pl-6">
+<span class="text-sm text-text-muted mb-1 font-semibold uppercase tracking-wide flex items-center gap-2">
+                            Due Amount
+                            <span class="w-2 h-2 rounded-full bg-tactical-orange"></span>
+</span>
+<span class="font-stats-display text-stats-display text-tactical-orange">₹ 40,000</span>
+<span class="text-xs text-text-muted mt-1">Next installment due in 15 days</span>
+</div>
+</div>
+<!-- Progress bar -->
+<div class="w-full bg-surface-container-high h-2 rounded-full mt-6 overflow-hidden">
+<div class="bg-success-green h-full rounded-full" style="width: 66%"></div>
+</div>
+</div>
+<!-- Quick Actions / Notices (Optional lower section for bento fullness) -->
+<div class="md:col-span-4 bg-primary text-white rounded-xl p-6 shadow-[0px_15px_15px_rgba(0,10,30,0.04)] mt-4">
+<h3 class="font-headline-md text-headline-md mb-4">Upcoming Events</h3>
+<ul class="space-y-4">
+<li class="flex gap-3 items-start border-b border-white/10 pb-3">
+<div class="bg-white/10 p-2 rounded text-center min-w-[50px]">
+<div class="text-xs uppercase">Oct</div>
+<div class="font-bold">12</div>
+</div>
+<div>
+<div class="font-semibold text-sm">Parent-Teacher Meeting</div>
+<div class="text-xs text-white/70">10:00 AM - Main Hall</div>
+</div>
+</li>
+<li class="flex gap-3 items-start">
+<div class="bg-white/10 p-2 rounded text-center min-w-[50px]">
+<div class="text-xs uppercase">Oct</div>
+<div class="font-bold">25</div>
+</div>
+<div>
+<div class="font-semibold text-sm">Mid-Term Exams Begin</div>
+<div class="text-xs text-white/70">Check timetable for details</div>
+</div>
+</li>
+</ul>
+</div>
+<div class="md:col-span-8 bg-surface-container-lowest rounded-xl p-6 shadow-[0px_15px_15px_rgba(0,10,30,0.04)] mt-4 border border-outline-variant/20">
+<h3 class="font-headline-md text-headline-md text-primary mb-4">Recent Notices</h3>
+<div class="space-y-3">
+<a class="block p-4 rounded-lg bg-surface hover:bg-surface-container-high transition-colors border border-outline-variant/10" href="#">
+<div class="flex justify-between items-center mb-1">
+<span class="font-semibold text-primary text-sm">Winter Uniform Guidelines</span>
+<span class="text-xs text-text-muted">Today</span>
+</div>
+<p class="text-sm text-text-muted line-clamp-1">Please ensure students switch to the winter uniform starting November 1st.</p>
+</a>
+<a class="block p-4 rounded-lg bg-surface hover:bg-surface-container-high transition-colors border border-outline-variant/10" href="#">
+<div class="flex justify-between items-center mb-1">
+<span class="font-semibold text-primary text-sm">Diwali Holidays Announcement</span>
+<span class="text-xs text-text-muted">2 days ago</span>
+</div>
+<p class="text-sm text-text-muted line-clamp-1">The school will remain closed from Oct 22 to Oct 26 for Diwali celebrations.</p>
+</a>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-16 bg-surface-container-lowest shadow-[0px_-5px_15px_rgba(0,10,30,0.05)] border-t border-outline-variant/20 px-2 pb-safe">
+<a class="flex flex-col items-center justify-center w-16 text-secondary" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="text-[10px] font-semibold mt-1">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center w-16 text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="assignment">assignment</span>
+<span class="text-[10px] font-semibold mt-1">HW</span>
+</a>
+<a class="flex flex-col items-center justify-center w-16 text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+<span class="text-[10px] font-semibold mt-1">Fees</span>
+</a>
+<a class="flex flex-col items-center justify-center w-16 text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="text-[10px] font-semibold mt-1">Profile</span>
+</a>
+</nav>
+</body></html>

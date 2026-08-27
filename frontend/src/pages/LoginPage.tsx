@@ -1,0 +1,493 @@
+import React, { useState, useEffect } from 'react';
+import { useAuth } from '../context/AuthContext';
+import { UserRole } from '../types';
+import {
+  GraduationCap,
+  Shield,
+  UserCheck,
+  Users,
+  Lock,
+  Mail,
+  ArrowRight,
+  Sparkles,
+  AlertCircle,
+  Eye,
+  EyeOff,
+  BookOpen,
+  Utensils,
+  Wallet,
+} from 'lucide-react';
+
+interface LoginPageProps {
+  initialAdminMode?: boolean;
+}
+
+export const LoginPage: React.FC<LoginPageProps> = ({ initialAdminMode = false }) => {
+  const { login } = useAuth();
+  const [isAdminMode, setIsAdminMode] = useState<boolean>(
+    initialAdminMode || window.location.pathname === '/admin'
+  );
+  const [selectedRole, setSelectedRole] = useState<UserRole>('teacher');
+  const [username, setUsername] = useState<string>('teacher@gmsawanpora.edu.in');
+  const [password, setPassword] = useState<string>('teacher123');
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  // Demo accounts
+  const demoAccounts = {
+    teacher: {
+      username: 'teacher@gmsawanpora.edu.in',
+      pass: 'teacher123',
+      title: 'General Line Teacher',
+      desc: 'Attendance roster, exam marks entry, homework publishing',
+      name: 'Nissar Ahmad Rather',
+      color: 'from-[#0c6780] to-[#002147]',
+      icon: <UserCheck className="w-5 h-5" />,
+    },
+    parent: {
+      username: 'parent@gmsawanpora.edu.in',
+      pass: 'parent123',
+      title: 'Parent & Guardian',
+      desc: 'Track child attendance, SCERT marks card, MDM hot lunch',
+      name: 'Nissar Ahmad Mir',
+      color: 'from-[#FF8C00] to-[#ea580c]',
+      icon: <Users className="w-5 h-5" />,
+    },
+    student: {
+      username: 'student@gmsawanpora.edu.in',
+      pass: 'student123',
+      title: 'Class 8-A Student',
+      desc: 'Daily timetable, assignments, report card evaluation',
+      name: 'Aaqib Nissar Mir',
+      color: 'from-[#22C55E] to-[#15803d]',
+      icon: <GraduationCap className="w-5 h-5" />,
+    },
+    admin: {
+      username: 'admin@gmsawanpora.edu.in',
+      pass: 'admin123',
+      title: 'Headmaster / Admin',
+      desc: 'Centralized school ERP, SSA grants, staff, PM-POSHAN',
+      name: 'Mohammad Ashraf Bhat',
+      color: 'from-[#002147] to-[#0c6780]',
+      icon: <Shield className="w-5 h-5" />,
+    },
+  };
+
+  useEffect(() => {
+    if (isAdminMode) {
+      setSelectedRole('admin');
+      setUsername(demoAccounts.admin.username);
+      setPassword(demoAccounts.admin.pass);
+    } else {
+      if (selectedRole === 'admin') {
+        setSelectedRole('teacher');
+        setUsername(demoAccounts.teacher.username);
+        setPassword(demoAccounts.teacher.pass);
+      } else {
+        setUsername(demoAccounts[selectedRole].username);
+        setPassword(demoAccounts[selectedRole].pass);
+      }
+    }
+  }, [isAdminMode, selectedRole]);
+
+  const handleRoleSelect = (role: UserRole) => {
+    setSelectedRole(role);
+    setErrorMsg(null);
+    if (role === 'admin') {
+      setIsAdminMode(true);
+      window.history.replaceState(null, '', '/admin');
+    } else {
+      setIsAdminMode(false);
+      window.history.replaceState(null, '', '/');
+    }
+    const acc = demoAccounts[role];
+    if (acc) {
+      setUsername(acc.username);
+      setPassword(acc.pass);
+    }
+  };
+
+  const handleToggleAdminMode = (enableAdmin: boolean) => {
+    setIsAdminMode(enableAdmin);
+    setErrorMsg(null);
+    if (enableAdmin) {
+      handleRoleSelect('admin');
+    } else {
+      handleRoleSelect('teacher');
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!username.trim() || !password.trim()) {
+      setErrorMsg('Please enter your username/email and password.');
+      return;
+    }
+
+    setLoading(true);
+    setErrorMsg(null);
+    try {
+      const success = await login(username.trim(), password.trim());
+      if (!success) {
+        setErrorMsg('Invalid login credentials. Please verify username and password.');
+      }
+    } catch {
+      setErrorMsg('An unexpected connection error occurred. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleQuickDemoLogin = async (roleToLogin: UserRole) => {
+    const acc = demoAccounts[roleToLogin];
+    if (!acc) return;
+    setLoading(true);
+    setErrorMsg(null);
+    try {
+      const success = await login(acc.username, acc.pass);
+      if (!success) {
+        setErrorMsg(`Failed to log in as ${acc.title}.`);
+      }
+    } catch {
+      setErrorMsg('Connection error during quick sign in.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-[#f0f4f8] via-[#e2eaf2] to-[#d8e3ed] flex flex-col justify-between font-sans selection:bg-[#9ae1ff] selection:text-[#002147]">
+      {/* Top institution bar */}
+      <div className="bg-[#002147] text-white px-4 lg:px-8 py-2.5 shadow-md flex items-center justify-between text-xs">
+        <div className="flex items-center gap-2 font-semibold tracking-wide">
+          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+          <span>Govt Middle School Awanpora</span>
+          <span className="hidden sm:inline text-slate-300">• SSA Salia (Zone Mattan, Dist. Anantnag)</span>
+        </div>
+        <div className="flex items-center gap-3">
+          <span className="text-[11px] text-slate-300 font-mono hidden md:inline">UDISE: 01050200101</span>
+          {isAdminMode ? (
+            <button
+              type="button"
+              onClick={() => handleToggleAdminMode(false)}
+              className="text-xs text-amber-300 hover:text-white font-bold underline transition-colors"
+            >
+              ← Switch to Public Portal
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={() => handleToggleAdminMode(true)}
+              className="px-2.5 py-1 rounded bg-amber-500 hover:bg-amber-600 text-white font-bold text-[11px] transition-all shadow-sm flex items-center gap-1"
+            >
+              <Shield className="w-3 h-3" />
+              Admin Portal (/admin)
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* Main Container */}
+      <div className="flex-1 flex items-center justify-center p-4 lg:p-8">
+        <div className="max-w-4xl w-full grid grid-cols-1 lg:grid-cols-12 gap-0 lg:gap-8 items-stretch">
+          {/* Left Hero / Info Branding Panel */}
+          <div className="lg:col-span-5 bg-gradient-to-br from-[#002147] via-[#09325e] to-[#0c6780] rounded-t-3xl lg:rounded-3xl p-6 lg:p-8 text-white flex flex-col justify-between shadow-2xl relative overflow-hidden">
+            {/* Watermark badge */}
+            <div className="absolute -right-12 -bottom-12 opacity-10 pointer-events-none">
+              <GraduationCap className="w-64 h-64" />
+            </div>
+
+            <div className="space-y-4 relative z-10">
+              <div className="w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-amber-300 shadow-inner">
+                {isAdminMode ? <Shield className="w-8 h-8" /> : <GraduationCap className="w-8 h-8" />}
+              </div>
+
+              <div>
+                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-400 text-[#002147] font-sans">
+                  {isAdminMode ? 'Administrative Console' : 'School ERP Portal'}
+                </span>
+                <h1 className="text-xl lg:text-2xl font-black tracking-tight mt-2 text-white leading-snug">
+                  Govt Middle School Awanpora
+                </h1>
+                <p className="text-xs text-slate-200 mt-1">
+                  Samagra Shiksha Abhiyan (SSA) • Zone Mattan, Anantnag, J&K
+                </p>
+              </div>
+
+              {/* Feature Highlights */}
+              <div className="space-y-2.5 pt-2">
+                <div className="flex items-start gap-2.5 text-xs text-slate-200 bg-white/5 p-2.5 rounded-xl border border-white/10">
+                  <BookOpen className="w-4 h-4 text-amber-300 shrink-0 mt-0.5" />
+                  <div>
+                    <span className="font-bold text-white">Continuous Evaluation (CCE):</span> SCERT J&K pattern report cards with AI remarks.
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-2.5 text-xs text-slate-200 bg-white/5 p-2.5 rounded-xl border border-white/10">
+                  <Utensils className="w-4 h-4 text-emerald-300 shrink-0 mt-0.5" />
+                  <div>
+                    <span className="font-bold text-white">PM-POSHAN Tracker:</span> Daily Mid-Day Meal distribution and attendance.
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-2.5 text-xs text-slate-200 bg-white/5 p-2.5 rounded-xl border border-white/10">
+                  <Wallet className="w-4 h-4 text-blue-300 shrink-0 mt-0.5" />
+                  <div>
+                    <span className="font-bold text-white">SSA Grants & Schemes:</span> Transparent composite grants & free uniforms.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom footnote */}
+            <div className="pt-6 border-t border-white/10 relative z-10 flex items-center justify-between text-[11px] text-slate-300">
+              <span>Academic Year 2026-27</span>
+              <span className="flex items-center gap-1 text-amber-300 font-semibold">
+                <Sparkles className="w-3.5 h-3.5 fill-amber-300" /> Powered by Gemini
+              </span>
+            </div>
+          </div>
+
+          {/* Right Login Action Panel */}
+          <div className="lg:col-span-7 bg-white rounded-b-3xl lg:rounded-3xl p-6 lg:p-8 shadow-2xl border border-slate-200 flex flex-col justify-between">
+            <div>
+              {/* Header Title */}
+              <div className="flex items-center justify-between pb-4 border-b border-slate-100 mb-5">
+                <div>
+                  <h2 className="text-lg lg:text-xl font-bold text-[#002147]">
+                    {isAdminMode ? 'Headmaster / Admin Sign In' : 'Sign In to School Portal'}
+                  </h2>
+                  <p className="text-xs text-slate-500 mt-0.5">
+                    {isAdminMode
+                      ? 'Secure administrative portal for Headmaster & Staff In-charge'
+                      : 'Choose your role or enter your credentials below'}
+                  </p>
+                </div>
+              </div>
+
+              {/* Role Selection Tabs (for non-admin or toggle) */}
+              {!isAdminMode ? (
+                <div className="space-y-3 mb-5">
+                  <label className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
+                    Select Your Role:
+                  </label>
+                  <div className="grid grid-cols-3 gap-2">
+                    <button
+                      type="button"
+                      onClick={() => handleRoleSelect('teacher')}
+                      className={`p-2.5 rounded-xl border text-center transition-all flex flex-col items-center gap-1.5 ${
+                        selectedRole === 'teacher'
+                          ? 'bg-[#0c6780] text-white border-[#0c6780] shadow-md scale-[1.02]'
+                          : 'bg-slate-50 hover:bg-slate-100 text-slate-700 border-slate-200'
+                      }`}
+                    >
+                      <UserCheck className="w-4 h-4" />
+                      <span className="text-xs font-bold">Teacher</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => handleRoleSelect('parent')}
+                      className={`p-2.5 rounded-xl border text-center transition-all flex flex-col items-center gap-1.5 ${
+                        selectedRole === 'parent'
+                          ? 'bg-[#FF8C00] text-white border-[#FF8C00] shadow-md scale-[1.02]'
+                          : 'bg-slate-50 hover:bg-slate-100 text-slate-700 border-slate-200'
+                      }`}
+                    >
+                      <Users className="w-4 h-4" />
+                      <span className="text-xs font-bold">Parent</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => handleRoleSelect('student')}
+                      className={`p-2.5 rounded-xl border text-center transition-all flex flex-col items-center gap-1.5 ${
+                        selectedRole === 'student'
+                          ? 'bg-[#22C55E] text-white border-[#22C55E] shadow-md scale-[1.02]'
+                          : 'bg-slate-50 hover:bg-slate-100 text-slate-700 border-slate-200'
+                      }`}
+                    >
+                      <GraduationCap className="w-4 h-4" />
+                      <span className="text-xs font-bold">Student</span>
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="mb-5 p-3 rounded-xl bg-blue-50 border border-blue-200 flex items-center justify-between">
+                  <div className="flex items-center gap-2 text-xs font-bold text-[#002147]">
+                    <Shield className="w-4 h-4 text-[#0c6780]" />
+                    <span>Administrator Route Active (/admin)</span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => handleToggleAdminMode(false)}
+                    className="text-[11px] font-bold text-[#0c6780] hover:underline"
+                  >
+                    Switch to Teacher/Parent
+                  </button>
+                </div>
+              )}
+
+              {/* Error Alert */}
+              {errorMsg && (
+                <div className="mb-4 p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs font-semibold flex items-center gap-2 animate-fadeIn">
+                  <AlertCircle className="w-4 h-4 text-rose-600 shrink-0" />
+                  <span>{errorMsg}</span>
+                </div>
+              )}
+
+              {/* Login Form */}
+              <form onSubmit={handleSubmit} className="space-y-3.5">
+                <div>
+                  <label className="text-[11px] font-bold uppercase text-slate-600 tracking-wider">
+                    Username / Email Address
+                  </label>
+                  <div className="relative mt-1">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                      <Mail className="w-4 h-4" />
+                    </div>
+                    <input
+                      type="text"
+                      required
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value)}
+                      placeholder="e.g. teacher@gmsawanpora.edu.in"
+                      className="w-full pl-9 pr-3 py-2.5 text-xs bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-[#0c6780] focus:bg-white focus:outline-none transition-all font-medium text-slate-800"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="text-[11px] font-bold uppercase text-slate-600 tracking-wider">
+                    Password
+                  </label>
+                  <div className="relative mt-1">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                      <Lock className="w-4 h-4" />
+                    </div>
+                    <input
+                      type={showPassword ? 'text' : 'password'}
+                      required
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      placeholder="Enter password"
+                      className="w-full pl-9 pr-10 py-2.5 text-xs bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-[#0c6780] focus:bg-white focus:outline-none transition-all font-medium text-slate-800"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600"
+                    >
+                      {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Submit button */}
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full py-2.5 rounded-xl bg-[#002147] hover:bg-[#0c6780] text-white text-xs font-bold transition-all shadow-md flex items-center justify-center gap-2 disabled:opacity-50 mt-2"
+                >
+                  {loading ? (
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  ) : (
+                    <>
+                      <span>Sign In as {isAdminMode ? 'Headmaster' : selectedRole.charAt(0).toUpperCase() + selectedRole.slice(1)}</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </>
+                  )}
+                </button>
+              </form>
+
+              {/* 1-Click Quick Demo Sign In */}
+              <div className="mt-4 pt-4 border-t border-slate-100">
+                <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400 text-center mb-2.5">
+                  — Quick Demo 1-Click Access —
+                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => handleQuickDemoLogin('teacher')}
+                    className="p-2 rounded-xl bg-slate-50 hover:bg-blue-50 border border-slate-200 text-left transition-all group"
+                  >
+                    <div className="text-[11px] font-bold text-[#0c6780] flex items-center gap-1">
+                      <UserCheck className="w-3 h-3" /> Teacher
+                    </div>
+                    <div className="text-[10px] text-slate-500 truncate">Nissar Ahmad</div>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => handleQuickDemoLogin('parent')}
+                    className="p-2 rounded-xl bg-slate-50 hover:bg-orange-50 border border-slate-200 text-left transition-all group"
+                  >
+                    <div className="text-[11px] font-bold text-[#FF8C00] flex items-center gap-1">
+                      <Users className="w-3 h-3" /> Parent
+                    </div>
+                    <div className="text-[10px] text-slate-500 truncate">Nissar Mir</div>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => handleQuickDemoLogin('student')}
+                    className="p-2 rounded-xl bg-slate-50 hover:bg-emerald-50 border border-slate-200 text-left transition-all group"
+                  >
+                    <div className="text-[11px] font-bold text-emerald-700 flex items-center gap-1">
+                      <GraduationCap className="w-3 h-3" /> Student
+                    </div>
+                    <div className="text-[10px] text-slate-500 truncate">Aaqib Nissar</div>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => handleQuickDemoLogin('admin')}
+                    className="p-2 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-left transition-all group"
+                  >
+                    <div className="text-[11px] font-bold text-[#002147] flex items-center gap-1">
+                      <Shield className="w-3 h-3" /> Admin (/admin)
+                    </div>
+                    <div className="text-[10px] text-slate-500 truncate">Headmaster</div>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom Role Switcher Helper */}
+            <div className="mt-5 pt-3 border-t border-slate-100 text-center text-xs text-slate-500">
+              {!isAdminMode ? (
+                <span>
+                  Are you the School Headmaster or Admin?{' '}
+                  <button
+                    type="button"
+                    onClick={() => handleToggleAdminMode(true)}
+                    className="font-bold text-[#002147] hover:underline"
+                  >
+                    Use Admin Login (/admin)
+                  </button>
+                </span>
+              ) : (
+                <span>
+                  Staff member, student or parent?{' '}
+                  <button
+                    type="button"
+                    onClick={() => handleToggleAdminMode(false)}
+                    className="font-bold text-[#0c6780] hover:underline"
+                  >
+                    Back to General Portal (Teacher/Parent/Student)
+                  </button>
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <footer className="text-center py-3 text-[11px] text-slate-500">
+        Govt Middle School Awanpora • Zone Mattan, District Anantnag, Jammu & Kashmir (SSA Salia) • UDISE 01050200101
+      </footer>
+    </div>
+  );
+};

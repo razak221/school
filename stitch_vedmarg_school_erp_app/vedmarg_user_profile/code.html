@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vedmarg ERP - User Profile</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "primary-fixed-dim": "#aec7f6",
+                      "primary-container": "#002147",
+                      "text-main": "#1E293B",
+                      "inverse-primary": "#aec7f6",
+                      "error-container": "#ffdad6",
+                      "surface-dim": "#d8dadc",
+                      "on-secondary-fixed": "#001f29",
+                      "on-tertiary": "#ffffff",
+                      "primary-fixed": "#d6e3ff",
+                      "error": "#ba1a1a",
+                      "on-secondary-fixed-variant": "#004d62",
+                      "on-tertiary-fixed-variant": "#6e3900",
+                      "secondary": "#0c6780",
+                      "on-primary-fixed": "#001b3d",
+                      "success-green": "#22C55E",
+                      "on-primary-fixed-variant": "#2d476f",
+                      "on-error": "#ffffff",
+                      "on-background": "#191c1e",
+                      "on-secondary-container": "#09657f",
+                      "on-surface": "#191c1e",
+                      "on-tertiary-container": "#cf7000",
+                      "surface-tint": "#465f88",
+                      "surface": "#f7f9fb",
+                      "on-surface-variant": "#44474e",
+                      "tertiary": "#160700",
+                      "secondary-container": "#9ae1ff",
+                      "text-muted": "#64748B",
+                      "surface-container": "#eceef0",
+                      "inverse-on-surface": "#eff1f3",
+                      "on-primary-container": "#708ab5",
+                      "outline-variant": "#c4c6cf",
+                      "surface-container-highest": "#e0e3e5",
+                      "tertiary-fixed": "#ffdcc3",
+                      "surface-bright": "#f7f9fb",
+                      "inverse-surface": "#2d3133",
+                      "on-primary": "#ffffff",
+                      "on-tertiary-fixed": "#2f1500",
+                      "secondary-fixed": "#baeaff",
+                      "tertiary-fixed-dim": "#ffb77d",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-container-high": "#e6e8ea",
+                      "secondary-fixed-dim": "#89d0ed",
+                      "error-red": "#EF4444",
+                      "on-secondary": "#ffffff",
+                      "tertiary-container": "#371a00",
+                      "on-error-container": "#93000a",
+                      "surface-container-low": "#f2f4f6",
+                      "primary": "#000a1e",
+                      "surface-variant": "#e0e3e5",
+                      "outline": "#74777f",
+                      "background": "#f7f9fb"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "container-max-width": "1440px",
+                      "gutter": "24px",
+                      "margin-desktop": "40px",
+                      "margin-mobile": "16px",
+                      "bento-gap": "16px"
+              },
+              "fontFamily": {
+                      "stats-display": [
+                              "Montserrat"
+                      ],
+                      "headline-lg-mobile": [
+                              "Montserrat"
+                      ],
+                      "headline-xl": [
+                              "Montserrat"
+                      ],
+                      "body-md": [
+                              "Montserrat"
+                      ],
+                      "headline-md": [
+                              "Montserrat"
+                      ],
+                      "label-bold": [
+                              "Montserrat"
+                      ],
+                      "headline-lg": [
+                              "Montserrat"
+                      ],
+                      "body-sm": [
+                              "Montserrat"
+                      ],
+                      "body-lg": [
+                              "Montserrat"
+                      ]
+              },
+              "fontSize": {
+                      "stats-display": [
+                              "28px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-xl": [
+                              "40px",
+                              {
+                                      "lineHeight": "48px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "label-bold": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-sm": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "400"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+    </script>
+<style>
+        body { background-color: #F8FAFC; }
+        .bento-card {
+            background-color: #FFFFFF;
+            box-shadow: 0px 15px 15px rgba(0, 10, 30, 0.04);
+            border: 1px solid #E2E8F0;
+        }
+        .bento-card-hover:hover {
+            box-shadow: 0px 20px 20px rgba(0, 10, 30, 0.08);
+            transform: translateY(-2px);
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md text-on-surface antialiased">
+<!-- Top Navigation Bar -->
+<nav class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin-desktop h-20 bg-surface-container-lowest dark:bg-inverse-surface shadow-[0px_15px_15px_rgba(0,10,30,0.04)] shadow-sm">
+<div class="flex items-center gap-4">
+<span class="font-headline-xl text-headline-xl text-primary dark:text-primary-fixed-dim">Vedmarg</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:flex gap-6">
+<a class="text-on-surface-variant dark:text-surface-variant font-label-bold text-label-bold hover:bg-surface-container dark:hover:bg-on-surface-variant transition-colors p-2 rounded" href="#">Dashboard</a>
+<a class="text-on-surface-variant dark:text-surface-variant font-label-bold text-label-bold hover:bg-surface-container dark:hover:bg-on-surface-variant transition-colors p-2 rounded" href="#">Attendance</a>
+<a class="text-secondary dark:text-secondary-fixed font-bold border-b-2 border-secondary p-2" href="#">Profile</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 hover:bg-surface-container rounded-full transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant">notifications</span>
+</button>
+<img alt="User profile" class="w-10 h-10 rounded-full object-cover border-2 border-surface-container" data-alt="A small circular user profile image of a professional male teacher in a bright, modern educational setting. Corporate aesthetic, high-key lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBpQZuIjcr8B55u3tF-s_Kq4BPgT99jweCieDmCOhtT8AtWoVvba5l1Rwl-ePWt6HinDxv3BHjP6W9XnGTJOED4SQO_hGFVJcoi368nfa3o4b0EawogvxnLVrGvB4SsjuE9q5l4sm7xx2uPnZcfWKDR6rH5qUwAdKU4Qd_ifwvzxV7DoeWzG3LNariC119CKRf4j4pJbgqw0Y5E20emC3cEo2grd2P10r7fLCsMKuigaYDnsNd-svfi"/>
+</div>
+</div>
+</nav>
+<!-- Side Navigation Bar -->
+<aside class="hidden md:flex flex-col fixed left-0 top-0 h-full z-40 py-6 bg-surface-container-lowest dark:bg-inverse-surface border-r border-outline-variant dark:border-outline shadow-sm docked left-0 h-full w-72 mt-20 transition-all duration-200 ease-in-out">
+<div class="px-6 mb-8 flex items-center gap-4">
+<img alt="Institution Logo" class="w-12 h-12 rounded-lg" data-alt="A minimalist, modern institutional logo in navy blue and sky blue, representing an educational ERP system. Clean lines, white background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAxY3Sgf-GOumGjkRngDcYCMkg-t0FXHwmjwun1kLJc__8FdIcigjlOzEUb4cHcE9XiY4flBqGzLvax4D_7kZj0WdVaDEMUNQI5N6Tahsexj8ZzEqtUHcBx5qNIaasFvSrDlRV6gWxn1iGl1eeG8-OQ_X7VVfh95vMkNsDe8EfADc69QPOZ-Y1VxTto7OWrq6lkDGwALZWF-yUheoWbYblZzmg3EP1QqL0qXSgtj4JTfmh7oWjpKBKX"/>
+<div>
+<h2 class="font-headline-md text-headline-md text-primary dark:text-primary-fixed">Vedmarg ERP</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Decision Intelligence</p>
+</div>
+</div>
+<nav class="flex-1 overflow-y-auto">
+<a class="flex items-center gap-3 text-on-surface-variant dark:text-surface-variant px-4 py-3 mx-2 font-label-bold text-label-bold hover:bg-surface-container-high dark:hover:bg-on-surface-variant rounded-xl" href="#">
+<span class="material-symbols-outlined">dashboard</span> Dashboard
+            </a>
+<a class="flex items-center gap-3 text-on-surface-variant dark:text-surface-variant px-4 py-3 mx-2 font-label-bold text-label-bold hover:bg-surface-container-high dark:hover:bg-on-surface-variant rounded-xl" href="#">
+<span class="material-symbols-outlined">calendar_today</span> Attendance
+            </a>
+<a class="flex items-center gap-3 text-on-surface-variant dark:text-surface-variant px-4 py-3 mx-2 font-label-bold text-label-bold hover:bg-surface-container-high dark:hover:bg-on-surface-variant rounded-xl" href="#">
+<span class="material-symbols-outlined">payments</span> Fees
+            </a>
+<a class="flex items-center gap-3 text-on-surface-variant dark:text-surface-variant px-4 py-3 mx-2 font-label-bold text-label-bold hover:bg-surface-container-high dark:hover:bg-on-surface-variant rounded-xl" href="#">
+<span class="material-symbols-outlined">assignment</span> Exams
+            </a>
+<a class="flex items-center gap-3 text-on-surface-variant dark:text-surface-variant px-4 py-3 mx-2 font-label-bold text-label-bold hover:bg-surface-container-high dark:hover:bg-on-surface-variant rounded-xl" href="#">
+<span class="material-symbols-outlined">schedule</span> Timetable
+            </a>
+<a class="flex items-center gap-3 bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary rounded-xl px-4 py-3 mx-2 font-label-bold text-label-bold" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person</span> Profile
+            </a>
+<a class="flex items-center gap-3 text-on-surface-variant dark:text-surface-variant px-4 py-3 mx-2 font-label-bold text-label-bold hover:bg-surface-container-high dark:hover:bg-on-surface-variant rounded-xl" href="#">
+<span class="material-symbols-outlined">settings</span> Settings
+            </a>
+</nav>
+<div class="px-4 mt-auto">
+<button class="w-full flex justify-center items-center gap-2 bg-primary text-on-primary py-2 rounded-lg font-label-bold text-label-bold mb-4 hover:bg-on-primary-fixed-variant transition-colors">Support</button>
+<a class="flex items-center gap-3 text-on-surface-variant dark:text-surface-variant px-4 py-3 font-label-bold text-label-bold hover:bg-surface-container-high dark:hover:bg-on-surface-variant rounded-xl" href="#">
+<span class="material-symbols-outlined">logout</span> Logout
+            </a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="md:ml-72 mt-20 p-margin-mobile md:p-margin-desktop min-h-screen">
+<div class="max-w-container-max-width mx-auto space-y-gutter">
+<!-- Profile Header Bento -->
+<div class="bento-card rounded-xl p-6 md:p-8 flex flex-col md:flex-row items-center md:items-start gap-8">
+<div class="relative">
+<img alt="Amit Sharma Avatar" class="w-32 h-32 md:w-40 md:h-40 rounded-xl object-cover shadow-sm" data-alt="A high-quality, professional headshot of a male teacher in his 40s. He is wearing a smart-casual shirt. Bright, soft studio lighting, white background. Corporate educational aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD6LmzIOfdNH5WAwci1yplPmtS-7qUwKIOC7zGaNq-SPVr647EbDe7wYXuxRDgoHxOeA-tSE3uyclUwXxi2zmUYKoLVMsoNquXxItgOE2l-H9Mlnqc9b-WFcpNL7chjQGfaKFi1h9BBVKoykwHK6cnsIijairn9vv1Lmp_gBbHFaCUp_EZlbemP4fD24nE-tNmJwTtRzJMHbyE0SkgGyA0QkcDIM2YfXOUVyKN4fBFTL1NSkE0RP7IQ"/>
+<button class="absolute -bottom-3 -right-3 bg-secondary-container text-on-secondary-container p-2 rounded-full shadow-sm hover:bg-secondary hover:text-on-secondary transition-colors">
+<span class="material-symbols-outlined text-lg">edit</span>
+</button>
+</div>
+<div class="flex-1 text-center md:text-left space-y-2">
+<h1 class="font-headline-lg text-headline-lg text-text-main md:font-headline-xl md:text-headline-xl">Amit Sharma</h1>
+<p class="font-body-lg text-body-lg text-secondary font-medium">Senior Teacher, Mathematics Dept.</p>
+<p class="font-body-sm text-body-sm text-text-muted max-w-2xl mt-4">Dedicated educator with over 15 years of experience in fostering analytical skills and mathematical proficiency in senior secondary students. Passionate about integrating technology into traditional pedagogical frameworks.</p>
+<div class="flex flex-wrap justify-center md:justify-start gap-4 mt-6">
+<div class="flex items-center gap-2 bg-surface-container-low px-4 py-2 rounded-lg border border-outline-variant">
+<span class="material-symbols-outlined text-primary text-sm">mail</span>
+<span class="font-body-sm text-body-sm">amit.sharma@vedmarg.edu</span>
+</div>
+<div class="flex items-center gap-2 bg-surface-container-low px-4 py-2 rounded-lg border border-outline-variant">
+<span class="material-symbols-outlined text-primary text-sm">call</span>
+<span class="font-body-sm text-body-sm">+91 98765 43210</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Dashboard Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-bento-gap">
+<!-- Left Column (Main Details) -->
+<div class="lg:col-span-8 space-y-bento-gap">
+<!-- Tabs -->
+<div class="bento-card rounded-xl p-2 flex overflow-x-auto gap-2 no-scrollbar border-b-0 shadow-none bg-transparent">
+<button class="px-6 py-2 rounded-lg bg-primary-container text-on-primary font-label-bold text-label-bold whitespace-nowrap">Personal Info</button>
+<button class="px-6 py-2 rounded-lg bg-surface-container-lowest text-text-muted hover:bg-surface-container-low font-label-bold text-label-bold whitespace-nowrap border border-outline-variant">Academic Details</button>
+<button class="px-6 py-2 rounded-lg bg-surface-container-lowest text-text-muted hover:bg-surface-container-low font-label-bold text-label-bold whitespace-nowrap border border-outline-variant">Documents</button>
+<button class="px-6 py-2 rounded-lg bg-surface-container-lowest text-text-muted hover:bg-surface-container-low font-label-bold text-label-bold whitespace-nowrap border border-outline-variant">Activity</button>
+</div>
+<!-- Personal Info Content -->
+<div class="bento-card rounded-xl p-6 md:p-8 space-y-6">
+<h3 class="font-headline-md text-headline-md text-primary-container border-b border-outline-variant pb-4">Personal Information</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-1">
+<label class="font-label-bold text-label-bold text-text-muted uppercase tracking-wider">Date of Birth</label>
+<p class="font-body-md text-body-md text-text-main font-medium">12th August 1980</p>
+</div>
+<div class="space-y-1">
+<label class="font-label-bold text-label-bold text-text-muted uppercase tracking-wider">Gender</label>
+<p class="font-body-md text-body-md text-text-main font-medium">Male</p>
+</div>
+<div class="space-y-1 md:col-span-2">
+<label class="font-label-bold text-label-bold text-text-muted uppercase tracking-wider">Residential Address</label>
+<p class="font-body-md text-body-md text-text-main">A-124, Sunrise Apartments, Sector 15, New Delhi - 110001, India</p>
+</div>
+<div class="space-y-1">
+<label class="font-label-bold text-label-bold text-text-muted uppercase tracking-wider">Emergency Contact Name</label>
+<p class="font-body-md text-body-md text-text-main">Priya Sharma (Spouse)</p>
+</div>
+<div class="space-y-1">
+<label class="font-label-bold text-label-bold text-text-muted uppercase tracking-wider">Emergency Contact Number</label>
+<p class="font-body-md text-body-md text-text-main">+91 98765 00000</p>
+</div>
+</div>
+</div>
+<!-- Academic Details Snippet (Bento Tile) -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-bento-gap">
+<div class="bento-card bento-card-hover rounded-xl p-6 space-y-4">
+<div class="flex items-center justify-between">
+<h4 class="font-label-bold text-label-bold text-text-muted uppercase">Employee Details</h4>
+<span class="material-symbols-outlined text-secondary">badge</span>
+</div>
+<div>
+<p class="font-stats-display text-stats-display text-primary-container">EMP-2049</p>
+<p class="font-body-sm text-body-sm text-text-muted mt-1">Joined: 15 July 2008</p>
+</div>
+</div>
+<div class="bento-card bento-card-hover rounded-xl p-6 space-y-4">
+<div class="flex items-center justify-between">
+<h4 class="font-label-bold text-label-bold text-text-muted uppercase">Current Assignments</h4>
+<span class="material-symbols-outlined text-secondary">class</span>
+</div>
+<div>
+<p class="font-headline-md text-headline-md text-primary-container">Class 11A, 12B</p>
+<p class="font-body-sm text-body-sm text-text-muted mt-1">Subject: Adv. Mathematics</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column (Security & Activity) -->
+<div class="lg:col-span-4 space-y-bento-gap">
+<!-- Account Security Card -->
+<div class="bento-card rounded-xl p-6 space-y-6 bg-surface-container-lowest">
+<h3 class="font-headline-md text-headline-md text-primary-container flex items-center gap-2">
+<span class="material-symbols-outlined">security</span> Account Security
+                        </h3>
+<div class="space-y-4">
+<div class="p-4 border border-outline-variant rounded-lg hover:border-secondary transition-colors cursor-pointer group flex justify-between items-center">
+<div>
+<h4 class="font-label-bold text-label-bold text-text-main">Change Password</h4>
+<p class="font-body-sm text-body-sm text-text-muted">Last changed 4 months ago</p>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-secondary">chevron_right</span>
+</div>
+<div class="p-4 border border-outline-variant rounded-lg flex justify-between items-center">
+<div>
+<h4 class="font-label-bold text-label-bold text-text-main flex items-center gap-2">
+                                        Two-Factor Auth (2FA)
+                                        <span class="bg-error-container text-error text-[10px] px-2 py-0.5 rounded font-bold uppercase">Disabled</span>
+</h4>
+<p class="font-body-sm text-body-sm text-text-muted">Enhance account security</p>
+</div>
+<button class="bg-secondary-container text-on-secondary-container px-3 py-1.5 rounded text-sm font-bold hover:bg-secondary hover:text-on-secondary transition-colors">Enable</button>
+</div>
+</div>
+</div>
+<!-- Recent Activity Log -->
+<div class="bento-card rounded-xl p-6 space-y-4">
+<div class="flex justify-between items-center border-b border-outline-variant pb-2">
+<h3 class="font-label-bold text-label-bold text-text-muted uppercase">Recent Activity</h3>
+<button class="text-secondary font-label-bold text-label-bold hover:underline">View All</button>
+</div>
+<ul class="space-y-4 relative before:absolute before:inset-y-0 before:left-3.5 before:w-px before:bg-outline-variant ml-2">
+<li class="relative pl-8">
+<span class="absolute left-0 top-1.5 w-3 h-3 bg-secondary rounded-full border-2 border-white shadow-sm ring-2 ring-secondary/20"></span>
+<p class="font-body-sm text-body-sm text-text-main font-medium">Logged in successfully</p>
+<p class="font-label-bold text-label-bold text-text-muted text-[10px]">Today, 08:45 AM • IP: 192.168.1.1</p>
+</li>
+<li class="relative pl-8">
+<span class="absolute left-0 top-1.5 w-3 h-3 bg-surface-variant rounded-full border-2 border-white shadow-sm"></span>
+<p class="font-body-sm text-body-sm text-text-main">Updated attendance for Class 12B</p>
+<p class="font-label-bold text-label-bold text-text-muted text-[10px]">Yesterday, 02:15 PM</p>
+</li>
+<li class="relative pl-8">
+<span class="absolute left-0 top-1.5 w-3 h-3 bg-surface-variant rounded-full border-2 border-white shadow-sm"></span>
+<p class="font-body-sm text-body-sm text-text-main">Downloaded Term 1 Result Report</p>
+<p class="font-label-bold text-label-bold text-text-muted text-[10px]">Oct 24, 11:30 AM</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

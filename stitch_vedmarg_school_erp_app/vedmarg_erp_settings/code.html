@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Settings - Vedmarg ERP</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed": "#2f1500",
+                        "tertiary-fixed": "#ffdcc3",
+                        "error-container": "#ffdad6",
+                        "primary-fixed-dim": "#aec7f6",
+                        "surface-tint": "#465f88",
+                        "on-tertiary-container": "#cf7000",
+                        "secondary": "#0c6780",
+                        "error-red": "#EF4444",
+                        "surface-dim": "#d8dadc",
+                        "surface": "#f7f9fb",
+                        "surface-container-low": "#f2f4f6",
+                        "on-secondary-container": "#09657f",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#6e3900",
+                        "primary-container": "#002147",
+                        "on-primary-fixed": "#001b3d",
+                        "on-secondary": "#ffffff",
+                        "inverse-surface": "#2d3133",
+                        "on-primary-container": "#708ab5",
+                        "surface-container-highest": "#e0e3e5",
+                        "text-main": "#1E293B",
+                        "text-muted": "#64748B",
+                        "outline": "#74777f",
+                        "on-secondary-fixed": "#001f29",
+                        "on-secondary-fixed-variant": "#004d62",
+                        "background": "#f7f9fb",
+                        "tertiary": "#160700",
+                        "primary": "#000a1e",
+                        "on-surface-variant": "#44474e",
+                        "surface-variant": "#e0e3e5",
+                        "tertiary-fixed-dim": "#ffb77d",
+                        "tertiary-container": "#371a00",
+                        "error": "#ba1a1a",
+                        "secondary-fixed-dim": "#89d0ed",
+                        "inverse-on-surface": "#eff1f3",
+                        "surface-container-high": "#e6e8ea",
+                        "primary-fixed": "#d6e3ff",
+                        "secondary-fixed": "#baeaff",
+                        "secondary-container": "#9ae1ff",
+                        "outline-variant": "#c4c6cf",
+                        "surface-container": "#eceef0",
+                        "on-tertiary": "#ffffff",
+                        "on-background": "#191c1e",
+                        "on-surface": "#191c1e",
+                        "inverse-primary": "#aec7f6",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-bright": "#f7f9fb",
+                        "success-green": "#22C55E",
+                        "on-error": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "on-primary-fixed-variant": "#2d476f"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "container-max-width": "1440px",
+                        "margin-desktop": "40px",
+                        "bento-gap": "16px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "body-sm": ["Montserrat"],
+                        "headline-md": ["Montserrat"],
+                        "headline-lg": ["Montserrat"],
+                        "stats-display": ["Montserrat"],
+                        "body-lg": ["Montserrat"],
+                        "body-md": ["Montserrat"],
+                        "label-bold": ["Montserrat"],
+                        "headline-lg-mobile": ["Montserrat"],
+                        "headline-xl": ["Montserrat"]
+                    },
+                    "fontSize": {
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "600" }],
+                        "stats-display": ["28px", { "lineHeight": "32px", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "label-bold": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "headline-xl": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #F8FAFC; /* Light mode base */
+            color: #1E293B;
+        }
+        .bento-card {
+            background-color: #FFFFFF;
+            border-radius: 0.75rem;
+            padding: 24px;
+            box-shadow: 0px 15px 15px rgba(0, 10, 30, 0.04);
+            border: 1px solid #E2E8F0; /* Fallback for outline variant */
+        }
+        .input-field {
+            border: 1px solid #E2E8F0;
+            border-radius: 0.5rem;
+            padding: 0.75rem 1rem;
+            width: 100%;
+            transition: border-color 0.2s ease-in-out;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+        }
+        .input-field:focus {
+            outline: none;
+            border-color: #89d0ed; /* Sky blue focus */
+            box-shadow: 0 0 0 2px rgba(137, 208, 237, 0.2);
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md antialiased bg-background">
+<!-- TopNavBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin-desktop h-20 bg-surface-container-lowest dark:bg-inverse-surface shadow-[0px_15px_15px_rgba(0,10,30,0.04)] shadow-sm">
+<div class="flex items-center gap-4">
+<h1 class="font-headline-xl text-headline-xl text-primary dark:text-primary-fixed-dim">Vedmarg</h1>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative flex items-center bg-surface-container-low rounded-full px-4 py-2 w-64">
+<span class="material-symbols-outlined text-on-surface-variant mr-2" data-icon="search">search</span>
+<input class="bg-transparent border-none focus:outline-none w-full text-body-sm font-body-sm text-on-surface" placeholder="Search settings..." type="text"/>
+</div>
+<button class="text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container rounded-full p-2">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<div class="h-10 w-10 rounded-full bg-secondary-container flex items-center justify-center overflow-hidden border border-outline-variant">
+<img alt="User profile" class="w-full h-full object-cover" data-alt="A professional headshot of a school administrator, wearing a crisp navy blue suit, standing in a brightly lit modern office environment with subtle architectural details in the background. The lighting is soft and flattering, creating a trustworthy and competent aura, consistent with a high-end corporate identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfjPYv57ITZ2xmU8XzBgVraYxeI8mNQD6RtQAAM0AddnNnSYHzF4IwkM4sQpuK638n2gcN7I8ksd2gEbUHsPZxhiLN2gNhcWymKtkuUiKwWGAGyBpS8No3e_TRr5QQXNhlo6DuWJrdqcU6kRrxdsZj1XA-g0T3qtRQs7FcqzK1WHIeArYt9hbHVh58tUPhojYnJpTpvHc3wnvSw6bsSdaRtPp0C6-mqR92cWUI13MB9E7QYPMAQB7T"/>
+</div>
+</div>
+</header>
+<!-- SideNavBar -->
+<nav class="hidden md:flex flex-col fixed left-0 top-0 h-full z-40 py-6 mt-20 docked left-0 h-full w-72 bg-surface-container-lowest dark:bg-inverse-surface border-r border-outline-variant dark:border-outline shadow-sm">
+<div class="px-6 mb-8 mt-4 flex items-center gap-4">
+<div class="w-12 h-12 rounded-lg bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary" data-icon="school">school</span>
+</div>
+<div>
+<h2 class="font-headline-md text-headline-md text-primary dark:text-primary-fixed">Vedmarg ERP</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Decision Intelligence</p>
+</div>
+</div>
+<ul class="flex flex-col gap-1 flex-1">
+<li>
+<a class="flex items-center gap-3 text-on-surface-variant dark:text-surface-variant px-4 py-3 mx-2 hover:bg-surface-container-high dark:hover:bg-on-surface-variant rounded-xl transition-all duration-200 ease-in-out font-label-bold text-label-bold" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+                    Dashboard
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-3 text-on-surface-variant dark:text-surface-variant px-4 py-3 mx-2 hover:bg-surface-container-high dark:hover:bg-on-surface-variant rounded-xl transition-all duration-200 ease-in-out font-label-bold text-label-bold" href="#">
+<span class="material-symbols-outlined" data-icon="calendar_today">calendar_today</span>
+                    Attendance
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-3 text-on-surface-variant dark:text-surface-variant px-4 py-3 mx-2 hover:bg-surface-container-high dark:hover:bg-on-surface-variant rounded-xl transition-all duration-200 ease-in-out font-label-bold text-label-bold" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+                    Fees
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-3 text-on-surface-variant dark:text-surface-variant px-4 py-3 mx-2 hover:bg-surface-container-high dark:hover:bg-on-surface-variant rounded-xl transition-all duration-200 ease-in-out font-label-bold text-label-bold" href="#">
+<span class="material-symbols-outlined" data-icon="assignment">assignment</span>
+                    Exams
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-3 text-on-surface-variant dark:text-surface-variant px-4 py-3 mx-2 hover:bg-surface-container-high dark:hover:bg-on-surface-variant rounded-xl transition-all duration-200 ease-in-out font-label-bold text-label-bold" href="#">
+<span class="material-symbols-outlined" data-icon="schedule">schedule</span>
+                    Timetable
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-3 text-on-surface-variant dark:text-surface-variant px-4 py-3 mx-2 hover:bg-surface-container-high dark:hover:bg-on-surface-variant rounded-xl transition-all duration-200 ease-in-out font-label-bold text-label-bold" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+                    Profile
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-3 bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary rounded-xl px-4 py-3 mx-2 transition-all duration-200 ease-in-out font-label-bold text-label-bold" href="#">
+<span class="material-symbols-outlined" data-icon="settings" style="font-variation-settings: 'FILL' 1;">settings</span>
+                    Settings
+                </a>
+</li>
+</ul>
+<div class="px-4 mt-auto mb-6 flex flex-col gap-2">
+<button class="w-full flex items-center justify-center gap-2 bg-primary-container text-on-primary rounded-xl py-3 font-label-bold text-label-bold hover:bg-primary transition-colors">
+                Support
+            </button>
+<a class="flex items-center gap-3 text-on-surface-variant dark:text-surface-variant px-4 py-3 mx-2 hover:bg-surface-container-high dark:hover:bg-on-surface-variant rounded-xl transition-all duration-200 ease-in-out font-label-bold text-label-bold" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+                Logout
+            </a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="md:ml-72 pt-28 pb-24 px-margin-mobile md:px-margin-desktop max-w-container-max-width mx-auto">
+<div class="flex justify-between items-center mb-8">
+<div>
+<h2 class="font-headline-lg text-headline-lg md:font-headline-lg text-primary">System Settings</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Manage your institution's configuration and preferences.</p>
+</div>
+<button class="bg-primary text-on-primary font-label-bold text-label-bold px-6 py-3 rounded-lg shadow-sm hover:bg-primary-container transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined" data-icon="save">save</span>
+                Save Changes
+            </button>
+</div>
+<div class="flex flex-col lg:flex-row gap-gutter">
+<!-- Settings Navigation (Inner) -->
+<aside class="w-full lg:w-64 shrink-0 mb-6 lg:mb-0">
+<div class="bento-card p-4 sticky top-32">
+<ul class="flex flex-col gap-2">
+<li>
+<button class="w-full text-left flex items-center gap-3 bg-secondary-container text-on-secondary-container px-4 py-3 rounded-lg font-label-bold text-label-bold">
+<span class="material-symbols-outlined text-lg" data-icon="domain" style="font-variation-settings: 'FILL' 1;">domain</span>
+                                Institution Profile
+                            </button>
+</li>
+<li>
+<button class="w-full text-left flex items-center gap-3 text-on-surface-variant hover:bg-surface-container px-4 py-3 rounded-lg font-label-bold text-label-bold transition-colors">
+<span class="material-symbols-outlined text-lg" data-icon="manage_accounts">manage_accounts</span>
+                                User Management
+                            </button>
+</li>
+<li>
+<button class="w-full text-left flex items-center gap-3 text-on-surface-variant hover:bg-surface-container px-4 py-3 rounded-lg font-label-bold text-label-bold transition-colors">
+<span class="material-symbols-outlined text-lg" data-icon="notifications_active">notifications_active</span>
+                                Notification Preferences
+                            </button>
+</li>
+<li>
+<button class="w-full text-left flex items-center gap-3 text-on-surface-variant hover:bg-surface-container px-4 py-3 rounded-lg font-label-bold text-label-bold transition-colors">
+<span class="material-symbols-outlined text-lg" data-icon="security">security</span>
+                                Security &amp; Password
+                            </button>
+</li>
+<li>
+<button class="w-full text-left flex items-center gap-3 text-on-surface-variant hover:bg-surface-container px-4 py-3 rounded-lg font-label-bold text-label-bold transition-colors">
+<span class="material-symbols-outlined text-lg" data-icon="credit_card">credit_card</span>
+                                Billing &amp; Subscription
+                            </button>
+</li>
+</ul>
+</div>
+</aside>
+<!-- Settings Content Form (Bento Grid) -->
+<div class="flex-1 grid grid-cols-1 md:grid-cols-12 gap-bento-gap">
+<!-- General Info Card -->
+<section class="md:col-span-12 bento-card">
+<h3 class="font-headline-md text-headline-md text-primary mb-6 border-b border-outline-variant pb-4">General Information</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="flex flex-col gap-2">
+<label class="font-label-bold text-label-bold text-on-surface">Institution Name</label>
+<input class="input-field" type="text" value="Vedmarg International School"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-label-bold text-label-bold text-on-surface">Registration Number</label>
+<input class="input-field" type="text" value="REG-2023-9876"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-label-bold text-label-bold text-on-surface">Established Year</label>
+<input class="input-field" type="text" value="1995"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-label-bold text-label-bold text-on-surface">Primary Language</label>
+<select class="input-field bg-white">
+<option>English (US)</option>
+<option>English (UK)</option>
+<option>Hindi</option>
+</select>
+</div>
+</div>
+</section>
+<!-- Logo & Branding -->
+<section class="md:col-span-4 bento-card flex flex-col items-center text-center">
+<h3 class="font-headline-md text-headline-md text-primary mb-4 w-full text-left">Institution Logo</h3>
+<div class="w-32 h-32 rounded-full bg-surface-container-high border-2 border-dashed border-outline-variant flex items-center justify-center mb-4 relative group cursor-pointer hover:border-secondary transition-colors">
+<img alt="Current Logo" class="w-full h-full object-cover rounded-full p-2" data-alt="A clean, minimalist abstract geometric logo design suitable for a modern educational institution. The logo features intersecting shapes in deep navy and bright sky blue, set against a pure white background. The aesthetic is highly polished and professional, conveying trust and forward-thinking intelligence." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAopSG39Ryx8lfwy2eSddqFtJmXQst3iXTU3SLriIGSz6ILzLyJIzcprkDLAtvqk8UmjWjWYDoQxffvXtvMKIC6L7el40iSm8SiFpGC1JKRUWPb-iIkSOjGZpniKsxg9-XxuNABeCiIXFS-Q3K_mDN8jigKDWmm-V-uBr8eAzF8rtdczAH3NA7V5wwlQ6hRwSVp_Rv6DjXOLHTaFxcYkCsWH9HCUsZ7d-jNBIW9nLZUoc3bhnCOjmTv"/>
+<div class="absolute inset-0 bg-primary/50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-on-primary text-3xl" data-icon="upload">upload</span>
+</div>
+</div>
+<p class="font-body-sm text-body-sm text-text-muted mb-4">Recommended size: 256x256px. Formats: PNG, JPG.</p>
+<button class="border border-outline-variant text-primary font-label-bold text-label-bold px-4 py-2 rounded-lg hover:bg-surface-container transition-colors w-full">
+                        Upload New Logo
+                    </button>
+</section>
+<!-- Contact & Location -->
+<section class="md:col-span-8 bento-card">
+<h3 class="font-headline-md text-headline-md text-primary mb-6 border-b border-outline-variant pb-4">Contact &amp; Location</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="flex flex-col gap-2 md:col-span-2">
+<label class="font-label-bold text-label-bold text-on-surface">Primary Address</label>
+<input class="input-field" type="text" value="123 Education Boulevard, Knowledge City"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-label-bold text-label-bold text-on-surface">Email Address</label>
+<input class="input-field" type="email" value="admin@vedmarg.edu"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-label-bold text-label-bold text-on-surface">Phone Number</label>
+<input class="input-field" type="tel" value="+1 (555) 123-4567"/>
+</div>
+<div class="flex flex-col gap-2 md:col-span-2">
+<label class="font-label-bold text-label-bold text-on-surface">Website</label>
+<input class="input-field" type="url" value="https://www.vedmarg.edu"/>
+</div>
+</div>
+</section>
+<!-- Academic Configuration -->
+<section class="md:col-span-12 bento-card">
+<h3 class="font-headline-md text-headline-md text-primary mb-6 border-b border-outline-variant pb-4">Academic Configuration</h3>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
+<div class="flex flex-col gap-2">
+<label class="font-label-bold text-label-bold text-on-surface">Current Academic Year</label>
+<select class="input-field bg-white">
+<option>2023 - 2024</option>
+<option selected="">2024 - 2025</option>
+<option>2025 - 2026</option>
+</select>
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-label-bold text-label-bold text-on-surface">Term Structure</label>
+<select class="input-field bg-white">
+<option>Semesters (2)</option>
+<option selected="">Trimesters (3)</option>
+<option>Quarters (4)</option>
+</select>
+</div>
+<div class="flex items-center bg-secondary-fixed/30 p-4 rounded-lg border border-secondary-fixed">
+<span class="material-symbols-outlined text-secondary mr-3" data-icon="info">info</span>
+<p class="font-body-sm text-body-sm text-on-secondary-container">Changing the term structure will affect current active classes.</p>
+</div>
+</div>
+</section>
+</div>
+</div>
+</main>
+</body></html>

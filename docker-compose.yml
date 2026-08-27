@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: gms_awanpora_erp
+    ports:
+      - "5001:5001"
+    environment:
+      - NODE_ENV=production
+      - PORT=5001
+      - JWT_SECRET=gms_awanpora_production_jwt_secret_2026
+      - SUPABASE_URL=https://ryhtbvczmtuyfacjqfnm.supabase.co
+      - SUPABASE_ANON_KEY=sb_publishable_0jXMf-UljXH-10w0n_pFIw_U3DKDj_r
+    restart: unless-stopped

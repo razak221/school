@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+
+<html class="h-full bg-background light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vedmarg - Teacher Dashboard</title>
+<!-- Material Symbols Link Required by JSON Guidelines -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS with Forms and Container Queries -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Design System Tailwind Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "background": "#f7f9fb",
+                        "primary": "#000a1e",
+                        "outline-variant": "#c4c6cf",
+                        "on-secondary": "#ffffff",
+                        "surface-container": "#eceef0",
+                        "surface-container-high": "#e6e8ea",
+                        "on-tertiary-fixed": "#2f1500",
+                        "tertiary-container": "#371a00",
+                        "inverse-surface": "#2d3133",
+                        "on-secondary-fixed": "#001f29",
+                        "on-surface-variant": "#44474e",
+                        "on-primary-fixed-variant": "#2d476f",
+                        "secondary": "#0c6780",
+                        "on-secondary-container": "#09657f",
+                        "primary-container": "#002147",
+                        "on-secondary-fixed-variant": "#004d62",
+                        "on-error": "#ffffff",
+                        "error-red": "#EF4444",
+                        "inverse-primary": "#aec7f6",
+                        "surface-bright": "#f7f9fb",
+                        "on-tertiary": "#ffffff",
+                        "secondary-fixed": "#baeaff",
+                        "success-green": "#22C55E",
+                        "error": "#ba1a1a",
+                        "tertiary-fixed-dim": "#ffb77d",
+                        "on-tertiary-fixed-variant": "#6e3900",
+                        "surface": "#f7f9fb",
+                        "tertiary": "#160700",
+                        "secondary-container": "#9ae1ff",
+                        "on-surface": "#191c1e",
+                        "surface-variant": "#e0e3e5",
+                        "on-background": "#191c1e",
+                        "on-tertiary-container": "#cf7000",
+                        "surface-tint": "#465f88",
+                        "on-primary": "#ffffff",
+                        "surface-container-low": "#f2f4f6",
+                        "on-error-container": "#93000a",
+                        "tertiary-fixed": "#ffdcc3",
+                        "primary-fixed": "#d6e3ff",
+                        "primary-fixed-dim": "#aec7f6",
+                        "on-primary-container": "#708ab5",
+                        "surface-dim": "#d8dadc",
+                        "outline": "#74777f",
+                        "text-muted": "#64748B",
+                        "inverse-on-surface": "#eff1f3",
+                        "on-primary-fixed": "#001b3d",
+                        "text-main": "#1E293B",
+                        "error-container": "#ffdad6",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-highest": "#e0e3e5",
+                        "secondary-fixed-dim": "#89d0ed"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "40px",
+                        "margin-mobile": "16px",
+                        "bento-gap": "16px",
+                        "container-max-width": "1440px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Montserrat"],
+                        "headline-lg-mobile": ["Montserrat"],
+                        "body-lg": ["Montserrat"],
+                        "headline-md": ["Montserrat"],
+                        "label-bold": ["Montserrat"],
+                        "stats-display": ["Montserrat"],
+                        "headline-xl": ["Montserrat"],
+                        "body-md": ["Montserrat"],
+                        "body-sm": ["Montserrat"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "label-bold": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                        "stats-display": ["28px", { "lineHeight": "32px", "fontWeight": "700" }],
+                        "headline-xl": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
+        
+        .bento-card {
+            @apply bg-surface-container-lowest rounded-xl p-6 shadow-[0px_15px_15px_rgba(0,10,30,0.04)] border border-surface-variant flex flex-col gap-4;
+        }
+        
+        /* Subtle Entrance Animation */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-up {
+            animation: fadeUp 0.4s ease-out forwards;
+        }
+        .delay-100 { animation-delay: 100ms; }
+        .delay-200 { animation-delay: 200ms; }
+        .delay-300 { animation-delay: 300ms; }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex">
+<!-- JSON SideNavBar -->
+<nav class="hidden md:flex flex-col fixed left-0 top-0 h-full z-40 py-6 bg-surface-container-lowest dark:bg-inverse-surface border-r border-outline-variant dark:border-outline shadow-sm docked left-0 h-full w-72">
+<!-- Header -->
+<div class="px-6 mb-8 flex items-center gap-4">
+<img alt="Institution Logo" class="w-10 h-10 rounded-lg object-cover" data-alt="A clean, modern geometric logo design representing an educational institution. The logo features abstract interlocking shapes in primary navy blue and sky blue, symbolizing connectivity and intelligence. Placed on a pure white background for high contrast. The style is minimalist corporate identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA4xyvopaz1XQHahuLuHh-BS7a2cHzX4AzWCRY1DodNr4kKkWqRtw9IclAykc4yciTIyya_STo95kMoJSOsfkulTmLauIZ_vvHJRUkLn6paBkKRCgzS4f5pNZp1uF9mSBEemvpsAeChJIr3_1H7XCaRWOqJXMLk_3RFwpir_QxekAVa5hxP0Ds78F6WxpspOicNAG4rk-lExYuONz0RjRFcpfU616urZdVbhNf49uvMirT6uy4Y_n0v"/>
+<div>
+<h1 class="font-headline-md text-headline-md text-primary dark:text-primary-fixed">Vedmarg ERP</h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Decision Intelligence</p>
+</div>
+</div>
+<!-- Navigation Links -->
+<div class="flex-1 overflow-y-auto flex flex-col gap-1 px-4">
+<!-- Dashboard (Active) -->
+<a class="flex items-center gap-3 bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary rounded-xl px-4 py-3 mx-2 transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="font-label-bold text-label-bold">Dashboard</span>
+</a>
+<!-- Attendance -->
+<a class="flex items-center gap-3 text-on-surface-variant dark:text-surface-variant px-4 py-3 mx-2 hover:bg-surface-container-high dark:hover:bg-on-surface-variant rounded-xl transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">calendar_today</span>
+<span class="font-label-bold text-label-bold">Attendance</span>
+</a>
+<!-- Fees -->
+<a class="flex items-center gap-3 text-on-surface-variant dark:text-surface-variant px-4 py-3 mx-2 hover:bg-surface-container-high dark:hover:bg-on-surface-variant rounded-xl transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span class="font-label-bold text-label-bold">Fees</span>
+</a>
+<!-- Exams -->
+<a class="flex items-center gap-3 text-on-surface-variant dark:text-surface-variant px-4 py-3 mx-2 hover:bg-surface-container-high dark:hover:bg-on-surface-variant rounded-xl transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">assignment</span>
+<span class="font-label-bold text-label-bold">Exams</span>
+</a>
+<!-- Timetable -->
+<a class="flex items-center gap-3 text-on-surface-variant dark:text-surface-variant px-4 py-3 mx-2 hover:bg-surface-container-high dark:hover:bg-on-surface-variant rounded-xl transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">schedule</span>
+<span class="font-label-bold text-label-bold">Timetable</span>
+</a>
+<!-- Profile -->
+<a class="flex items-center gap-3 text-on-surface-variant dark:text-surface-variant px-4 py-3 mx-2 hover:bg-surface-container-high dark:hover:bg-on-surface-variant rounded-xl transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-bold text-label-bold">Profile</span>
+</a>
+<!-- Settings -->
+<a class="flex items-center gap-3 text-on-surface-variant dark:text-surface-variant px-4 py-3 mx-2 hover:bg-surface-container-high dark:hover:bg-on-surface-variant rounded-xl transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-bold text-label-bold">Settings</span>
+</a>
+</div>
+<!-- Footer -->
+<div class="px-6 mt-auto flex flex-col gap-4">
+<button class="w-full py-3 bg-primary-container text-on-primary-container rounded-xl font-label-bold text-label-bold hover:bg-primary-container/90 transition-colors">Support</button>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 hover:bg-surface-container-high rounded-xl transition-colors" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-label-bold text-label-bold">Logout</span>
+</a>
+</div>
+</nav>
+<!-- JSON TopNavBar (Mobile Only) -->
+<nav class="md:hidden fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin-mobile h-20 bg-surface-container-lowest dark:bg-inverse-surface shadow-sm shadow-[0px_15px_15px_rgba(0,10,30,0.04)] docked full-width top-0">
+<div class="font-headline-xl text-headline-xl text-primary dark:text-primary-fixed-dim">Vedmarg</div>
+<div class="flex items-center gap-4 text-primary dark:text-primary-fixed">
+<button class="hover:bg-surface-container dark:hover:bg-on-surface-variant transition-colors p-2 rounded-full Active: scale-95 duration-150 relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1 right-1 w-2.5 h-2.5 bg-tertiary-container rounded-full border-2 border-surface-container-lowest"></span>
+</button>
+<img alt="User profile" class="w-10 h-10 rounded-full object-cover border border-outline-variant" data-alt="A professional headshot of a friendly male teacher in his mid-30s. He is wearing a crisp light blue button-down shirt. The background is a soft, out-of-focus bright classroom setting. The lighting is natural and flattering, creating a trustworthy and approachable mood suitable for an educational profile avatar." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPrC3KB9Pi05O0bUtZnKwwtyZywNMW2ihDfiQe2Ecb8DROdK96_Da-6P80HqSU0c63s9C989HKBHKC8ycbIh0SAnLYx-PyPxDplzDd-aUH1NMNpFOuCIkOxLWo4v44ITjNWNyJuqqrVgfj9yS7pxw6ReYrvTTMmNH0lKDnyHxZ2KfcNXUx5HCL1ry6GxJun3gdybdp2vmaoBC4g4ea38aI1r5bCKTo0kODG8oNbNwSexyYlTZIZKd-"/>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-1 md:ml-72 pt-24 md:pt-8 px-margin-mobile md:px-margin-desktop pb-12 w-full max-w-container-max-width mx-auto">
+<!-- Header Section -->
+<header class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4 animate-fade-up">
+<div>
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary">Good Morning, Amit</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Here is what's happening in your classes today.</p>
+</div>
+<!-- Quick Status Chip -->
+<div class="flex items-center gap-3 bg-success-green/10 px-4 py-2 rounded-full border border-success-green/20">
+<span class="w-2.5 h-2.5 rounded-full bg-success-green animate-pulse"></span>
+<span class="font-label-bold text-label-bold text-on-surface">Amit is Present today</span>
+</div>
+</header>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-bento-gap">
+<!-- Class Attendance Stats (Spans 8 cols on desktop) -->
+<section class="md:col-span-8 bento-card opacity-0 animate-fade-up delay-100">
+<div class="flex justify-between items-center mb-2">
+<h3 class="font-label-bold text-label-bold text-on-surface uppercase tracking-wider">Class X-A Attendance</h3>
+<button class="text-secondary hover:bg-secondary-container/30 p-1.5 rounded-md transition-colors"><span class="material-symbols-outlined text-[20px]">more_vert</span></button>
+</div>
+<div class="grid grid-cols-3 gap-4">
+<!-- Present -->
+<div class="bg-surface-bright rounded-lg p-4 border border-outline-variant/30 flex flex-col justify-between">
+<div class="flex items-center gap-2 mb-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">check_circle</span>
+<span class="font-body-sm text-body-sm">Present</span>
+</div>
+<div class="flex items-end justify-between">
+<span class="font-stats-display text-stats-display text-primary">42</span>
+<span class="font-label-bold text-label-bold text-success-green mb-1">84%</span>
+</div>
+</div>
+<!-- Absent -->
+<div class="bg-surface-bright rounded-lg p-4 border border-outline-variant/30 flex flex-col justify-between">
+<div class="flex items-center gap-2 mb-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">cancel</span>
+<span class="font-body-sm text-body-sm">Absent</span>
+</div>
+<div class="flex items-end justify-between">
+<span class="font-stats-display text-stats-display text-primary">5</span>
+<span class="font-label-bold text-label-bold text-error-red mb-1">10%</span>
+</div>
+</div>
+<!-- Leaves -->
+<div class="bg-surface-bright rounded-lg p-4 border border-outline-variant/30 flex flex-col justify-between">
+<div class="flex items-center gap-2 mb-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">event_busy</span>
+<span class="font-body-sm text-body-sm">Leaves</span>
+</div>
+<div class="flex items-end justify-between">
+<span class="font-stats-display text-stats-display text-primary">3</span>
+<span class="font-label-bold text-label-bold text-tertiary-container mb-1">6%</span>
+</div>
+</div>
+</div>
+<!-- Small chart placeholder -->
+<div class="mt-4 h-2 w-full bg-surface-container rounded-full overflow-hidden flex">
+<div class="bg-success-green h-full" style="width: 84%"></div>
+<div class="bg-error-red h-full" style="width: 10%"></div>
+<div class="bg-tertiary-container h-full" style="width: 6%"></div>
+</div>
+</section>
+<!-- Quick Actions / Visual (Spans 4 cols on desktop) -->
+<section class="md:col-span-4 bento-card opacity-0 animate-fade-up delay-200 relative overflow-hidden group">
+<!-- The reference image provided by the user -->
+<div class="absolute inset-0 z-0 opacity-20 group-hover:opacity-30 transition-opacity duration-500">
+<img alt="Dashboard Interface Reference" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AEtjO1WfIBtjqg3d2-oouL-UV2xxFVL7H2mLxceDVUMwS841qJWqJZLG23RwIaQQppmbMLxZIv5kTtuhq8FOrPb1gDanqeYF0XDKAzM-tChs8MYNFgU57-mt2SurVIi8gGeKvuZWyUyKlmf4P_AJiStfOFryDVgmlLTXtdTKlppuwZnjIto8z-PTCJQEwhz1fc5omyasQoKC8B_HwmOvswmAfelP4K9Zp4DHIw0avZ2MI4aAPyBna94kTA3KhRQ"/>
+</div>
+<div class="relative z-10 h-full flex flex-col justify-between">
+<div>
+<h3 class="font-label-bold text-label-bold text-on-surface uppercase tracking-wider mb-2">Quick Actions</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Streamline your daily tasks.</p>
+</div>
+<div class="flex flex-col gap-3 mt-4">
+<button class="w-full py-3 px-4 bg-primary text-on-primary rounded-lg font-label-bold text-label-bold flex items-center justify-center gap-2 hover:bg-primary/90 transition-colors shadow-sm">
+<span class="material-symbols-outlined text-[18px]">edit_calendar</span>
+                             Mark Attendance
+                         </button>
+<button class="w-full py-3 px-4 bg-surface-bright text-primary border border-outline-variant rounded-lg font-label-bold text-label-bold flex items-center justify-center gap-2 hover:bg-surface-container transition-colors shadow-sm">
+<span class="material-symbols-outlined text-[18px]">add_task</span>
+                             Assign Homework
+                         </button>
+</div>
+</div>
+</section>
+<!-- Timetable Summary (Spans 6 cols on desktop) -->
+<section class="md:col-span-6 bento-card opacity-0 animate-fade-up delay-300">
+<div class="flex justify-between items-center mb-4">
+<h3 class="font-label-bold text-label-bold text-on-surface uppercase tracking-wider">Today's Timetable</h3>
+<a class="font-label-bold text-label-bold text-secondary hover:underline" href="#">View Full</a>
+</div>
+<div class="flex flex-col gap-0 border border-outline-variant/30 rounded-lg overflow-hidden">
+<!-- Current Class -->
+<div class="flex items-stretch bg-secondary-container/10 border-b border-outline-variant/30">
+<div class="w-2 bg-secondary"></div>
+<div class="flex-1 p-4 flex justify-between items-center">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="font-label-bold text-label-bold text-secondary bg-secondary/10 px-2 py-0.5 rounded text-[10px] uppercase">Ongoing</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">09:00 AM - 09:45 AM</span>
+</div>
+<h4 class="font-headline-md text-headline-md text-primary text-[18px]">Mathematics</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Class X-A • Room 102</p>
+</div>
+<span class="material-symbols-outlined text-secondary opacity-50 text-[32px]">calculate</span>
+</div>
+</div>
+<!-- Next Class -->
+<div class="flex items-stretch border-b border-outline-variant/30 hover:bg-surface-container-low transition-colors">
+<div class="w-2 bg-transparent"></div>
+<div class="flex-1 p-4 flex justify-between items-center">
+<div>
+<div class="font-body-sm text-body-sm text-on-surface-variant mb-1">10:00 AM - 10:45 AM</div>
+<h4 class="font-headline-md text-headline-md text-primary text-[16px]">Physics Lab</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Class XI-B • Lab 3</p>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant opacity-30 text-[24px]">science</span>
+</div>
+</div>
+<!-- Later Class -->
+<div class="flex items-stretch hover:bg-surface-container-low transition-colors">
+<div class="w-2 bg-transparent"></div>
+<div class="flex-1 p-4 flex justify-between items-center">
+<div>
+<div class="font-body-sm text-body-sm text-on-surface-variant mb-1">11:30 AM - 12:15 PM</div>
+<h4 class="font-headline-md text-headline-md text-primary text-[16px]">Mathematics</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Class IX-C • Room 205</p>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant opacity-30 text-[24px]">calculate</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Updates Feed (Spans 6 cols on desktop) -->
+<section class="md:col-span-6 bento-card opacity-0 animate-fade-up delay-300">
+<div class="flex justify-between items-center mb-4">
+<h3 class="font-label-bold text-label-bold text-on-surface uppercase tracking-wider">Updates &amp; Notices</h3>
+<div class="flex gap-2">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span class="w-2 h-2 rounded-full bg-surface-dim"></span>
+</div>
+</div>
+<div class="flex flex-col gap-4 overflow-y-auto pr-2" style="max-height: 300px;">
+<!-- Update Item 1 -->
+<div class="flex gap-4 items-start pb-4 border-b border-outline-variant/30">
+<div class="w-10 h-10 rounded-full bg-tertiary-container/10 flex items-center justify-center shrink-0 text-tertiary-container">
+<span class="material-symbols-outlined text-[20px]">campaign</span>
+</div>
+<div>
+<div class="flex justify-between items-baseline mb-1">
+<h4 class="font-label-bold text-label-bold text-primary text-[14px]">Staff Meeting Rescheduled</h4>
+<span class="font-body-sm text-body-sm text-on-surface-variant text-[11px]">2 hrs ago</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">The monthly staff meeting has been moved to Friday at 3:00 PM in the Main Hall.</p>
+</div>
+</div>
+<!-- Update Item 2 -->
+<div class="flex gap-4 items-start pb-4 border-b border-outline-variant/30">
+<div class="w-10 h-10 rounded-full bg-secondary-container/20 flex items-center justify-center shrink-0 text-secondary">
+<span class="material-symbols-outlined text-[20px]">assignment_turned_in</span>
+</div>
+<div>
+<div class="flex justify-between items-baseline mb-1">
+<h4 class="font-label-bold text-label-bold text-primary text-[14px]">Class X-A Homework Submissions</h4>
+<span class="font-body-sm text-body-sm text-on-surface-variant text-[11px]">Yesterday</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">38/42 students have submitted the Algebra assignment. Review pending for 12 students.</p>
+</div>
+</div>
+<!-- Update Item 3 -->
+<div class="flex gap-4 items-start">
+<div class="w-10 h-10 rounded-full bg-error-container/20 flex items-center justify-center shrink-0 text-error-red">
+<span class="material-symbols-outlined text-[20px]">warning</span>
+</div>
+<div>
+<div class="flex justify-between items-baseline mb-1">
+<h4 class="font-label-bold text-label-bold text-primary text-[14px]">System Maintenance</h4>
+<span class="font-body-sm text-body-sm text-on-surface-variant text-[11px]">Yesterday</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">ERP system will be down for maintenance from 12 AM to 2 AM tonight.</p>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+</body></html>

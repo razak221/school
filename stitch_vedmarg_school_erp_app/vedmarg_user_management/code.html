@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vedmarg ERP - User Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed-dim": "#89d0ed",
+                        "on-secondary-container": "#09657f",
+                        "on-background": "#191c1e",
+                        "surface-tint": "#465f88",
+                        "surface-dim": "#d8dadc",
+                        "background": "#f7f9fb",
+                        "on-secondary-fixed-variant": "#004d62",
+                        "tertiary-container": "#371a00",
+                        "outline-variant": "#c4c6cf",
+                        "secondary": "#0c6780",
+                        "on-secondary": "#ffffff",
+                        "surface-container-highest": "#e0e3e5",
+                        "on-tertiary-fixed-variant": "#6e3900",
+                        "text-main": "#1E293B",
+                        "on-tertiary": "#ffffff",
+                        "on-surface": "#191c1e",
+                        "primary": "#000a1e",
+                        "on-tertiary-container": "#cf7000",
+                        "text-muted": "#64748B",
+                        "error-red": "#EF4444",
+                        "inverse-primary": "#aec7f6",
+                        "error": "#ba1a1a",
+                        "error-container": "#ffdad6",
+                        "surface-bright": "#f7f9fb",
+                        "on-secondary-fixed": "#001f29",
+                        "primary-fixed-dim": "#aec7f6",
+                        "surface-variant": "#e0e3e5",
+                        "primary-fixed": "#d6e3ff",
+                        "surface-container": "#eceef0",
+                        "on-error": "#ffffff",
+                        "on-primary-fixed": "#001b3d",
+                        "surface-container-high": "#e6e8ea",
+                        "outline": "#74777f",
+                        "tertiary-fixed-dim": "#ffb77d",
+                        "surface": "#f7f9fb",
+                        "success-green": "#22C55E",
+                        "inverse-on-surface": "#eff1f3",
+                        "tertiary-fixed": "#ffdcc3",
+                        "on-primary-container": "#708ab5",
+                        "secondary-container": "#9ae1ff",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-surface": "#2d3133",
+                        "primary-container": "#002147",
+                        "on-error-container": "#93000a",
+                        "on-primary": "#ffffff",
+                        "on-primary-fixed-variant": "#2d476f",
+                        "on-tertiary-fixed": "#2f1500",
+                        "secondary-fixed": "#baeaff",
+                        "surface-container-low": "#f2f4f6",
+                        "on-surface-variant": "#44474e",
+                        "tertiary": "#160700"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-max-width": "1440px",
+                        "margin-mobile": "16px",
+                        "bento-gap": "16px",
+                        "gutter": "24px",
+                        "margin-desktop": "40px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Montserrat"],
+                        "stats-display": ["Montserrat"],
+                        "headline-md": ["Montserrat"],
+                        "body-sm": ["Montserrat"],
+                        "body-md": ["Montserrat"],
+                        "headline-lg": ["Montserrat"],
+                        "label-bold": ["Montserrat"],
+                        "headline-xl": ["Montserrat"],
+                        "body-lg": ["Montserrat"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "stats-display": ["28px", { "lineHeight": "32px", "fontWeight": "700" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "600" }],
+                        "label-bold": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                        "headline-xl": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .bento-card {
+            box-shadow: 0px 15px 15px rgba(0, 10, 30, 0.04);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen font-body-md flex">
+<!-- SideNavBar -->
+<nav class="hidden md:flex flex-col fixed left-0 top-0 h-full z-40 py-6 bg-surface-container-lowest border-r border-outline-variant shadow-sm w-72">
+<div class="px-6 mb-8 flex items-center gap-4">
+<img class="w-10 h-10 rounded-lg object-cover" data-alt="A modern, abstract, geometric institutional logo in deep navy and sky blue, representing knowledge and structured data." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5kqN79J409fVG4NRqkEaiJRqLWCmh-1-37EO2jIStx5MSJCQJo4414UoNcnGqUjLwVxm5boq1pWvnITgkKA-azXpnM_7kMMWL0WixiJ5BO2fO9ebfV9EmNSUVQAOLOdkTn603uBv8k-OrG0rdxqVWd8VGiU_Kj2EINOuYoVPK0a7_x5y53HIqQVm8qN8yRrm3ncPJBb5Zw0SBnfuKyhyw-R5PIwtTXa4d6lZ-j1k-3pQIv074Ef1I"/>
+<div>
+<h1 class="font-headline-md text-headline-md text-primary">Vedmarg ERP</h1>
+<p class="font-body-sm text-body-sm text-text-muted">Decision Intelligence</p>
+</div>
+</div>
+<div class="flex flex-col gap-1 flex-1 px-2">
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 mx-2 hover:bg-surface-container-high rounded-xl transition-all duration-200 ease-in-out font-label-bold text-label-bold" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+                Dashboard
+            </a>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 mx-2 hover:bg-surface-container-high rounded-xl transition-all duration-200 ease-in-out font-label-bold text-label-bold" href="#">
+<span class="material-symbols-outlined" data-icon="calendar_today">calendar_today</span>
+                Attendance
+            </a>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 mx-2 hover:bg-surface-container-high rounded-xl transition-all duration-200 ease-in-out font-label-bold text-label-bold" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+                Fees
+            </a>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 mx-2 hover:bg-surface-container-high rounded-xl transition-all duration-200 ease-in-out font-label-bold text-label-bold" href="#">
+<span class="material-symbols-outlined" data-icon="assignment">assignment</span>
+                Exams
+            </a>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 mx-2 hover:bg-surface-container-high rounded-xl transition-all duration-200 ease-in-out font-label-bold text-label-bold" href="#">
+<span class="material-symbols-outlined" data-icon="schedule">schedule</span>
+                Timetable
+            </a>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 mx-2 hover:bg-surface-container-high rounded-xl transition-all duration-200 ease-in-out font-label-bold text-label-bold" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+                Profile
+            </a>
+<a class="flex items-center gap-3 bg-secondary-container text-on-secondary-container rounded-xl px-4 py-3 mx-2 transition-all duration-200 ease-in-out font-label-bold text-label-bold" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+                Settings
+            </a>
+</div>
+<div class="px-4 mt-auto space-y-4">
+<button class="w-full flex items-center justify-center gap-2 bg-primary text-on-primary font-label-bold text-label-bold py-3 rounded-lg hover:bg-primary-container transition-colors">
+                Support
+            </button>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 mx-2 hover:bg-surface-container-high rounded-xl transition-all duration-200 ease-in-out font-label-bold text-label-bold" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+                Logout
+            </a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-1 md:ml-72 flex flex-col min-h-screen">
+<!-- TopNavBar -->
+<header class="fixed top-0 left-0 md:left-72 right-0 w-auto z-50 flex justify-between items-center px-margin-desktop h-20 bg-surface-container-lowest shadow-[0px_15px_15px_rgba(0,10,30,0.04)]">
+<div class="flex items-center gap-4 w-full max-w-md">
+<!-- Search Bar -->
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-muted">search</span>
+<input class="w-full pl-10 pr-4 py-2 border border-outline-variant rounded-full bg-surface focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary font-body-sm text-body-sm transition-colors" placeholder="Search users..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<button class="text-on-surface-variant hover:bg-surface-container p-2 rounded-full transition-colors relative">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-1 right-1 w-2.5 h-2.5 bg-on-tertiary-container rounded-full border-2 border-surface-container-lowest"></span>
+</button>
+<div class="h-8 w-px bg-outline-variant"></div>
+<button class="flex items-center gap-2">
+<img class="w-9 h-9 rounded-full object-cover" data-alt="A professional headshot of a smiling school administrator in a bright, modern office setting. Crisp lighting, shallow depth of field." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKQu3taBZ8XhIQIIl2GmyhraTp916Syb8_c-VI3jMH_sDDT3aKXYpPPWNU9xrhwzCzTu6MSZVvJLYZ3ht_vSDlTir_y0Mb_JFSXUfEIdynVMnV_Z5p3VwwNWzsE_XYyOnFRM04Y2X8OXSU5vnM3ZdF4ya9pT6PorUERxPvH3rFplHw6BP0MdhFzp7D8WlJhy6IhnJ3XknoU-_ppi4H2inWAEam9I9FqIeQJgs7_OiI3JJY3FbtxFvX"/>
+</button>
+</div>
+</header>
+<!-- Page Content -->
+<div class="flex-1 pt-28 px-margin-mobile md:px-margin-desktop pb-12 overflow-y-auto">
+<!-- Page Header -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+<div>
+<h2 class="font-headline-lg text-headline-lg md:font-headline-xl md:text-headline-xl text-primary">User Management</h2>
+<p class="font-body-md text-body-md text-text-muted mt-1">Manage staff, teachers, and students across the institution.</p>
+</div>
+<div class="flex flex-wrap items-center gap-3">
+<button class="flex items-center gap-2 border border-outline-variant text-text-main px-4 py-2 rounded-lg font-label-bold text-label-bold hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-sm">download</span> Export
+                    </button>
+<button class="flex items-center gap-2 border border-outline-variant text-text-main px-4 py-2 rounded-lg font-label-bold text-label-bold hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-sm">upload</span> Import
+                    </button>
+<button class="flex items-center gap-2 bg-primary text-on-primary px-5 py-2.5 rounded-lg font-label-bold text-label-bold hover:bg-primary-container transition-colors shadow-sm">
+<span class="material-symbols-outlined text-sm">add</span> Add User
+                    </button>
+</div>
+</div>
+<!-- Dashboard Modules (Bento Grid) -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-bento-gap mb-8">
+<!-- Total Users Stat -->
+<div class="col-span-1 md:col-span-4 bg-surface-container-lowest p-6 rounded-xl bento-card border border-outline-variant/30 flex flex-col justify-between">
+<div class="flex justify-between items-start mb-4">
+<span class="font-label-bold text-label-bold text-text-muted uppercase">Total Users</span>
+<div class="p-2 bg-primary-fixed rounded-lg text-on-primary-fixed">
+<span class="material-symbols-outlined">group</span>
+</div>
+</div>
+<div>
+<div class="font-stats-display text-stats-display text-primary mb-1">1,248</div>
+<div class="flex items-center gap-1 text-secondary font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-[16px]">trending_up</span>
+<span>+4% from last month</span>
+</div>
+</div>
+</div>
+<!-- Active Staff Stat -->
+<div class="col-span-1 md:col-span-4 bg-surface-container-lowest p-6 rounded-xl bento-card border border-outline-variant/30 flex flex-col justify-between">
+<div class="flex justify-between items-start mb-4">
+<span class="font-label-bold text-label-bold text-text-muted uppercase">Active Staff</span>
+<div class="p-2 bg-secondary-container rounded-lg text-on-secondary-container">
+<span class="material-symbols-outlined">badge</span>
+</div>
+</div>
+<div>
+<div class="font-stats-display text-stats-display text-primary mb-1">112</div>
+<div class="flex items-center gap-1 text-text-muted font-body-sm text-body-sm">
+<span>8 pending approvals</span>
+</div>
+</div>
+</div>
+<!-- System Roles Split -->
+<div class="col-span-1 md:col-span-4 bg-surface-container-lowest p-6 rounded-xl bento-card border border-outline-variant/30 flex flex-col justify-center">
+<span class="font-label-bold text-label-bold text-text-muted uppercase mb-4 block">Role Distribution</span>
+<div class="space-y-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-primary"></div>
+<span class="font-body-sm text-body-sm text-text-main">Students</span>
+</div>
+<span class="font-label-bold text-label-bold">980</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-secondary"></div>
+<span class="font-body-sm text-body-sm text-text-main">Teachers</span>
+</div>
+<span class="font-label-bold text-label-bold">185</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-on-tertiary-container"></div>
+<span class="font-body-sm text-body-sm text-text-main">Admin</span>
+</div>
+<span class="font-label-bold text-label-bold">83</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Data Table Section -->
+<div class="bg-surface-container-lowest rounded-xl bento-card border border-outline-variant/30 overflow-hidden">
+<!-- Table Controls -->
+<div class="p-5 border-b border-outline-variant/50 flex flex-col sm:flex-row justify-between items-center gap-4 bg-surface-bright">
+<div class="flex gap-2 w-full sm:w-auto">
+<select class="border-outline-variant text-text-main text-sm rounded-lg focus:ring-secondary focus:border-secondary block w-full p-2 bg-white">
+<option>All Roles</option>
+<option>Student</option>
+<option>Teacher</option>
+<option>Admin</option>
+</select>
+<select class="border-outline-variant text-text-main text-sm rounded-lg focus:ring-secondary focus:border-secondary block w-full p-2 bg-white">
+<option>All Status</option>
+<option>Active</option>
+<option>Inactive</option>
+</select>
+</div>
+<div class="text-text-muted font-body-sm text-body-sm w-full sm:w-auto text-right">
+                        Showing 1-5 of 1,248
+                    </div>
+</div>
+<!-- Table -->
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface border-b border-outline-variant/50">
+<th class="p-4 font-label-bold text-label-bold text-text-muted uppercase tracking-wider w-12">
+<input class="rounded border-outline-variant text-secondary focus:ring-secondary" type="checkbox"/>
+</th>
+<th class="p-4 font-label-bold text-label-bold text-text-muted uppercase tracking-wider">User</th>
+<th class="p-4 font-label-bold text-label-bold text-text-muted uppercase tracking-wider">Role</th>
+<th class="p-4 font-label-bold text-label-bold text-text-muted uppercase tracking-wider">Department/Class</th>
+<th class="p-4 font-label-bold text-label-bold text-text-muted uppercase tracking-wider">Status</th>
+<th class="p-4 font-label-bold text-label-bold text-text-muted uppercase tracking-wider text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/30 font-body-md text-body-md text-text-main">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="p-4">
+<input class="rounded border-outline-variant text-secondary focus:ring-secondary" type="checkbox"/>
+</td>
+<td class="p-4">
+<div class="flex items-center gap-3">
+<img class="w-10 h-10 rounded-full object-cover border border-outline-variant/20" data-alt="A small, circular avatar portrait of a young male student in a bright, modern setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAhjB9eb7eeKzemraW5vRbDMzr4QIy1zxi9_RX8wWQllnx0kcaY4_eM3M3YDuYggEYalmYPcuvbsAxHKp41NKem3yDUO9GVPjZwprCdcd3bfH5ynUCfnciQgLsEYbXIfpNRdgrfj00sSVMf2z8wZ_I3O6rfA5NC1PyC6h8oMNrJLcl55MWFUPzbKNyBWhhN7_cENwTzAGaO37Qx1sN4ciV0RnL16Y_oApLQsJIkCIkN-JrfBX6Rkd76"/>
+<div>
+<div class="font-headline-sm text-headline-sm font-semibold">Arjun Sharma</div>
+<div class="font-body-sm text-body-sm text-text-muted">arjun.s@vedmarg.edu</div>
+</div>
+</div>
+</td>
+<td class="p-4">Student</td>
+<td class="p-4 text-text-muted">Class 10-A</td>
+<td class="p-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full font-label-bold text-[10px] bg-success-green/10 text-success-green border border-success-green/20">
+                                        Active
+                                    </span>
+</td>
+<td class="p-4 text-right">
+<div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1.5 text-text-muted hover:text-secondary hover:bg-secondary-container rounded-md transition-colors"><span class="material-symbols-outlined text-[20px]">edit</span></button>
+<button class="p-1.5 text-text-muted hover:text-error hover:bg-error-container rounded-md transition-colors"><span class="material-symbols-outlined text-[20px]">delete</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="p-4">
+<input class="rounded border-outline-variant text-secondary focus:ring-secondary" type="checkbox"/>
+</td>
+<td class="p-4">
+<div class="flex items-center gap-3">
+<img class="w-10 h-10 rounded-full object-cover border border-outline-variant/20" data-alt="A small, circular avatar portrait of a professional female teacher with glasses in a modern classroom setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC6aLUcfAUP6x2gCEX_pP-XpojFmwwnzLSTLJI_Arc0cBqH-5-Ouge4gSCRzzuFVNaHJdPs5UHWzg-_kU-P_KMqKuRMthLtfz18J3J3BX2Ey8rf_zJ_kNKKFnfKihNzEoj8dGSQW_RSQ8InLPjNlPCeBUZO6i0hclm3QyjVNnhF8savvWZ4lFlIkm8S2Q3iyjlrTNSJYpfG4lSzDpJrwWSG6FNuNMmZFqkxQPCcRSZ6zEdWCbCzJ-WD"/>
+<div>
+<div class="font-headline-sm text-headline-sm font-semibold">Dr. Meera Patel</div>
+<div class="font-body-sm text-body-sm text-text-muted">m.patel@vedmarg.edu</div>
+</div>
+</div>
+</td>
+<td class="p-4 font-semibold text-secondary">Teacher</td>
+<td class="p-4 text-text-muted">Science Dept.</td>
+<td class="p-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full font-label-bold text-[10px] bg-success-green/10 text-success-green border border-success-green/20">
+                                        Active
+                                    </span>
+</td>
+<td class="p-4 text-right">
+<div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1.5 text-text-muted hover:text-secondary hover:bg-secondary-container rounded-md transition-colors"><span class="material-symbols-outlined text-[20px]">edit</span></button>
+<button class="p-1.5 text-text-muted hover:text-error hover:bg-error-container rounded-md transition-colors"><span class="material-symbols-outlined text-[20px]">delete</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="p-4">
+<input class="rounded border-outline-variant text-secondary focus:ring-secondary" type="checkbox"/>
+</td>
+<td class="p-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-headline-md font-bold">
+                                            RK
+                                        </div>
+<div>
+<div class="font-headline-sm text-headline-sm font-semibold">Rahul Kumar</div>
+<div class="font-body-sm text-body-sm text-text-muted">rahul.k@vedmarg.edu</div>
+</div>
+</div>
+</td>
+<td class="p-4 text-on-tertiary-container font-semibold">Admin</td>
+<td class="p-4 text-text-muted">IT Operations</td>
+<td class="p-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full font-label-bold text-[10px] bg-outline-variant/30 text-text-muted border border-outline-variant">
+                                        Inactive
+                                    </span>
+</td>
+<td class="p-4 text-right">
+<div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1.5 text-text-muted hover:text-secondary hover:bg-secondary-container rounded-md transition-colors"><span class="material-symbols-outlined text-[20px]">edit</span></button>
+<button class="p-1.5 text-text-muted hover:text-error hover:bg-error-container rounded-md transition-colors"><span class="material-symbols-outlined text-[20px]">delete</span></button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="p-4 border-t border-outline-variant/50 flex justify-center bg-surface-bright">
+<nav class="flex items-center gap-1">
+<button class="p-2 rounded-lg text-text-muted hover:bg-surface-container disabled:opacity-50"><span class="material-symbols-outlined text-sm">chevron_left</span></button>
+<button class="w-8 h-8 rounded-lg bg-primary text-on-primary font-label-bold text-label-bold flex items-center justify-center">1</button>
+<button class="w-8 h-8 rounded-lg text-text-main hover:bg-surface-container font-label-bold text-label-bold flex items-center justify-center">2</button>
+<button class="w-8 h-8 rounded-lg text-text-main hover:bg-surface-container font-label-bold text-label-bold flex items-center justify-center">3</button>
+<span class="px-2 text-text-muted">...</span>
+<button class="p-2 rounded-lg text-text-main hover:bg-surface-container"><span class="material-symbols-outlined text-sm">chevron_right</span></button>
+</nav>
+</div>
+</div>
+</div>
+</main>
+</body></html>

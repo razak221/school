@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vedmarg - Student Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "background": "#f7f9fb",
+                        "primary": "#000a1e",
+                        "outline-variant": "#c4c6cf",
+                        "on-secondary": "#ffffff",
+                        "surface-container": "#eceef0",
+                        "surface-container-high": "#e6e8ea",
+                        "on-tertiary-fixed": "#2f1500",
+                        "tertiary-container": "#371a00",
+                        "inverse-surface": "#2d3133",
+                        "on-secondary-fixed": "#001f29",
+                        "on-surface-variant": "#44474e",
+                        "on-primary-fixed-variant": "#2d476f",
+                        "secondary": "#0c6780",
+                        "on-secondary-container": "#09657f",
+                        "primary-container": "#002147",
+                        "on-secondary-fixed-variant": "#004d62",
+                        "on-error": "#ffffff",
+                        "error-red": "#EF4444",
+                        "inverse-primary": "#aec7f6",
+                        "surface-bright": "#f7f9fb",
+                        "on-tertiary": "#ffffff",
+                        "secondary-fixed": "#baeaff",
+                        "success-green": "#22C55E",
+                        "error": "#ba1a1a",
+                        "tertiary-fixed-dim": "#ffb77d",
+                        "on-tertiary-fixed-variant": "#6e3900",
+                        "surface": "#f7f9fb",
+                        "tertiary": "#160700",
+                        "secondary-container": "#9ae1ff",
+                        "on-surface": "#191c1e",
+                        "surface-variant": "#e0e3e5",
+                        "on-background": "#191c1e",
+                        "on-tertiary-container": "#cf7000",
+                        "surface-tint": "#465f88",
+                        "on-primary": "#ffffff",
+                        "surface-container-low": "#f2f4f6",
+                        "on-error-container": "#93000a",
+                        "tertiary-fixed": "#ffdcc3",
+                        "primary-fixed": "#d6e3ff",
+                        "primary-fixed-dim": "#aec7f6",
+                        "on-primary-container": "#708ab5",
+                        "surface-dim": "#d8dadc",
+                        "outline": "#74777f",
+                        "text-muted": "#64748B",
+                        "inverse-on-surface": "#eff1f3",
+                        "on-primary-fixed": "#001b3d",
+                        "text-main": "#1E293B",
+                        "error-container": "#ffdad6",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-highest": "#e0e3e5",
+                        "secondary-fixed-dim": "#89d0ed"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "40px",
+                        "margin-mobile": "16px",
+                        "bento-gap": "16px",
+                        "container-max-width": "1440px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Montserrat"],
+                        "headline-lg-mobile": ["Montserrat"],
+                        "body-lg": ["Montserrat"],
+                        "headline-md": ["Montserrat"],
+                        "label-bold": ["Montserrat"],
+                        "stats-display": ["Montserrat"],
+                        "headline-xl": ["Montserrat"],
+                        "body-md": ["Montserrat"],
+                        "body-sm": ["Montserrat"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "label-bold": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                        "stats-display": ["28px", { "lineHeight": "32px", "fontWeight": "700" }],
+                        "headline-xl": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }]
+                    }
+                },
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill-icon {
+            font-variation-settings: 'FILL' 1;
+        }
+        
+        .bento-card {
+            @apply bg-surface-container-lowest rounded-xl shadow-[0px_15px_15px_rgba(0,10,30,0.04)] p-6 transition-all duration-200 hover:shadow-sm;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md h-screen flex overflow-hidden">
+<!-- SideNavBar (Desktop) -->
+<aside class="hidden md:flex flex-col fixed left-0 top-0 h-full z-40 py-6 bg-surface-container-lowest border-r border-outline-variant shadow-sm w-72">
+<div class="px-6 mb-8 flex items-center gap-4">
+<img class="w-10 h-10 rounded-lg object-cover" data-alt="A clean, modern geometric logo icon for an educational institution, featuring crisp lines and a professional deep blue color palette. The icon sits on a pure white background, lit softly to emphasize its premium, trustworthy design aesthetic suitable for a high-end school management system." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDsd-OhwhzQn6GN_HB0rOOIcsUTXRnt1y9DXzTWaL1AiJUIBql_5eAU3RpIlbSLB2dpc9eFj1IYBrnnVdyEpkBVVNnxJP_sY3neyIQdPC7449AhmYxsSxv7hSwzBfZhSCXvPRkhlio40qqR-cvYMU0kG8e6yNSLrNIhruuwj9iAT-Rli4CdBDGxJIY3wJurwm8V9rOJlla7pHX5arR3G63VdNw_YZ5WVjAFAYAEZP96F5d79Fu_FGxF"/>
+<div>
+<h1 class="font-headline-md text-headline-md text-primary">Vedmarg ERP</h1>
+<p class="font-body-sm text-body-sm text-text-muted">Decision Intelligence</p>
+</div>
+</div>
+<nav class="flex-1 overflow-y-auto space-y-2 px-2">
+<!-- Active Tab -->
+<a class="flex items-center gap-3 bg-secondary-container text-on-secondary-container rounded-xl px-4 py-3 mx-2 transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined fill-icon">dashboard</span>
+<span class="font-label-bold text-label-bold">Dashboard</span>
+</a>
+<!-- Inactive Tabs -->
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high rounded-xl px-4 py-3 mx-2 transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">calendar_today</span>
+<span class="font-label-bold text-label-bold">Attendance</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high rounded-xl px-4 py-3 mx-2 transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span class="font-label-bold text-label-bold">Fees</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high rounded-xl px-4 py-3 mx-2 transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">assignment</span>
+<span class="font-label-bold text-label-bold">Exams</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high rounded-xl px-4 py-3 mx-2 transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">schedule</span>
+<span class="font-label-bold text-label-bold">Timetable</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high rounded-xl px-4 py-3 mx-2 transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-bold text-label-bold">Profile</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high rounded-xl px-4 py-3 mx-2 transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-bold text-label-bold">Settings</span>
+</a>
+</nav>
+<div class="px-6 mt-4 pt-4 border-t border-outline-variant">
+<button class="w-full mb-4 bg-primary text-on-primary font-label-bold text-label-bold py-3 rounded-lg hover:bg-primary-container transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">help</span>
+                Support
+             </button>
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high rounded-xl px-4 py-3 transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-label-bold text-label-bold">Logout</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 md:ml-72 flex flex-col h-full bg-background">
+<!-- TopNavBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin-mobile md:px-margin-desktop h-20 bg-surface-container-lowest shadow-[0px_15px_15px_rgba(0,10,30,0.04)] md:hidden">
+<div class="font-headline-xl text-headline-xl text-primary">Vedmarg</div>
+<div class="flex items-center gap-4">
+<button class="text-primary hover:bg-surface-container p-2 rounded-full transition-colors relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1 right-1 w-3 h-3 bg-tertiary-container rounded-full border-2 border-surface-container-lowest"></span>
+</button>
+<img alt="User profile" class="w-10 h-10 rounded-full object-cover border border-outline-variant" data-alt="A professional headshot of a young female student with a bright, welcoming smile. She is wearing a neat, dark blue school uniform against a soft, well-lit white studio background. The lighting highlights the crispness of the corporate-modern aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTVukOfArMRG2yg4bEI8cKp7uY611moQxa1pMkpiJVxcDStltVuSidKwbZovmWSj1cZoFdV1YjU6YNnk7XCnSyKGk1S-52_e5rGswa8F6XspCwq45XjCTkb3dhy2I36UXK3jyh31mi6vgnZu-U6BIu-gAIzB7k0ppi0xbgJ5jcncIVrTB0onViKbtm743RR-kT7ciXhKfPFauKiryrDkZ25qhfiLTae5tfbkX-6KEUgbG2H0h7EF-Q"/>
+</div>
+</header>
+<!-- Top Header for Desktop (replaces nav bar functionally on large screens for search/profile) -->
+<div class="hidden md:flex justify-between items-center px-gutter py-6 bg-background">
+<div class="font-headline-lg text-headline-lg text-primary">Overview</div>
+<div class="flex items-center gap-6">
+<button class="text-primary hover:bg-surface-container p-2 rounded-full transition-colors relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1 right-1 w-2.5 h-2.5 bg-tertiary-container rounded-full border-2 border-background"></span>
+</button>
+<div class="flex items-center gap-3">
+<div class="text-right">
+<p class="font-label-bold text-label-bold text-primary">Rashmi Sharma</p>
+<p class="font-body-sm text-body-sm text-text-muted">Class X - A</p>
+</div>
+<img class="w-10 h-10 rounded-full object-cover border-2 border-outline-variant" data-alt="A professional headshot of a young female student with a bright, welcoming smile. She is wearing a neat, dark blue school uniform against a soft, well-lit white studio background. The lighting highlights the crispness of the corporate-modern aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBhPBVGvIPMErNQizvRwhAfy6N5iW2n91VjZ81P8YUpCS64gPf-HK5bBykwZPiVnnhtPGqDCIH41Bxc8SpASNZi9ArjW5z5X6Eiy8nYVnu1OdYSOjVBlVcLyXCFw54SyYldlAkfXGfr5fu1nzo4HcpeR2xcIA66psLSVB6ok1inX3bgKuc7FLssVCOWvM1108Hd3vs0zVLLAdsNSOiePQ0xwWwTfmbUDLGRMzxAZcov0FA_syNSLfVn"/>
+</div>
+</div>
+</div>
+<!-- Scrollable Dashboard Content -->
+<div class="flex-1 overflow-y-auto p-margin-mobile md:p-gutter pt-24 md:pt-0">
+<div class="max-w-container-max-width mx-auto">
+<!-- Welcome Section -->
+<div class="mb-8 md:hidden">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-primary mb-1">Hi, Rashmi!</h2>
+<p class="font-body-sm text-body-sm text-text-muted">Here is your daily update.</p>
+</div>
+<!-- Bento Grid Container -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-bento-gap">
+<!-- Left Column (Primary Data) -->
+<div class="md:col-span-8 space-y-bento-gap">
+<!-- Fee Summary (Spans full width of left column) -->
+<div class="bento-card">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-headline-md text-headline-md text-primary">Fee Summary</h3>
+<button class="text-secondary hover:bg-secondary-container px-3 py-1 rounded-full font-label-bold text-label-bold transition-colors">View Details</button>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+<!-- Total Due -->
+<div class="bg-surface p-4 rounded-lg border border-outline-variant">
+<p class="font-label-bold text-label-bold text-text-muted mb-2 uppercase">Total Due</p>
+<p class="font-stats-display text-stats-display text-primary">₹12,500</p>
+<p class="font-body-sm text-body-sm text-error-red mt-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">warning</span> Overdue
+                                    </p>
+</div>
+<!-- Current Due -->
+<div class="bg-surface p-4 rounded-lg border border-outline-variant">
+<p class="font-label-bold text-label-bold text-text-muted mb-2 uppercase">Current Installment</p>
+<p class="font-stats-display text-stats-display text-primary">₹4,500</p>
+<p class="font-body-sm text-body-sm text-text-muted mt-1">Due: 15 Oct</p>
+</div>
+<!-- Paid -->
+<div class="bg-surface p-4 rounded-lg border border-outline-variant col-span-2 md:col-span-1">
+<p class="font-label-bold text-label-bold text-text-muted mb-2 uppercase">Total Paid</p>
+<p class="font-stats-display text-stats-display text-primary">₹24,000</p>
+<p class="font-body-sm text-body-sm text-success-green mt-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">check_circle</span> Up to date
+                                    </p>
+</div>
+</div>
+<div class="mt-6 flex gap-4">
+<button class="flex-1 bg-tertiary-container text-on-tertiary font-label-bold text-label-bold py-3 rounded-lg hover:bg-primary transition-colors">
+                                    Pay Now
+                                </button>
+</div>
+</div>
+<!-- Secondary Row: Attendance & Updates -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-bento-gap">
+<!-- Attendance Widget -->
+<div class="bento-card flex flex-col justify-between">
+<div class="flex justify-between items-start mb-4">
+<h3 class="font-headline-md text-headline-md text-primary">Attendance</h3>
+<span class="material-symbols-outlined text-secondary">calendar_month</span>
+</div>
+<div class="flex items-end gap-4 mb-4">
+<div class="w-24 h-24 relative flex items-center justify-center">
+<!-- Decorative SVG Ring for modern aesthetic -->
+<svg class="absolute inset-0 w-full h-full transform -rotate-90" viewbox="0 0 36 36">
+<path class="text-surface-variant stroke-current" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke-width="3"></path>
+<path class="text-secondary stroke-current" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke-dasharray="85, 100" stroke-width="3"></path>
+</svg>
+<span class="font-stats-display text-stats-display text-primary relative z-10">85%</span>
+</div>
+<div class="pb-2">
+<p class="font-body-sm text-body-sm text-text-muted">Present: <span class="font-label-bold text-primary">185 days</span></p>
+<p class="font-body-sm text-body-sm text-text-muted">Absent: <span class="font-label-bold text-primary">12 days</span></p>
+</div>
+</div>
+<div class="bg-surface p-3 rounded-lg flex items-center gap-3">
+<span class="material-symbols-outlined text-success-green fill-icon">check_circle</span>
+<div>
+<p class="font-label-bold text-label-bold text-primary">Today: Present</p>
+<p class="font-body-sm text-body-sm text-text-muted text-[12px]">Marked at 08:15 AM</p>
+</div>
+</div>
+</div>
+<!-- Updates Widget -->
+<div class="bento-card">
+<div class="flex justify-between items-center mb-4">
+<h3 class="font-headline-md text-headline-md text-primary">Updates</h3>
+<span class="bg-secondary-container text-on-secondary-container font-label-bold text-[10px] px-2 py-1 rounded-full">New</span>
+</div>
+<div class="space-y-4">
+<!-- Update Item 1 -->
+<div class="flex gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-secondary">payments</span>
+</div>
+<div>
+<p class="font-label-bold text-label-bold text-primary">Fee Received</p>
+<p class="font-body-sm text-body-sm text-text-muted line-clamp-2">Receipt #4592 generated for October installment of ₹4,500.</p>
+<p class="font-body-sm text-body-sm text-text-muted text-[10px] mt-1">2 hours ago</p>
+</div>
+</div>
+<!-- Update Item 2 -->
+<div class="flex gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-tertiary-container">menu_book</span>
+</div>
+<div>
+<p class="font-label-bold text-label-bold text-primary">Science Homework</p>
+<p class="font-body-sm text-body-sm text-text-muted line-clamp-2">Complete chapter 4 exercises. Submission due tomorrow.</p>
+<p class="font-body-sm text-body-sm text-text-muted text-[10px] mt-1">5 hours ago</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column (Contextual & Feature Widgets) -->
+<div class="md:col-span-4 space-y-bento-gap">
+<!-- Reference Image Display (as a feature card) -->
+<div class="bento-card p-0 overflow-hidden relative group h-48 md:h-64">
+<img alt="Student Dashboard Features" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida/AEtjO1WrVzRyxkP0MkeGFlO2zCUWB9VS6EEtUkkqI2CxHU33s4qKa_BJ_5mw51bIjwYhCMNxPZko223hGlJyGrNdttqfdy1XaKrOamiN_UAcjLPr6eZKTkzIurV0mWRbK2_uQr4wfMNUby9F3LEN8aOlUGsLi9BFAE2SRQ3U9YD0TT1trlm7S7q4NzR-v-u-d3ZkU32W9zToUl5jC5asRcLQnqECJfsBPlxpo4A5NNTyC4anfNY1XJcrA_cQgQ"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent flex flex-col justify-end p-6">
+<h3 class="font-headline-md text-headline-md text-on-primary">Vedmarg Mobile</h3>
+<p class="font-body-sm text-body-sm text-inverse-on-surface mb-3">Experience the dashboard on the go.</p>
+<button class="w-max bg-on-primary text-primary font-label-bold text-label-bold px-4 py-2 rounded-full hover:bg-surface-container transition-colors">Download App</button>
+</div>
+</div>
+<!-- Let's Play & Learn Widget -->
+<div class="bento-card bg-secondary-container text-on-secondary-container border-none relative overflow-hidden">
+<!-- Decorative background element -->
+<div class="absolute -right-10 -top-10 w-32 h-32 bg-secondary/10 rounded-full blur-2xl"></div>
+<div class="relative z-10">
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-[32px] text-tertiary-container">toys</span>
+<h3 class="font-headline-md text-headline-md">Let's Play &amp; Learn</h3>
+</div>
+<p class="font-body-sm text-body-sm mb-6 opacity-90">Discover interactive quizzes and educational games tailored for Class X students.</p>
+<button class="w-full bg-primary text-on-primary font-label-bold text-label-bold py-3 rounded-lg hover:bg-primary-container transition-colors flex items-center justify-center gap-2 shadow-sm">
+<span class="material-symbols-outlined">play_arrow</span>
+                                    Start Exploring
+                                </button>
+</div>
+</div>
+<!-- Quick Actions -->
+<div class="bento-card">
+<h3 class="font-label-bold text-label-bold text-text-muted mb-4 uppercase">Quick Links</h3>
+<div class="grid grid-cols-2 gap-3">
+<button class="flex flex-col items-center justify-center p-4 rounded-lg bg-surface border border-outline-variant hover:border-secondary hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-secondary mb-2">library_books</span>
+<span class="font-body-sm text-body-sm font-semibold">Library</span>
+</button>
+<button class="flex flex-col items-center justify-center p-4 rounded-lg bg-surface border border-outline-variant hover:border-secondary hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-secondary mb-2">event_note</span>
+<span class="font-body-sm text-body-sm font-semibold">Syllabus</span>
+</button>
+<button class="flex flex-col items-center justify-center p-4 rounded-lg bg-surface border border-outline-variant hover:border-secondary hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-secondary mb-2">emoji_events</span>
+<span class="font-body-sm text-body-sm font-semibold">Results</span>
+</button>
+<button class="flex flex-col items-center justify-center p-4 rounded-lg bg-surface border border-outline-variant hover:border-secondary hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-secondary mb-2">forum</span>
+<span class="font-body-sm text-body-sm font-semibold">Messages</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom padding for mobile to account for hypothetical bottom nav if it were used, though hidden here as sidebar is primary nav -->
+<div class="h-8 md:hidden"></div>
+</div>
+</main>
+</body></html>
