@@ -2,9 +2,26 @@ import React, { useState, useEffect } from 'react';
 import { api } from '../services/api';
 import { ClassSection, AttendanceRosterItem } from '../types';
 import { BentoCard } from '../components/BentoCard';
-import { CheckCircle, XCircle, Clock, Save, Users, Utensils, CheckCheck, Search, Download } from 'lucide-react';
+import {
+  CheckCircle,
+  XCircle,
+  Clock,
+  Save,
+  Users,
+  Utensils,
+  CheckCheck,
+  Search,
+  Download,
+  ShieldCheck,
+  Lock,
+  Printer,
+  Calendar,
+  Award,
+} from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 
 export const AttendanceManager: React.FC = () => {
+  const { user, activeRole } = useAuth();
   const [classes, setClasses] = useState<ClassSection[]>([]);
   const [selectedClassId, setSelectedClassId] = useState<string>('');
   const [date, setDate] = useState<string>(new Date().toISOString().split('T')[0]);
@@ -148,6 +165,167 @@ export const AttendanceManager: React.FC = () => {
   const lateCount = roster.filter((r) => r.status === 'late').length;
   const mdmCount = roster.filter((r) => r.midDayMealConsumed).length;
 
+  // -------------------------------------------------------------
+  // If user is a STUDENT or PARENT, render strictly READ-ONLY view
+  // -------------------------------------------------------------
+  if (activeRole === 'student' || activeRole === 'parent') {
+    const pastRecords = [
+      { date: '2026-08-27', day: 'Thursday', status: 'present', mdm: true, teacher: 'Nissar Ahmad Rather' },
+      { date: '2026-08-26', day: 'Wednesday', status: 'present', mdm: true, teacher: 'Nissar Ahmad Rather' },
+      { date: '2026-08-25', day: 'Tuesday', status: 'present', mdm: true, teacher: 'Nissar Ahmad Rather' },
+      { date: '2026-08-24', day: 'Monday', status: 'present', mdm: true, teacher: 'Nissar Ahmad Rather' },
+      { date: '2026-08-22', day: 'Saturday', status: 'present', mdm: true, teacher: 'Nissar Ahmad Rather' },
+      { date: '2026-08-21', day: 'Friday', status: 'present', mdm: true, teacher: 'Nissar Ahmad Rather' },
+      { date: '2026-08-20', day: 'Thursday', status: 'absent', mdm: false, teacher: 'Nissar Ahmad Rather' },
+      { date: '2026-08-19', day: 'Wednesday', status: 'present', mdm: true, teacher: 'Nissar Ahmad Rather' },
+      { date: '2026-08-18', day: 'Tuesday', status: 'present', mdm: true, teacher: 'Nissar Ahmad Rather' },
+      { date: '2026-08-17', day: 'Monday', status: 'present', mdm: true, teacher: 'Nissar Ahmad Rather' },
+    ];
+
+    return (
+      <div className="space-y-6">
+        {/* Header */}
+        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#002147] to-[#0c6780] text-white flex items-center justify-center shadow-md">
+              <Calendar className="w-5 h-5 text-emerald-400" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <h2 className="text-xl font-bold text-[#002147]">My Attendance & PM-POSHAN Meal Record</h2>
+                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase bg-emerald-100 text-emerald-800 border border-emerald-200 flex items-center gap-1">
+                  <ShieldCheck className="w-3 h-3 text-emerald-600" /> Verified Record
+                </span>
+              </div>
+              <p className="text-xs text-slate-500">
+                Govt Middle School Awanpora • Class 8-A • Official Academic Session 2026-27
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <div className="px-3 py-1.5 rounded-xl bg-slate-100 text-slate-600 text-xs font-bold border border-slate-200 flex items-center gap-1.5">
+              <Lock className="w-3.5 h-3.5 text-slate-400" />
+              <span>Read-Only Official Log</span>
+            </div>
+            <button
+              onClick={() => window.print()}
+              className="px-3 py-1.5 rounded-xl bg-[#002147] hover:bg-[#0c6780] text-white text-xs font-bold transition-all shadow-sm flex items-center gap-1.5"
+            >
+              <Printer className="w-3.5 h-3.5" />
+              <span>Print Log</span>
+            </button>
+          </div>
+        </div>
+
+        {/* KPI Cards */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-sm flex items-center justify-between">
+            <div>
+              <div className="text-[11px] font-bold text-slate-400 uppercase">Overall Attendance</div>
+              <div className="text-xl font-extrabold text-emerald-600">95.0%</div>
+              <div className="text-[10px] text-emerald-700 font-semibold mt-0.5">Exemplary Regularity</div>
+            </div>
+            <div className="w-9 h-9 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
+              <CheckCircle className="w-5 h-5" />
+            </div>
+          </div>
+
+          <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-sm flex items-center justify-between">
+            <div>
+              <div className="text-[11px] font-bold text-slate-400 uppercase">Days Present</div>
+              <div className="text-xl font-extrabold text-[#002147]">38 Days</div>
+              <div className="text-[10px] text-slate-500 mt-0.5">of 40 Working Days</div>
+            </div>
+            <div className="w-9 h-9 rounded-lg bg-blue-50 text-[#002147] flex items-center justify-center">
+              <Calendar className="w-5 h-5" />
+            </div>
+          </div>
+
+          <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-sm flex items-center justify-between">
+            <div>
+              <div className="text-[11px] font-bold text-slate-400 uppercase">Days Absent</div>
+              <div className="text-xl font-extrabold text-slate-700">2 Days</div>
+              <div className="text-[10px] text-slate-400 mt-0.5">Medical / Leave</div>
+            </div>
+            <div className="w-9 h-9 rounded-lg bg-slate-100 text-slate-600 flex items-center justify-center">
+              <XCircle className="w-5 h-5" />
+            </div>
+          </div>
+
+          <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-sm flex items-center justify-between">
+            <div>
+              <div className="text-[11px] font-bold text-slate-400 uppercase">PM-POSHAN Meals</div>
+              <div className="text-xl font-extrabold text-amber-800">38 Lunches</div>
+              <div className="text-[10px] text-emerald-700 font-semibold mt-0.5">100% Quality Inspected</div>
+            </div>
+            <div className="w-9 h-9 rounded-lg bg-amber-50 text-amber-800 flex items-center justify-center">
+              <Utensils className="w-5 h-5" />
+            </div>
+          </div>
+        </div>
+
+        {/* Read-Only Log Bento Card */}
+        <BentoCard
+          title="Daily Attendance & Meal Roll Record"
+          subtitle="Signed and certified by Class Teacher (Nissar Ahmad Rather, GLT)"
+          icon={<ShieldCheck className="w-4 h-4 text-emerald-600" />}
+          span="col-span-12"
+        >
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs">
+              <thead>
+                <tr className="border-b border-slate-200 text-slate-400 uppercase font-semibold">
+                  <th className="pb-3">Date</th>
+                  <th className="pb-3">Day</th>
+                  <th className="pb-3 text-center">Status</th>
+                  <th className="pb-3 text-center">PM-POSHAN Mid-Day Meal</th>
+                  <th className="pb-3 text-right">Certified In-Charge</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100 font-medium">
+                {pastRecords.map((rec, idx) => (
+                  <tr key={idx} className="hover:bg-slate-50/80 transition-colors">
+                    <td className="py-3 font-mono font-bold text-[#002147]">{rec.date}</td>
+                    <td className="py-3 text-slate-600">{rec.day}</td>
+                    <td className="py-3 text-center">
+                      {rec.status === 'present' ? (
+                        <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200 inline-flex items-center gap-1">
+                          <CheckCircle className="w-3 h-3 text-emerald-600" /> Present
+                        </span>
+                      ) : (
+                        <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-rose-100 text-rose-800 border border-rose-200 inline-flex items-center gap-1">
+                          <XCircle className="w-3 h-3 text-rose-600" /> Absent (Leave)
+                        </span>
+                      )}
+                    </td>
+                    <td className="py-3 text-center">
+                      {rec.mdm ? (
+                        <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-blue-50 text-[#0c6780] border border-blue-200 inline-flex items-center gap-1">
+                          <Utensils className="w-3 h-3 text-[#0c6780]" /> Hot Lunch Consumed
+                        </span>
+                      ) : (
+                        <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-slate-100 text-slate-500">
+                          Not Served (Absent)
+                        </span>
+                      )}
+                    </td>
+                    <td className="py-3 text-right text-slate-600 font-medium">
+                      {rec.teacher}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </BentoCard>
+      </div>
+    );
+  }
+
+  // -------------------------------------------------------------
+  // Otherwise (ADMIN or TEACHER): Render Class Roll Call Editor
+  // -------------------------------------------------------------
   return (
     <div className="space-y-6">
       {/* Header Controls */}

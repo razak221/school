@@ -47,7 +47,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentTab, setCurrentTab }) =
           { id: 'student-dashboard', label: 'Student Dashboard', icon: <LayoutDashboard className="w-4 h-4" />, badge: 'Class 8' },
           { id: 'timetable', label: 'My Class Schedule', icon: <CalendarDays className="w-4 h-4" />, badge: 'Periods' },
           { id: 'academics', label: 'My Exam Results', icon: <Award className="w-4 h-4" />, badge: 'Grade A+' },
-          { id: 'attendance', label: 'Attendance Log', icon: <CalendarCheck className="w-4 h-4" />, badge: 'Safe' },
+          { id: 'attendance', label: 'My Attendance & Meal Log', icon: <CalendarCheck className="w-4 h-4" />, badge: '95%' },
           { id: 'notices', label: 'School Announcements', icon: <Bell className="w-4 h-4" />, badge: 'Circulars' },
           { id: 'ai-assistant', label: 'AI Study Assistant', icon: <Sparkles className="w-4 h-4" />, badge: 'Ask AI', highlight: true },
         ];

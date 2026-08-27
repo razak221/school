@@ -266,73 +266,102 @@ export const TimetableManager: React.FC = () => {
           <div className="py-12 text-center text-slate-400 text-xs">Loading schedule...</div>
         ) : (
           <div className="space-y-3">
-            {periods.map((period, idx) => (
-              <div
-                key={idx}
-                className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80 hover:border-slate-300 transition-all flex flex-col md:flex-row items-start md:items-center justify-between gap-3"
-              >
-                {/* Period Badge & Time */}
-                <div className="flex items-center gap-3 shrink-0">
-                  <div className="w-9 h-9 rounded-xl bg-[#002147] text-white flex items-center justify-center font-black text-xs shadow-sm">
-                    P{period.periodNumber}
+            {periods.map((period, idx) => {
+              const isReadOnly = activeRole === 'student' || activeRole === 'parent';
+              if (isReadOnly) {
+                return (
+                  <div
+                    key={idx}
+                    className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80 hover:border-slate-300 transition-all flex items-center justify-between gap-3"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-9 h-9 rounded-xl bg-[#002147] text-white flex items-center justify-center font-black text-xs shadow-sm">
+                        P{period.periodNumber}
+                      </div>
+                      <div>
+                        <h4 className="text-xs font-bold text-[#002147]">{period.subject}</h4>
+                        <p className="text-[11px] text-slate-500">{period.teacherName || 'Assigned Teacher'}</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-3 text-right">
+                      <span className="text-xs font-bold text-[#0c6780] bg-blue-50 px-2.5 py-1 rounded-xl border border-blue-100 font-mono">
+                        {period.startTime} - {period.endTime}
+                      </span>
+                      <span className="text-[11px] font-semibold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-lg hidden sm:inline">
+                        {period.room || 'Room 101'}
+                      </span>
+                    </div>
                   </div>
-                  <div>
-                    <div className="flex items-center gap-2">
+                );
+              }
+
+              return (
+                <div
+                  key={idx}
+                  className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80 hover:border-slate-300 transition-all flex flex-col md:flex-row items-start md:items-center justify-between gap-3"
+                >
+                  {/* Period Badge & Time */}
+                  <div className="flex items-center gap-3 shrink-0">
+                    <div className="w-9 h-9 rounded-xl bg-[#002147] text-white flex items-center justify-center font-black text-xs shadow-sm">
+                      P{period.periodNumber}
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="text"
+                          value={period.startTime}
+                          onChange={(e) => handlePeriodChange(idx, 'startTime', e.target.value)}
+                          className="px-2 py-1 bg-white border border-slate-300 rounded-lg text-xs font-mono w-24 text-center focus:outline-none focus:ring-1 focus:ring-[#0c6780]"
+                        />
+                        <span className="text-slate-400 text-xs">to</span>
+                        <input
+                          type="text"
+                          value={period.endTime}
+                          onChange={(e) => handlePeriodChange(idx, 'endTime', e.target.value)}
+                          className="px-2 py-1 bg-white border border-slate-300 rounded-lg text-xs font-mono w-24 text-center focus:outline-none focus:ring-1 focus:ring-[#0c6780]"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Subject Selector */}
+                  <div className="flex-1 w-full md:w-auto grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <div>
+                      <select
+                        value={period.subject}
+                        onChange={(e) => handlePeriodChange(idx, 'subject', e.target.value)}
+                        className="w-full px-2.5 py-1.5 bg-white border border-slate-300 rounded-xl text-xs font-bold text-[#002147] focus:outline-none focus:ring-2 focus:ring-[#0c6780]"
+                      >
+                        {subjectsList.map((sub) => (
+                          <option key={sub} value={sub}>
+                            {sub}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div>
                       <input
                         type="text"
-                        value={period.startTime}
-                        onChange={(e) => handlePeriodChange(idx, 'startTime', e.target.value)}
-                        className="px-2 py-1 bg-white border border-slate-300 rounded-lg text-xs font-mono w-24 text-center focus:outline-none focus:ring-1 focus:ring-[#0c6780]"
-                      />
-                      <span className="text-slate-400 text-xs">to</span>
-                      <input
-                        type="text"
-                        value={period.endTime}
-                        onChange={(e) => handlePeriodChange(idx, 'endTime', e.target.value)}
-                        className="px-2 py-1 bg-white border border-slate-300 rounded-lg text-xs font-mono w-24 text-center focus:outline-none focus:ring-1 focus:ring-[#0c6780]"
+                        placeholder="Teacher Name (e.g. Shabir Ahmad)"
+                        value={period.teacherName || ''}
+                        onChange={(e) => handlePeriodChange(idx, 'teacherName', e.target.value)}
+                        className="w-full px-2.5 py-1.5 bg-white border border-slate-300 rounded-xl text-xs font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0c6780]"
                       />
                     </div>
                   </div>
-                </div>
 
-                {/* Subject Selector */}
-                <div className="flex-1 w-full md:w-auto grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  <div>
-                    <select
-                      value={period.subject}
-                      onChange={(e) => handlePeriodChange(idx, 'subject', e.target.value)}
-                      className="w-full px-2.5 py-1.5 bg-white border border-slate-300 rounded-xl text-xs font-bold text-[#002147] focus:outline-none focus:ring-2 focus:ring-[#0c6780]"
-                    >
-                      {subjectsList.map((sub) => (
-                        <option key={sub} value={sub}>
-                          {sub}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div>
+                  {/* Room and Delete */}
+                  <div className="flex items-center gap-2 w-full md:w-auto justify-end">
                     <input
                       type="text"
-                      placeholder="Teacher Name (e.g. Shabir Ahmad)"
-                      value={period.teacherName || ''}
-                      onChange={(e) => handlePeriodChange(idx, 'teacherName', e.target.value)}
-                      className="w-full px-2.5 py-1.5 bg-white border border-slate-300 rounded-xl text-xs font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0c6780]"
+                      placeholder="Room"
+                      value={period.room || 'Room 101'}
+                      onChange={(e) => handlePeriodChange(idx, 'room', e.target.value)}
+                      className="px-2 py-1 bg-white border border-slate-300 rounded-lg text-xs w-24 text-center font-medium focus:outline-none focus:ring-1 focus:ring-[#0c6780]"
                     />
-                  </div>
-                </div>
 
-                {/* Room and Delete */}
-                <div className="flex items-center gap-2 w-full md:w-auto justify-end">
-                  <input
-                    type="text"
-                    placeholder="Room"
-                    value={period.room || 'Room 101'}
-                    onChange={(e) => handlePeriodChange(idx, 'room', e.target.value)}
-                    className="px-2 py-1 bg-white border border-slate-300 rounded-lg text-xs w-24 text-center font-medium focus:outline-none focus:ring-1 focus:ring-[#0c6780]"
-                  />
-
-                  {(activeRole === 'admin' || activeRole === 'teacher') && (
                     <button
                       type="button"
                       onClick={() => handleRemovePeriod(idx)}
@@ -341,10 +370,10 @@ export const TimetableManager: React.FC = () => {
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
-                  )}
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </BentoCard>
