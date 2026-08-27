@@ -16,9 +16,9 @@ export const ChangelogModal: React.FC<ChangelogModalProps> = ({ onClose }) => {
             </div>
             <div>
               <div className="flex items-center gap-1.5">
-                <h3 className="font-extrabold text-sm text-[#002147]">What's New in Version 1.0 Beta</h3>
-                <span className="px-2 py-0.5 rounded-full text-[9px] font-black uppercase bg-emerald-100 text-emerald-800">
-                  Release v1.0.0-beta.1
+                <h3 className="font-extrabold text-sm text-[#002147]">Official Production Release</h3>
+                <span className="px-2 py-0.5 rounded-full text-[9px] font-black uppercase bg-emerald-100 text-emerald-800 border border-emerald-300">
+                  Release v1.0.0 (Live GA)
                 </span>
               </div>
               <p className="text-[10px] text-slate-500">Govt Middle School Awanpora ERP & Portal</p>
@@ -36,10 +36,10 @@ export const ChangelogModal: React.FC<ChangelogModalProps> = ({ onClose }) => {
           <div className="p-3.5 rounded-2xl bg-blue-50/60 border border-blue-100 space-y-1.5">
             <h4 className="font-bold text-[#002147] flex items-center gap-1.5">
               <Sparkles className="w-4 h-4 text-amber-500 fill-amber-400" />
-              Comprehensive Beta Feature Suite
+              General Availability — Real Version 1.0.0
             </h4>
             <p className="text-[11px] text-slate-600 leading-relaxed">
-              Govt Middle School Awanpora has transitioned from initial prototype to a fully integrated, multi-role school ERP platform tailored for Jammu & Kashmir School Education Department standards.
+              Govt Middle School Awanpora is officially live with full production stability, multi-role access control, Supabase PostgreSQL cloud sync, and SCERT J&K Continuous Comprehensive Evaluation (CCE) reporting.
             </p>
           </div>
 

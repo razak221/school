@@ -44,7 +44,7 @@ export const SystemDiagnostics: React.FC = () => {
             <div className="flex items-center gap-2">
               <h2 className="text-xl font-bold text-[#002147]">System Diagnostics & Cloud Hub</h2>
               <span className="px-2 py-0.5 text-[10px] font-black uppercase rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
-                Beta v1.0 Active
+                v1.0.0 Production Live
               </span>
             </div>
             <p className="text-xs text-slate-500">

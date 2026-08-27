@@ -8,7 +8,6 @@ import {
   Sparkles,
   LogOut,
   MessageSquarePlus,
-  Zap,
 } from 'lucide-react';
 import { ChangelogModal } from './ChangelogModal';
 import { BetaFeedbackModal } from './BetaFeedbackModal';
@@ -79,11 +78,11 @@ export const Navbar: React.FC<NavbarProps> = ({ currentTab, setCurrentTab }) => 
               <button
                 type="button"
                 onClick={() => setShowChangelog(true)}
-                className="px-2 py-0.5 text-[9px] font-black uppercase rounded-full bg-amber-100 text-amber-900 hover:bg-amber-200 border border-amber-300 transition-all flex items-center gap-0.5 shadow-xs"
-                title="View what's new in Beta"
+                className="px-2 py-0.5 text-[9px] font-black uppercase rounded-full bg-emerald-100 text-emerald-900 hover:bg-emerald-200 border border-emerald-300 transition-all flex items-center gap-1 shadow-xs"
+                title="View Release Notes (v1.0.0 Production)"
               >
-                <Zap className="w-2.5 h-2.5 text-amber-700 fill-amber-600" />
-                v1.0-beta
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                v1.0.0 Live
               </button>
             </div>
             <p className="text-[11px] text-slate-500 font-medium mt-0.5 hidden sm:block">

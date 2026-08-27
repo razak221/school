@@ -1,6 +1,6 @@
 {
   "name": "gms-awanpora-erp-backend",
-  "version": "1.0.0-beta.1",
+  "version": "1.0.0",
   "description": "Backend API for Govt Middle School Awanpora ERP (SSA Salia, Anantnag)",
   "main": "dist/server.js",
   "scripts": {
