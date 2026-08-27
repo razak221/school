@@ -1,0 +1,38 @@
+{
+  "id": "TASK-1",
+  "title": "Verify project prerequisites and access",
+  "category": "setup",
+  "description": "Verify that required database access, MCPs, service documentation, environment variables, and login/test users are available before implementation begins.",
+  "acceptanceCriteria": [
+    "`.env.local` exists with placeholder entries for every required environment variable name listed in the PRD",
+    "Real secret values are not written to the PRD, task specs, repository, logs, or chat",
+    "The user has manually filled required local secret values in `.env.local` where needed",
+    "Database connectivity to Supabase is verified",
+    "Stripe API credentials and client libraries are installed"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Read prerequisite requirements from the PRD",
+      "details": "Open `.agent/prd/PRD.md` and review the Prerequisites and Access section. Confirm all required variables and SDKs.",
+      "pass": true
+    },
+    {
+      "step": 2,
+      "description": "Verify `.env.local` placeholder names",
+      "details": "Confirm `.env.local` contains SUPABASE_URL, SUPABASE_ANON_KEY, STRIPE_SECRET_KEY, STRIPE_PUBLISHABLE_KEY, STRIPE_WEBHOOK_SECRET.",
+      "pass": true
+    },
+    {
+      "step": 3,
+      "description": "Verify Supabase client initialization",
+      "details": "Check that `@supabase/supabase-js` is imported and initialized with non-empty URL and key.",
+      "pass": true
+    }
+  ],
+  "dependencies": [],
+  "estimatedComplexity": "low",
+  "technicalNotes": [
+    "This task gates implementation. Do not start dependent feature tasks until prerequisites are verified."
+  ]
+}

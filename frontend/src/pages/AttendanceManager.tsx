@@ -16,12 +16,11 @@ import {
   Lock,
   Printer,
   Calendar,
-  Award,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 export const AttendanceManager: React.FC = () => {
-  const { user, activeRole } = useAuth();
+  const { activeRole } = useAuth();
   const [classes, setClasses] = useState<ClassSection[]>([]);
   const [selectedClassId, setSelectedClassId] = useState<string>('');
   const [date, setDate] = useState<string>(new Date().toISOString().split('T')[0]);

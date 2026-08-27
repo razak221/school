@@ -1,0 +1,27 @@
+{
+  "id": "TASK-3",
+  "title": "User Authentication & Organization Onboarding",
+  "category": "functional",
+  "description": "Implement Supabase Auth login, registration, and onboarding flow to capture business profile, default currency, and tax settings.",
+  "acceptanceCriteria": [
+    "User can sign up and sign in with email and password",
+    "Session persists across page reloads",
+    "Onboarding form captures business name, tax ID, and default currency"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Build Auth and Onboarding UI with shadcn/ui",
+      "details": "Create LoginForm and OnboardingModal using Card, Input, Button, Select from shadcn/ui.",
+      "pass": true
+    },
+    {
+      "step": 2,
+      "description": "Connect to Supabase Auth API",
+      "details": "Use supabase.auth.signUp() and supabase.auth.signInWithPassword() in auth context.",
+      "pass": true
+    }
+  ],
+  "dependencies": ["TASK-1", "TASK-2"],
+  "estimatedComplexity": "medium"
+}

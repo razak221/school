@@ -10,6 +10,7 @@ import grantsRoutes from './routes/grants.routes';
 import aiRoutes from './routes/ai.routes';
 import statsRoutes from './routes/stats.routes';
 import usersRoutes from './routes/users.routes';
+import financeRoutes from './routes/finance.routes';
 import { seedDatabase } from './seeds/seed';
 
 dotenv.config();
@@ -41,6 +42,7 @@ app.use('/api/v1/grants', grantsRoutes);
 app.use('/api/v1/ai', aiRoutes);
 app.use('/api/v1/stats', statsRoutes);
 app.use('/api/v1/users', usersRoutes);
+app.use('/api/v1/finance', financeRoutes);
 
 // Global 404 handler
 app.use((req: Request, res: Response) => {

@@ -1,0 +1,27 @@
+{
+  "id": "TASK-8",
+  "title": "Income & Expense Tracking System",
+  "category": "functional",
+  "description": "Build an intuitive expense tracking module with category tagging, vendor selection, receipt attachment upload, and tax-deductible expense marking.",
+  "acceptanceCriteria": [
+    "User can log one-time and recurring business expenses",
+    "Categorization dropdown with standard tax categories (Office, Travel, Software, Utilities)",
+    "Summary statistics update dynamically when expenses are added or edited"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Create Expense Management UI",
+      "details": "Build ExpenseTable and AddExpenseModal with shadcn/ui components.",
+      "pass": true
+    },
+    {
+      "step": 2,
+      "description": "Connect to Supabase expenses table",
+      "details": "Implement CRUD queries via Supabase client with active organization filter.",
+      "pass": true
+    }
+  ],
+  "dependencies": ["TASK-2", "TASK-3"],
+  "estimatedComplexity": "medium"
+}

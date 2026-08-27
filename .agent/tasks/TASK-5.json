@@ -1,0 +1,27 @@
+{
+  "id": "TASK-5",
+  "title": "Invoicing Engine & PDF Generator",
+  "category": "functional",
+  "description": "Develop full invoice lifecycle management: create invoice, add line items with automatic tax calculation, preview PDF, and track payment status.",
+  "acceptanceCriteria": [
+    "User can create and edit multi-item invoices with tax rates and discounts",
+    "Invoice status updates across Draft, Sent, Paid, and Overdue",
+    "Invoice preview supports one-click print and PDF download"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Build Invoice Builder component",
+      "details": "Create InvoiceForm with dynamic line items (description, quantity, unit price, tax rate).",
+      "pass": true
+    },
+    {
+      "step": 2,
+      "description": "Implement PDF and Print Template",
+      "details": "Render clean, professional invoice template with print CSS styles and PDF generation.",
+      "pass": true
+    }
+  ],
+  "dependencies": ["TASK-2", "TASK-3"],
+  "estimatedComplexity": "high"
+}

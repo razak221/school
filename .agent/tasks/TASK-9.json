@@ -1,0 +1,27 @@
+{
+  "id": "TASK-9",
+  "title": "Banking & Payment Processor Sync Interface",
+  "category": "integration",
+  "description": "Provide bank account connection interface (Plaid / Open Banking) and CSV bank statement import for transaction sync and automated expense matching.",
+  "acceptanceCriteria": [
+    "Bank accounts view lists connected institutions and balance updates",
+    "CSV statement parser handles standard bank formats (OFX/QIF/CSV)",
+    "Auto-matches imported transactions with recorded invoices and expenses"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Build Bank Sync UI",
+      "details": "Create BankAccountsView showing linked checking, savings, and credit card accounts.",
+      "pass": true
+    },
+    {
+      "step": 2,
+      "description": "Implement CSV statement importer",
+      "details": "Create file upload dropzone that parses CSV columns (Date, Description, Amount) into ledger items.",
+      "pass": true
+    }
+  ],
+  "dependencies": ["TASK-2", "TASK-8"],
+  "estimatedComplexity": "medium"
+}

@@ -1,0 +1,28 @@
+{
+  "id": "TASK-7",
+  "title": "Stripe Webhook & Automated Reconciliation",
+  "category": "api-endpoint",
+  "description": "Implement Stripe webhook handler endpoint to capture checkout.session.completed and payment_intent.succeeded events, updating invoice status to paid and logging payments.",
+  "acceptanceCriteria": [
+    "Webhook endpoint verifies Stripe event signatures with STRIPE_WEBHOOK_SECRET",
+    "On payment.succeeded, updates invoice status to 'paid'",
+    "Creates a payment record in payments table and records transaction in ledger",
+    "Returns 200 HTTP status code to Stripe"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Create webhook route handler",
+      "details": "Create POST /api/webhooks/stripe endpoint with raw body parser for signature verification.",
+      "pass": true
+    },
+    {
+      "step": 2,
+      "description": "Reconcile invoice status",
+      "details": "Extract invoiceId from session metadata and update status in Supabase database.",
+      "pass": true
+    }
+  ],
+  "dependencies": ["TASK-2", "TASK-6"],
+  "estimatedComplexity": "medium"
+}

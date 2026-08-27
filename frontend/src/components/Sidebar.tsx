@@ -11,6 +11,7 @@ import {
   Users,
   Shield,
   CalendarDays,
+  DollarSign,
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -55,6 +56,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentTab, setCurrentTab }) =
       default:
         return [
           { id: 'admin-dashboard', label: 'Main ERP Dashboard', icon: <LayoutDashboard className="w-4 h-4" />, badge: 'Bento' },
+          { id: 'finance', label: 'FinFlow & Invoicing', icon: <DollarSign className="w-4 h-4 text-amber-500" />, badge: 'Stripe' },
           { id: 'directory', label: 'Student & Staff Directory', icon: <Users className="w-4 h-4" />, badge: '248 Enrolled' },
           { id: 'timetable', label: 'Timetable & Schedule Master', icon: <CalendarDays className="w-4 h-4" />, badge: 'All Classes' },
           { id: 'attendance', label: 'Attendance & MDM Tracker', icon: <CalendarCheck className="w-4 h-4" />, badge: '94.2%' },

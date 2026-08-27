@@ -1,0 +1,27 @@
+{
+  "id": "TASK-4",
+  "title": "Core Dashboard & Financial KPI Widgets",
+  "category": "ui-ux",
+  "description": "Build an executive bento dashboard featuring Total Revenue, Pending Receivables, Monthly Expenses, Net Profit Margin, and Cash Flow Trend chart.",
+  "acceptanceCriteria": [
+    "Dashboard loads in <1.5 seconds",
+    "KPI metric cards display accurate formatted currency amounts",
+    "Cash flow graph visualizes income vs expenses over time"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Construct Bento Dashboard layout",
+      "details": "Use Tailwind CSS and shadcn/ui Card components to lay out financial KPI metrics.",
+      "pass": true
+    },
+    {
+      "step": 2,
+      "description": "Integrate chart visualizer",
+      "details": "Render revenue vs expense trends with Recharts or Lucide graphical indicators.",
+      "pass": true
+    }
+  ],
+  "dependencies": ["TASK-2", "TASK-3"],
+  "estimatedComplexity": "medium"
+}

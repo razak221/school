@@ -14,6 +14,7 @@ import { AIAssistant } from './pages/AIAssistant';
 import { SystemDiagnostics } from './pages/SystemDiagnostics';
 import { TimetableManager } from './pages/TimetableManager';
 import { Directory } from './pages/Directory';
+import { FinanceManager } from './pages/FinanceManager';
 import { LoginPage } from './pages/LoginPage';
 
 const AppContent: React.FC = () => {
@@ -52,6 +53,8 @@ const AppContent: React.FC = () => {
         return <NoticeBoard />;
       case 'grants':
         return <GrantsAndFunds />;
+      case 'finance':
+        return <FinanceManager />;
       case 'diagnostics':
         return <SystemDiagnostics />;
       case 'ai-assistant':

@@ -1,0 +1,28 @@
+{
+  "id": "TASK-2",
+  "title": "Supabase Relational Database Schema & RLS Policies",
+  "category": "data-model",
+  "description": "Create PostgreSQL tables in Supabase for organizations, clients, invoices, invoice_items, expenses, categories, and payments with Row Level Security (RLS).",
+  "acceptanceCriteria": [
+    "Tables created: organizations, clients, invoices, invoice_items, expenses, categories, payments",
+    "Row Level Security (RLS) enabled on all tables",
+    "Multi-tenant isolation policies created using auth.uid() and organization_id",
+    "Indexes created on organization_id and status fields"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Create DDL migration schema for core financial tables",
+      "details": "Define SQL schema with UUID primary keys, foreign keys with ON DELETE CASCADE, and timestamps.",
+      "pass": true
+    },
+    {
+      "step": 2,
+      "description": "Apply Row Level Security policies",
+      "details": "Create RLS policies ensuring users can only read, insert, update, and delete rows belonging to their active organizationId.",
+      "pass": true
+    }
+  ],
+  "dependencies": ["TASK-1"],
+  "estimatedComplexity": "medium"
+}

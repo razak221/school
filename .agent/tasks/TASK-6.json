@@ -1,0 +1,27 @@
+{
+  "id": "TASK-6",
+  "title": "Stripe Payment Gateway Integration",
+  "category": "integration",
+  "description": "Integrate Stripe Checkout and Payment Elements to allow clients to pay invoices directly online with instant receipt generation.",
+  "acceptanceCriteria": [
+    "Invoices have a 'Pay with Card' link that opens Stripe Checkout",
+    "Supports card payments, Apple Pay, and Google Pay",
+    "PaymentIntent amount matches invoice balance exactly"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Set up Stripe SDK client",
+      "details": "Install `@stripe/stripe-js` and initialize Stripe client using STRIPE_PUBLISHABLE_KEY.",
+      "pass": true
+    },
+    {
+      "step": 2,
+      "description": "Create Stripe Checkout session endpoint",
+      "details": "Create API route to generate Stripe Checkout Sessions for given invoice IDs.",
+      "pass": true
+    }
+  ],
+  "dependencies": ["TASK-1", "TASK-5"],
+  "estimatedComplexity": "high"
+}

@@ -1,0 +1,27 @@
+{
+  "id": "TASK-10",
+  "title": "Financial Reports & Tax Insights",
+  "category": "functional",
+  "description": "Generate comprehensive Profit & Loss statements, monthly cash flow summaries, expense breakdowns, and estimated tax liability reports with export to CSV/PDF.",
+  "acceptanceCriteria": [
+    "Generates monthly/quarterly/annual Profit & Loss (P&L) statements",
+    "Calculates estimated tax liability based on net profit and regional tax brackets",
+    "Supports CSV and PDF financial report exports"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Build Financial Reports View",
+      "details": "Create ReportsDashboard with P&L table, income/expense breakdown, and tax estimates.",
+      "pass": true
+    },
+    {
+      "step": 2,
+      "description": "Implement Report Exporting",
+      "details": "Add CSV and PDF export buttons with formatted accounting headers.",
+      "pass": true
+    }
+  ],
+  "dependencies": ["TASK-4", "TASK-5", "TASK-8"],
+  "estimatedComplexity": "medium"
+}
