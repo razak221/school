@@ -8,6 +8,7 @@ import {
   Sparkles,
   LogOut,
   MessageSquarePlus,
+  Globe,
 } from 'lucide-react';
 import { ChangelogModal } from './ChangelogModal';
 import { BetaFeedbackModal } from './BetaFeedbackModal';
@@ -93,6 +94,17 @@ export const Navbar: React.FC<NavbarProps> = ({ currentTab, setCurrentTab }) => 
 
         {/* Right: Actions, Role Badge & User Profile */}
         <div className="flex items-center gap-2.5">
+          {/* Public Portal Button */}
+          <button
+            type="button"
+            onClick={logout}
+            className="hidden sm:flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-slate-100 hover:bg-blue-50 text-slate-700 hover:text-[#002147] text-xs font-semibold border border-slate-200 transition-all"
+            title="Switch to Public School Website View"
+          >
+            <Globe className="w-3.5 h-3.5 text-[#0c6780]" />
+            <span>Public Site</span>
+          </button>
+
           {/* Beta Feedback Button */}
           <button
             type="button"

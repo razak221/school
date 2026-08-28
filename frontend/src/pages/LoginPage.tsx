@@ -20,9 +20,10 @@ import {
 
 interface LoginPageProps {
   initialAdminMode?: boolean;
+  onBackToPublic?: () => void;
 }
 
-export const LoginPage: React.FC<LoginPageProps> = ({ initialAdminMode = false }) => {
+export const LoginPage: React.FC<LoginPageProps> = ({ initialAdminMode = false, onBackToPublic }) => {
   const { login } = useAuth();
   const [isAdminMode, setIsAdminMode] = useState<boolean>(
     initialAdminMode || window.location.pathname === '/admin'
@@ -167,13 +168,22 @@ export const LoginPage: React.FC<LoginPageProps> = ({ initialAdminMode = false }
         </div>
         <div className="flex items-center gap-3">
           <span className="text-[11px] text-slate-300 font-mono hidden md:inline">UDISE: 01061102301</span>
+          {onBackToPublic && (
+            <button
+              type="button"
+              onClick={onBackToPublic}
+              className="text-xs text-amber-300 hover:text-white font-bold transition-colors flex items-center gap-1"
+            >
+              ← Public School Portal
+            </button>
+          )}
           {isAdminMode ? (
             <button
               type="button"
               onClick={() => handleToggleAdminMode(false)}
-              className="text-xs text-amber-300 hover:text-white font-bold underline transition-colors"
+              className="text-xs text-slate-300 hover:text-white underline transition-colors"
             >
-              ← Switch to Public Portal
+              Portal Mode
             </button>
           ) : (
             <button

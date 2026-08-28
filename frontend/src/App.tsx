@@ -16,10 +16,14 @@ import { TimetableManager } from './pages/TimetableManager';
 import { Directory } from './pages/Directory';
 import { FinanceManager } from './pages/FinanceManager';
 import { LoginPage } from './pages/LoginPage';
+import { PublicPortal } from './pages/PublicPortal';
 
 const AppContent: React.FC = () => {
   const { user, token, activeRole, loading } = useAuth();
   const [currentTab, setCurrentTab] = useState<string>('admin-dashboard');
+  const [showLogin, setShowLogin] = useState<boolean>(
+    typeof window !== 'undefined' && (window.location.pathname === '/admin' || window.location.pathname === '/login')
+  );
 
   // Sync tab with role when user signs in or role changes
   React.useEffect(() => {
@@ -80,9 +84,12 @@ const AppContent: React.FC = () => {
     );
   }
 
-  // If not logged in, show the dedicated multi-role login page first
+  // If not logged in, show the public school portal by default, or the login page if requested
   if (!user || !token) {
-    return <LoginPage />;
+    if (showLogin) {
+      return <LoginPage onBackToPublic={() => setShowLogin(false)} />;
+    }
+    return <PublicPortal onOpenLogin={() => setShowLogin(true)} />;
   }
 
   return (
