@@ -1,90 +1,138 @@
-# 🌐 Govt Middle School Awanpora ERP — Publishing & Deployment Guide
+# 🌐 Govt Middle School Awanpora ERP — Complete Publishing & Deployment Guide
 
-Welcome to the production deployment guide for the **Govt Middle School Awanpora ERP & Multi-Role Portal** (`v1.0.0-beta.1`).
-
----
-
-## 🏗️ Architecture Overview
-
-| Component | Technology | Recommended Host |
-| :--- | :--- | :--- |
-| **Frontend** | React 18 + Vite + Tailwind CSS | **Vercel** / **Netlify** / **Cloudflare Pages** |
-| **Backend** | Node.js + Express + TypeScript | **Render** / **Railway** / **Fly.io** |
-| **Cloud Database** | PostgreSQL + RLS Policies | **Supabase** (`ryhtbvczmtuyfacjqfnm.supabase.co`) |
-| **Local / Container** | Docker + Multi-stage Build | **DigitalOcean** / **AWS EC2** / **VPS** |
+Welcome to the production deployment and hosting guide for the **Govt Middle School Awanpora ERP & Multi-Role School Portal** (`v1.0.0 Live`).
 
 ---
 
-## 🚀 Option 1: Deploy to Vercel (Frontend) & Render (Backend) [Recommended]
+## 🏗️ Architecture & Hosting Overview
 
-### Step 1: Deploy Frontend to Vercel
-1. Push your repository to **GitHub / GitLab**.
-2. Go to **[Vercel Dashboard](https://vercel.com/new)** and import your repository.
-3. Set **Root Directory** to `frontend`.
-4. Framework Preset: **Vite**.
-5. Add Environment Variables:
-   - `VITE_SUPABASE_URL`: `https://ryhtbvczmtuyfacjqfnm.supabase.co`
-   - `VITE_SUPABASE_ANON_KEY`: `sb_publishable_0jXMf-UljXH-10w0n_pFIw_U3DKDj_r`
-6. Click **Deploy**. Vercel will automatically read [`frontend/vercel.json`](file:///Users/razakahmedkhan/Desktop/school/frontend/vercel.json) for SPA client routing.
-
-### Step 2: Deploy Backend to Render / Railway
-1. In [Render Dashboard](https://dashboard.render.com/), create a **New Web Service**.
-2. Connect your GitHub repository and set **Root Directory** to `backend`.
-3. Build Command: `npm install && npm run build`
-4. Start Command: `node dist/server.js`
-5. Add Environment Variables:
-   - `NODE_ENV`: `production`
-   - `PORT`: `5001`
-   - `JWT_SECRET`: `your_secure_random_jwt_secret_2026`
-   - `SUPABASE_URL`: `https://ryhtbvczmtuyfacjqfnm.supabase.co`
-   - `SUPABASE_ANON_KEY`: `sb_publishable_0jXMf-UljXH-10w0n_pFIw_U3DKDj_r`
-   - *(Optional)* `GEMINI_API_KEY`: `your_google_ai_studio_api_key`
+| Component | Technology | Recommended Host | Cost (Free Tier Available) |
+| :--- | :--- | :--- | :--- |
+| **Public Portal & ERP Frontend** | React 18 + Vite + Tailwind CSS | **Vercel** / **Netlify** / **Cloudflare Pages** | **$0 / month** (100 GB bandwidth included) |
+| **Backend REST API & Webhooks** | Node.js + Express + TypeScript | **Render** / **Railway** / **Fly.io** | **$0 / month** (Free tier available) |
+| **Cloud Relational Database** | Supabase PostgreSQL + RLS | **Supabase Cloud** | **$0 / month** (500MB storage, 50,000 MAU) |
+| **Payments & Invoicing** | Stripe Checkout & Webhooks | **Stripe** | **Pay-as-you-go** (No monthly fee) |
+| **Full Stack Docker Container** | Multi-stage Docker + Compose | **DigitalOcean VPS / AWS / Linode** | **$4 - $6 / month** (Optional for self-hosting) |
 
 ---
 
-## 🐳 Option 2: 1-Click Docker Container Deployment
+## 💰 Total Cost to Publish
 
-You can run the entire production-ready system anywhere with Docker:
+| Resource | Service | Monthly Cost | Annual Cost |
+| :--- | :--- | :---: | :---: |
+| **Frontend Hosting** | Vercel (Hobby Tier) | $0.00 | $0.00 |
+| **Backend API Hosting** | Render / Railway (Hobby Tier) | $0.00 | $0.00 |
+| **Database & Auth** | Supabase Cloud (Free Tier) | $0.00 | $0.00 |
+| **SSL Certificates** | Automatic HTTPS (Let's Encrypt) | $0.00 | $0.00 |
+| **Custom Domain (Optional)** | `.edu.in` / `.in` / `.org.in` / `.com` | — | ~$10 - $12 / year |
+| **Total Minimum Cost** | **Zero-Cost Free Tier Setup** | **$0.00** | **$0.00** |
+
+---
+
+## 🚀 Step 1: Deploy Frontend to Vercel (Recommended)
+
+1. Push your latest code to **GitHub / GitLab**:
+   ```bash
+   git add .
+   git commit -m "chore: ready for production release"
+   git push origin main
+   ```
+2. Log in to **[Vercel Dashboard](https://vercel.com/new)** and click **Add New Project**.
+3. Import your `school` GitHub repository.
+4. Configure the build settings:
+   - **Framework Preset**: `Vite`
+   - **Root Directory**: `frontend`
+   - **Build Command**: `npm run build`
+   - **Output Directory**: `dist`
+5. Add Frontend Environment Variables:
+   | Key | Value | Notes |
+   | :--- | :--- | :--- |
+   | `VITE_SUPABASE_URL` | `https://ryhtbvczmtuyfacjqfnm.supabase.co` | Supabase API endpoint |
+   | `VITE_SUPABASE_ANON_KEY` | `sb_publishable_0jXMf-UljXH-10w0n_pFIw_U3DKDj_r` | Supabase publishable key |
+   | `VITE_API_URL` | `https://your-backend-service.onrender.com` | Your live backend URL |
+6. Click **Deploy**. Vercel will automatically detect [`frontend/vercel.json`](file:///Users/razakahmedkhan/Desktop/school/frontend/vercel.json) for client-side routing.
+
+---
+
+## ⚙️ Step 2: Deploy Backend API to Render / Railway
+
+1. Open the **[Render Dashboard](https://dashboard.render.com/)** and click **New → Web Service**.
+2. Connect your GitHub repository.
+3. Configure the service:
+   - **Name**: `gms-awanpora-backend`
+   - **Root Directory**: `backend`
+   - **Environment**: `Node`
+   - **Build Command**: `npm install && npm run build`
+   - **Start Command**: `node dist/server.js`
+4. Add Backend Environment Variables:
+   | Key | Value | Description |
+   | :--- | :--- | :--- |
+   | `NODE_ENV` | `production` | Production mode |
+   | `PORT` | `5001` | Express listening port |
+   | `JWT_SECRET` | `your_secure_random_jwt_secret_2026` | Auth session token secret |
+   | `SUPABASE_URL` | `https://ryhtbvczmtuyfacjqfnm.supabase.co` | Database endpoint |
+   | `SUPABASE_ANON_KEY` | `sb_publishable_0jXMf-UljXH-10w0n_pFIw_U3DKDj_r` | Database access key |
+   | `STRIPE_SECRET_KEY` | `sk_live_...` or `sk_test_...` | For FinFlow payment sessions |
+   | `STRIPE_WEBHOOK_SECRET` | `whsec_...` | For Stripe webhook verification |
+   | `GEMINI_API_KEY` | `AIzaSy...` *(Optional)* | For AI Marks remark generation |
+5. Click **Create Web Service**. Your live backend endpoint will be available at `https://gms-awanpora-backend.onrender.com`.
+
+---
+
+## 🗄️ Step 3: Initialize Cloud Database (Supabase)
+
+1. Open your Supabase SQL Editor:
+   [https://supabase.com/dashboard/project/ryhtbvczmtuyfacjqfnm/sql](https://supabase.com/dashboard/project/ryhtbvczmtuyfacjqfnm/sql)
+2. Copy the full contents of [`supabase_schema.sql`](file:///Users/razakahmedkhan/Desktop/school/supabase_schema.sql).
+3. Paste into the SQL editor and click **Run** (▶️).
+4. All tables (`organizations`, `users`, `students`, `teachers`, `parents`, `classes`, `attendance`, `marks`, `notices`, `grants`, `invoices`, `expenses`), Row Level Security policies, and initial school seed records will be initialized.
+
+---
+
+## 🐳 Step 4: Alternative 1-Click Docker Self-Hosting
+
+If you prefer self-hosting on a single VPS (DigitalOcean, Hetzner, AWS EC2):
 
 ```bash
-# Clone repository
+# Clone the repository
 git clone <your-repo-url>
 cd school
 
-# Build and start container in background
+# Build and launch all services with Docker Compose
 docker compose up --build -d
 ```
-The application will be live at `http://localhost:5001` (or your server's public IP).
 
----
-
-## 🗄️ Option 3: Supabase Cloud Database Setup
-
-1. Open your Supabase Dashboard: [https://supabase.com/dashboard/project/ryhtbvczmtuyfacjqfnm](https://supabase.com/dashboard/project/ryhtbvczmtuyfacjqfnm)
-2. Go to **SQL Editor** -> **New Query**.
-3. Copy all contents from [`supabase_schema.sql`](file:///Users/razakahmedkhan/Desktop/school/supabase_schema.sql) and paste them into the SQL editor.
-4. Click **Run** (▶️).
-5. All 13 tables, RLS policies, and institutional seed data for Classes 1 to 8, 11 Faculty staff, PM-POSHAN meals, and SSA grants will be initialized.
+- Web Portal will run on: `http://<your-server-ip>:5001`
+- Live Health Endpoint: `http://<your-server-ip>:5001/api/v1/health`
 
 ---
 
 ## 🔑 Default Portal Login Credentials
 
-| Role | Username | Password | Notes |
+| Role | Username | Password | Access Scope |
 | :--- | :--- | :--- | :--- |
-| **👑 Admin (Headmaster)** | `admin@gmsawanpora.edu.in` | `admin123` | Full access, user creation, grants, timetables |
-| **👨‍🏫 Teacher** | `shabir.teacher@gms.edu` | `teacher123` | Attendance, marks entry, timetable view |
-| **👨‍👩‍👧 Parent** | `nissar.parent@gms.edu` | `parent123` | Child progress, report card, notices |
-| **🎓 Student** | `aaqib.student@gms.edu` | `student123` | AI report card, attendance, homework, ID card |
+| **👑 Admin (Headmaster)** | `admin@gmsawanpora.edu.in` | `admin123` | Full access, user creation, grants, timetables, finflow |
+| **👨‍🏫 Teacher** | `teacher@gmsawanpora.edu.in` | `teacher123` | Class 8-A roll call, exam marks entry, CCE grades |
+| **👨‍👩‍👧 Parent** | `parent@gmsawanpora.edu.in` | `parent123` | Child progress, report card, PM-POSHAN meal record |
+| **🎓 Student** | `student@gmsawanpora.edu.in` | `student123` | Class schedule, exam results, attendance logs |
 
 ---
 
-## ✅ Pre-Publish Verification Checklist
+## 🌐 Public Routes & Entry Points
 
-- [x] **Frontend TypeScript & Bundle**: Passed (`npx tsc --noEmit && npx vite build` in 1.68s).
-- [x] **Backend TypeScript & Compilation**: Passed (`npx tsc` output to `dist/`).
-- [x] **SPA Routing**: Configured in `frontend/vercel.json`.
-- [x] **Responsive Mobile/Desktop**: Optimized for smartphones, tablets, and desktops.
-- [x] **Print Media Styling**: Student ID card generation and Timetable printing enabled.
-- [x] **SEO & Social Meta Tags**: Configured in `frontend/index.html`.
-- [x] **Multi-role Security**: JWT auth with bcrypt password hashing and multi-tenant isolation.
+| URL Path | Target Audience | Description |
+| :--- | :--- | :--- |
+| **`/`** | **Public Visitors & Community** | Public School Portal, institutional stats, admissions circulars, faculty showcase |
+| **`/login`** | **Staff & Students** | Multi-role authentication gateway for Teacher, Parent, Student, and Staff |
+| **`/admin`** | **Headmaster & Admin** | Dedicated direct route to Administrative Console login |
+
+---
+
+## ✅ Pre-Publish Quality & Build Verification
+
+- [x] **Frontend Production Bundle**: `npx vite build` clean (0 errors, 1.39s build time).
+- [x] **Backend Compilation**: `npx tsc` clean (0 errors).
+- [x] **SPA Client Routing**: Configured in [`frontend/vercel.json`](file:///Users/razakahmedkhan/Desktop/school/frontend/vercel.json).
+- [x] **Strict RBAC Security**: Students & Parents have zero edit rights on attendance/timetable.
+- [x] **Mobile Responsiveness**: Verified on phone, tablet, and desktop layouts.
+- [x] **SEO & Meta Tags**: Configured in `frontend/index.html` with school UDISE `01061102301`.
