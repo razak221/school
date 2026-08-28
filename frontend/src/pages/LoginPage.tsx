@@ -262,6 +262,20 @@ export const LoginPage: React.FC<LoginPageProps> = ({ initialAdminMode = false, 
           {/* Right Login Action Panel */}
           <div className="lg:col-span-7 bg-white rounded-b-3xl lg:rounded-3xl p-6 lg:p-8 shadow-2xl border border-slate-200 flex flex-col justify-between">
             <div>
+              {/* Top Banner to switch to public website */}
+              {onBackToPublic && (
+                <div className="mb-4 p-2.5 rounded-xl bg-blue-50/80 border border-blue-200/80 flex items-center justify-between">
+                  <span className="text-[11px] text-slate-600 font-medium">Looking for the public school website?</span>
+                  <button
+                    type="button"
+                    onClick={onBackToPublic}
+                    className="px-2.5 py-1 rounded-lg bg-[#002147] hover:bg-[#0c6780] text-white text-[11px] font-bold transition-all shadow-xs flex items-center gap-1"
+                  >
+                    <span>Visit Public Portal →</span>
+                  </button>
+                </div>
+              )}
+
               {/* Header Title */}
               <div className="flex items-center justify-between pb-4 border-b border-slate-100 mb-5">
                 <div>
