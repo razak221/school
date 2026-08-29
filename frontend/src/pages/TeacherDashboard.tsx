@@ -31,10 +31,20 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ onNavigate }
   const [hwDue, setHwDue] = useState('2026-08-30');
   const [savingHw, setSavingHw] = useState(false);
 
+  const [studentsCount, setStudentsCount] = useState<number>(0);
+  const [attRate, setAttRate] = useState<string>('0.0%');
+  const [presentCount, setPresentCount] = useState<number>(0);
+  const [absentCount, setAbsentCount] = useState<number>(0);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [ttRes, hwRes, clsRes] = await Promise.all([api.getTimetable(), api.getHomework(), api.getClasses()]);
+        const [ttRes, hwRes, clsRes, stdRes] = await Promise.all([
+          api.getTimetable(),
+          api.getHomework(),
+          api.getClasses(),
+          api.getStudents(),
+        ]);
         if (ttRes.success && ttRes.timetable) {
           const periods = Array.isArray(ttRes.timetable)
             ? ((ttRes.timetable[0] as any)?.periods || [])
@@ -46,8 +56,20 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ onNavigate }
         }
         if (clsRes.success && clsRes.classes.length > 0) {
           setClasses(clsRes.classes);
-          const c8 = clsRes.classes.find((c: any) => c.gradeLevel === 8) || clsRes.classes[0];
-          setHwClassId(c8._id);
+          const c1 = clsRes.classes[0];
+          setHwClassId(c1._id);
+        }
+        if (stdRes.success && stdRes.students) {
+          setStudentsCount(stdRes.students.length);
+        }
+
+        const today = new Date().toISOString().split('T')[0];
+        const rosterRes = await api.getRoster('c0000000-0000-0000-0000-000000000001', today);
+        if (rosterRes.success && rosterRes.stats) {
+          setPresentCount(rosterRes.stats.present);
+          setAbsentCount(rosterRes.stats.absent);
+          const total = rosterRes.stats.total;
+          setAttRate(total > 0 ? ((rosterRes.stats.present / total) * 100).toFixed(1) + '%' : '0.0%');
         }
       } catch (err) {
         console.error('Failed to load teacher dashboard', err);
@@ -121,9 +143,9 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ onNavigate }
       <div className="grid grid-cols-12 gap-4">
         <StatCard
           title="Assigned Students"
-          value="34"
-          subtitle="Class 8-A (Roll 1 to 34)"
-          trend={{ value: "All Active", isPositive: true }}
+          value={studentsCount.toString()}
+          subtitle="Enrolled in School"
+          trend={{ value: `${studentsCount} Active`, isPositive: true }}
           icon={<BookOpen className="w-5 h-5" />}
           iconBg="bg-blue-50 text-[#0c6780]"
           span="col-span-12 sm:col-span-4"
@@ -131,8 +153,8 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ onNavigate }
 
         <StatCard
           title="Today's Class Attendance"
-          value="94.1%"
-          subtitle="32 Present • 2 Absent"
+          value={attRate}
+          subtitle={`${presentCount} Present • ${absentCount} Absent`}
           trend={{ value: "Recorded", isPositive: true }}
           icon={<CalendarCheck className="w-5 h-5" />}
           iconBg="bg-emerald-50 text-emerald-700"
