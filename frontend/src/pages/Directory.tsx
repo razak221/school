@@ -115,7 +115,7 @@ export const Directory: React.FC<DirectoryProps> = ({ onNavigate }) => {
             </span>
           </div>
           <p className="text-xs text-slate-500">
-            Govt Middle School Awanpora • Complete roster of 248 Students, Teaching Faculty & Parents
+            Govt Middle School Awanpora • Complete roster of {students.length} Students, {teachers.length} Faculty & {parents.length} Parents
           </p>
         </div>
 
@@ -224,18 +224,18 @@ export const Directory: React.FC<DirectoryProps> = ({ onNavigate }) => {
                 <div className="bg-slate-50 p-3 rounded-xl space-y-1.5 text-[11px] text-slate-600 border border-slate-100">
                   <div className="flex justify-between">
                     <span className="text-slate-400">Father's Name:</span>
-                    <strong className="text-slate-700">{st.fatherName || 'Nissar Ahmad Mir'}</strong>
+                    <strong className="text-slate-700">{st.fatherName || 'Not Specified'}</strong>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-slate-400">Category:</span>
                     <span className="px-1.5 py-0.2 rounded bg-amber-50 text-amber-800 font-bold text-[10px]">
-                      {st.ssaCategory || 'RBA'}
+                      {st.ssaCategory || 'General'}
                     </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-slate-400">PM-POSHAN (MDM):</span>
                     <span className="text-emerald-700 font-semibold flex items-center gap-1">
-                      <Utensils className="w-3 h-3" /> Opted In
+                      <Utensils className="w-3 h-3" /> {st.midDayMealOpted ? 'Opted In' : 'Enrolled'}
                     </span>
                   </div>
                   <div className="flex justify-between">
@@ -321,7 +321,7 @@ export const Directory: React.FC<DirectoryProps> = ({ onNavigate }) => {
                 </div>
                 <div className="flex items-center gap-1.5 text-slate-700">
                   <Phone className="w-3 h-3 text-slate-400" />
-                  <span>{tch.userId?.phone || '+91-9419022233'}</span>
+                  <span>{tch.userId?.phone || 'Official Department Contact'}</span>
                 </div>
               </div>
 
@@ -359,11 +359,11 @@ export const Directory: React.FC<DirectoryProps> = ({ onNavigate }) => {
               <div className="bg-slate-50 p-3 rounded-xl space-y-1 text-[11px] text-slate-600 border border-slate-100">
                 <div className="flex items-center gap-1.5 text-slate-700">
                   <Phone className="w-3 h-3 text-slate-400" />
-                  <span>{pr.userId?.phone || '+91-9419055566'}</span>
+                  <span>{pr.userId?.phone || 'Registered Contact'}</span>
                 </div>
                 <div className="flex items-center gap-1.5 text-slate-700">
                   <MapPin className="w-3 h-3 text-slate-400" />
-                  <span className="truncate">{pr.address || 'Awanpora, Salia, Anantnag'}</span>
+                  <span className="truncate">{pr.address || 'Awanpora, Zone Mattan'}</span>
                 </div>
               </div>
 

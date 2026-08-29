@@ -43,6 +43,36 @@ export const AttendanceManager: React.FC = () => {
     fetchClasses();
   }, []);
 
+  const [studentHistory, setStudentHistory] = useState<any[]>([]);
+  const [studentStats, setStudentStats] = useState<any>({
+    totalDays: 0,
+    presentDays: 0,
+    absentDays: 0,
+    mdmDays: 0,
+    percentage: '100.0',
+  });
+
+  useEffect(() => {
+    if (activeRole === 'student' || activeRole === 'parent') {
+      const fetchStudentHistory = async () => {
+        try {
+          const stRes = await api.getStudents();
+          if (stRes.success && stRes.students?.length > 0) {
+            const firstStudentId = stRes.students[0]._id;
+            const attRes = await api.getStudentAttendance(firstStudentId);
+            if (attRes.success && Array.isArray(attRes.records)) {
+              setStudentHistory(attRes.records);
+              if (attRes.stats) setStudentStats(attRes.stats);
+            }
+          }
+        } catch (err) {
+          console.error('Failed to load student attendance history', err);
+        }
+      };
+      fetchStudentHistory();
+    }
+  }, [activeRole]);
+
   useEffect(() => {
     if (!selectedClassId) return;
 
@@ -168,18 +198,7 @@ export const AttendanceManager: React.FC = () => {
   // If user is a STUDENT or PARENT, render strictly READ-ONLY view
   // -------------------------------------------------------------
   if (activeRole === 'student' || activeRole === 'parent') {
-    const pastRecords = [
-      { date: '2026-08-27', day: 'Thursday', status: 'present', mdm: true, teacher: 'Nissar Ahmad Rather' },
-      { date: '2026-08-26', day: 'Wednesday', status: 'present', mdm: true, teacher: 'Nissar Ahmad Rather' },
-      { date: '2026-08-25', day: 'Tuesday', status: 'present', mdm: true, teacher: 'Nissar Ahmad Rather' },
-      { date: '2026-08-24', day: 'Monday', status: 'present', mdm: true, teacher: 'Nissar Ahmad Rather' },
-      { date: '2026-08-22', day: 'Saturday', status: 'present', mdm: true, teacher: 'Nissar Ahmad Rather' },
-      { date: '2026-08-21', day: 'Friday', status: 'present', mdm: true, teacher: 'Nissar Ahmad Rather' },
-      { date: '2026-08-20', day: 'Thursday', status: 'absent', mdm: false, teacher: 'Nissar Ahmad Rather' },
-      { date: '2026-08-19', day: 'Wednesday', status: 'present', mdm: true, teacher: 'Nissar Ahmad Rather' },
-      { date: '2026-08-18', day: 'Tuesday', status: 'present', mdm: true, teacher: 'Nissar Ahmad Rather' },
-      { date: '2026-08-17', day: 'Monday', status: 'present', mdm: true, teacher: 'Nissar Ahmad Rather' },
-    ];
+    const pastRecords = studentHistory;
 
     return (
       <div className="space-y-6">
@@ -197,7 +216,7 @@ export const AttendanceManager: React.FC = () => {
                 </span>
               </div>
               <p className="text-xs text-slate-500">
-                Govt Middle School Awanpora • Class 8-A • Official Academic Session 2026-27
+                Govt Middle School Awanpora • Official Academic Session 2026-27
               </p>
             </div>
           </div>
@@ -222,8 +241,8 @@ export const AttendanceManager: React.FC = () => {
           <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-sm flex items-center justify-between">
             <div>
               <div className="text-[11px] font-bold text-slate-400 uppercase">Overall Attendance</div>
-              <div className="text-xl font-extrabold text-emerald-600">95.0%</div>
-              <div className="text-[10px] text-emerald-700 font-semibold mt-0.5">Exemplary Regularity</div>
+              <div className="text-xl font-extrabold text-emerald-600">{studentStats.percentage || '100.0'}%</div>
+              <div className="text-[10px] text-emerald-700 font-semibold mt-0.5">Session Regularity</div>
             </div>
             <div className="w-9 h-9 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
               <CheckCircle className="w-5 h-5" />
@@ -233,8 +252,8 @@ export const AttendanceManager: React.FC = () => {
           <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-sm flex items-center justify-between">
             <div>
               <div className="text-[11px] font-bold text-slate-400 uppercase">Days Present</div>
-              <div className="text-xl font-extrabold text-[#002147]">38 Days</div>
-              <div className="text-[10px] text-slate-500 mt-0.5">of 40 Working Days</div>
+              <div className="text-xl font-extrabold text-[#002147]">{studentStats.presentDays || 0} Days</div>
+              <div className="text-[10px] text-slate-500 mt-0.5">of {studentStats.totalDays || 0} Recorded Days</div>
             </div>
             <div className="w-9 h-9 rounded-lg bg-blue-50 text-[#002147] flex items-center justify-center">
               <Calendar className="w-5 h-5" />
@@ -244,7 +263,7 @@ export const AttendanceManager: React.FC = () => {
           <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-sm flex items-center justify-between">
             <div>
               <div className="text-[11px] font-bold text-slate-400 uppercase">Days Absent</div>
-              <div className="text-xl font-extrabold text-slate-700">2 Days</div>
+              <div className="text-xl font-extrabold text-slate-700">{studentStats.absentDays || 0} Days</div>
               <div className="text-[10px] text-slate-400 mt-0.5">Medical / Leave</div>
             </div>
             <div className="w-9 h-9 rounded-lg bg-slate-100 text-slate-600 flex items-center justify-center">
@@ -255,8 +274,8 @@ export const AttendanceManager: React.FC = () => {
           <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-sm flex items-center justify-between">
             <div>
               <div className="text-[11px] font-bold text-slate-400 uppercase">PM-POSHAN Meals</div>
-              <div className="text-xl font-extrabold text-amber-800">38 Lunches</div>
-              <div className="text-[10px] text-emerald-700 font-semibold mt-0.5">100% Quality Inspected</div>
+              <div className="text-xl font-extrabold text-amber-800">{studentStats.mdmDays || 0} Lunches</div>
+              <div className="text-[10px] text-emerald-700 font-semibold mt-0.5">Quality Inspected</div>
             </div>
             <div className="w-9 h-9 rounded-lg bg-amber-50 text-amber-800 flex items-center justify-center">
               <Utensils className="w-5 h-5" />
@@ -267,55 +286,57 @@ export const AttendanceManager: React.FC = () => {
         {/* Read-Only Log Bento Card */}
         <BentoCard
           title="Daily Attendance & Meal Roll Record"
-          subtitle="Signed and certified by Class Teacher (Nissar Ahmad Rather, GLT)"
+          subtitle="Certified School Attendance Log"
           icon={<ShieldCheck className="w-4 h-4 text-emerald-600" />}
           span="col-span-12"
         >
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
-              <thead>
-                <tr className="border-b border-slate-200 text-slate-400 uppercase font-semibold">
-                  <th className="pb-3">Date</th>
-                  <th className="pb-3">Day</th>
-                  <th className="pb-3 text-center">Status</th>
-                  <th className="pb-3 text-center">PM-POSHAN Mid-Day Meal</th>
-                  <th className="pb-3 text-right">Certified In-Charge</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100 font-medium">
-                {pastRecords.map((rec, idx) => (
-                  <tr key={idx} className="hover:bg-slate-50/80 transition-colors">
-                    <td className="py-3 font-mono font-bold text-[#002147]">{rec.date}</td>
-                    <td className="py-3 text-slate-600">{rec.day}</td>
-                    <td className="py-3 text-center">
-                      {rec.status === 'present' ? (
-                        <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200 inline-flex items-center gap-1">
-                          <CheckCircle className="w-3 h-3 text-emerald-600" /> Present
-                        </span>
-                      ) : (
-                        <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-rose-100 text-rose-800 border border-rose-200 inline-flex items-center gap-1">
-                          <XCircle className="w-3 h-3 text-rose-600" /> Absent (Leave)
-                        </span>
-                      )}
-                    </td>
-                    <td className="py-3 text-center">
-                      {rec.mdm ? (
-                        <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-blue-50 text-[#0c6780] border border-blue-200 inline-flex items-center gap-1">
-                          <Utensils className="w-3 h-3 text-[#0c6780]" /> Hot Lunch Consumed
-                        </span>
-                      ) : (
-                        <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-slate-100 text-slate-500">
-                          Not Served (Absent)
-                        </span>
-                      )}
-                    </td>
-                    <td className="py-3 text-right text-slate-600 font-medium">
-                      {rec.teacher}
-                    </td>
+            {pastRecords.length === 0 ? (
+              <div className="py-8 text-center text-xs text-slate-400">No attendance logs recorded for this account yet.</div>
+            ) : (
+              <table className="w-full text-left text-xs">
+                <thead>
+                  <tr className="border-b border-slate-200 text-slate-400 uppercase font-semibold">
+                    <th className="pb-3">Date</th>
+                    <th className="pb-3 text-center">Status</th>
+                    <th className="pb-3 text-center">PM-POSHAN Mid-Day Meal</th>
+                    <th className="pb-3 text-right">Remarks</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y divide-slate-100 font-medium">
+                  {pastRecords.map((rec, idx) => (
+                    <tr key={idx} className="hover:bg-slate-50/80 transition-colors">
+                      <td className="py-3 font-mono font-bold text-[#002147]">{rec.date}</td>
+                      <td className="py-3 text-center">
+                        {rec.status === 'present' ? (
+                          <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200 inline-flex items-center gap-1">
+                            <CheckCircle className="w-3 h-3 text-emerald-600" /> Present
+                          </span>
+                        ) : (
+                          <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-rose-100 text-rose-800 border border-rose-200 inline-flex items-center gap-1">
+                            <XCircle className="w-3 h-3 text-rose-600" /> Absent (Leave)
+                          </span>
+                        )}
+                      </td>
+                      <td className="py-3 text-center">
+                        {rec.midDayMealConsumed ? (
+                          <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-blue-50 text-[#0c6780] border border-blue-200 inline-flex items-center gap-1">
+                            <Utensils className="w-3 h-3 text-[#0c6780]" /> Hot Lunch Consumed
+                          </span>
+                        ) : (
+                          <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-slate-100 text-slate-500">
+                            Not Served (Absent)
+                          </span>
+                        )}
+                      </td>
+                      <td className="py-3 text-right text-slate-600 font-medium">
+                        {rec.remarks || 'Regular Session'}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </div>
         </BentoCard>
       </div>

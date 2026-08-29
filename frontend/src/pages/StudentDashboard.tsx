@@ -50,7 +50,7 @@ export const StudentDashboard: React.FC<{ onNavigate: (tab: string) => void }> =
       <div className="p-6 rounded-2xl bg-gradient-to-r from-[#002147] via-[#09325e] to-[#22C55E] text-white shadow-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div className="space-y-1">
           <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-white/10 text-xs font-semibold backdrop-blur-md">
-            Student Portal • Class 8-A (Roll #1)
+            Student Portal • Enrolled Student
           </div>
           <h2 className="text-2xl font-extrabold">{user?.name || 'Enrolled Student'}</h2>
           <p className="text-xs text-slate-200">
@@ -91,7 +91,7 @@ export const StudentDashboard: React.FC<{ onNavigate: (tab: string) => void }> =
         <StatCard
           title="Term 1 Score"
           value="89.6%"
-          subtitle="Rank #1 in Class 8-A"
+          subtitle="Continuous Evaluation (CCE)"
           trend={{ value: "Grade A+", isPositive: true }}
           icon={<Award className="w-5 h-5" />}
           iconBg="bg-blue-50 text-[#002147]"

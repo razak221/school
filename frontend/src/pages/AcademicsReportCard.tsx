@@ -245,7 +245,7 @@ export const AcademicsReportCard: React.FC = () => {
                   <div>
                     <span className="text-[10px] font-bold text-slate-400 uppercase">Student Name</span>
                     <div className="font-bold text-[#002147]">
-                      {selectedResult.studentId?.userId?.name || 'Aaqib Nissar Mir'}
+                      {selectedResult.studentId?.userId?.name || 'Enrolled Student'}
                     </div>
                   </div>
                   <div>
@@ -338,7 +338,7 @@ export const AcademicsReportCard: React.FC = () => {
                   </p>
 
                   <div className="flex items-center justify-between text-[10px] text-slate-500 pt-1">
-                    <span>Teacher Verified: <strong>Nissar Ahmad Rather</strong> (General Line Teacher)</span>
+                    <span>Teacher Verified: <strong>Class Teacher In-Charge</strong> (General Line Teacher)</span>
                     <span className="text-emerald-700 font-semibold flex items-center gap-1">
                       <CheckCircle className="w-3 h-3" /> Ready for Parent Portal
                     </span>

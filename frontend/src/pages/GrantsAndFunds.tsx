@@ -287,7 +287,7 @@ export const GrantsAndFunds: React.FC = () => {
                 </p>
 
                 <div className="pt-1 border-t border-amber-100 flex items-center justify-between text-[10px] text-slate-400">
-                  <span>Inspected: <strong>Nissar Ahmad (GLT)</strong></span>
+                  <span>Inspected: <strong>MDM Committee In-Charge</strong></span>
                   <span className="text-emerald-700 font-bold flex items-center gap-1">
                     <CheckCircle2 className="w-3 h-3" /> Certified
                   </span>
