@@ -20,6 +20,13 @@ export const StudentDashboard: React.FC<{ onNavigate: (tab: string) => void }> =
   const [homeworkList, setHomeworkList] = useState<any[]>([]);
   const [completedHw, setCompletedHw] = useState<Record<string, boolean>>({});
 
+  const [attStats, setAttStats] = useState<any>({
+    totalDays: 0,
+    presentDays: 0,
+    absentDays: 0,
+    percentage: '100.0',
+  });
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -33,12 +40,18 @@ export const StudentDashboard: React.FC<{ onNavigate: (tab: string) => void }> =
         if (hwRes.success) {
           setHomeworkList(hwRes.homework);
         }
+        if (user?.id) {
+          const attRes = await api.getStudentAttendance(user.id);
+          if (attRes.success && attRes.stats) {
+            setAttStats(attRes.stats);
+          }
+        }
       } catch (err) {
         console.error('Failed to load student dashboard', err);
       }
     };
     fetchData();
-  }, []);
+  }, [user?.id]);
 
   const toggleComplete = (id: string) => {
     setCompletedHw((prev) => ({ ...prev, [id]: !prev[id] }));
@@ -70,6 +83,13 @@ export const StudentDashboard: React.FC<{ onNavigate: (tab: string) => void }> =
             View Marksheet
           </button>
           <button
+            onClick={() => onNavigate('attendance')}
+            className="px-4 py-2 rounded-xl bg-emerald-500 text-white text-xs font-bold hover:bg-emerald-600 shadow-sm flex items-center gap-1.5"
+          >
+            <CalendarCheck className="w-3.5 h-3.5" />
+            My Attendance Record
+          </button>
+          <button
             onClick={() => onNavigate('ai-assistant')}
             className="px-4 py-2 rounded-xl bg-amber-500 text-white text-xs font-bold hover:bg-amber-600 shadow-sm flex items-center gap-1.5"
           >
@@ -83,9 +103,9 @@ export const StudentDashboard: React.FC<{ onNavigate: (tab: string) => void }> =
       <div className="grid grid-cols-12 gap-4">
         <StatCard
           title="Attendance Rate"
-          value="95.0%"
-          subtitle="Regular & Punctual"
-          trend={{ value: "Exemplary", isPositive: true }}
+          value={`${attStats.percentage}%`}
+          subtitle={attStats.totalDays > 0 ? `${attStats.presentDays} present of ${attStats.totalDays} days` : "Regular & Punctual"}
+          trend={{ value: parseFloat(attStats.percentage) >= 75 ? "Safe Regular" : "Attention", isPositive: parseFloat(attStats.percentage) >= 75 }}
           icon={<CalendarCheck className="w-5 h-5" />}
           iconBg="bg-emerald-50 text-emerald-700"
           span="col-span-12 sm:col-span-4"
@@ -93,9 +113,9 @@ export const StudentDashboard: React.FC<{ onNavigate: (tab: string) => void }> =
 
         <StatCard
           title="Term 1 Score"
-          value="89.6%"
+          value="Grade A+"
           subtitle="Continuous Evaluation (CCE)"
-          trend={{ value: "Grade A+", isPositive: true }}
+          trend={{ value: "Exemplary", isPositive: true }}
           icon={<Award className="w-5 h-5" />}
           iconBg="bg-blue-50 text-[#002147]"
           span="col-span-12 sm:col-span-4"

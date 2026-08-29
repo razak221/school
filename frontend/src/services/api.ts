@@ -374,17 +374,32 @@ export const api = {
     }
   },
 
-  getStudentAttendance: async (studentId: string) => {
+  getStudentAttendance: async (studentOrUserId: string) => {
     try {
+      let targetStudentId = studentOrUserId;
+      if (studentOrUserId) {
+        const { data: stdProfile } = await supabase
+          .from('student_profiles')
+          .select('id')
+          .or(`id.eq.${studentOrUserId},user_id.eq.${studentOrUserId}`)
+          .maybeSingle();
+
+        if (stdProfile?.id) {
+          targetStudentId = stdProfile.id;
+        }
+      }
+
       const { data } = await supabase
         .from('attendance_records')
         .select('*')
-        .eq('student_id', studentId)
+        .eq('student_id', targetStudentId)
         .order('date', { ascending: false });
 
       const records = data || [];
       const present = records.filter((r) => r.status === 'present').length;
       const absent = records.filter((r) => r.status === 'absent').length;
+      const late = records.filter((r) => r.status === 'late' || r.status === 'leave').length;
+      const mdm = records.filter((r) => r.mid_day_meal_consumed).length;
       const total = records.length;
       const percentage = total > 0 ? ((present / total) * 100).toFixed(1) : '100.0';
 
@@ -395,11 +410,13 @@ export const api = {
           totalDays: total,
           presentDays: present,
           absentDays: absent,
+          lateDays: late,
+          mdmDays: mdm,
           percentage,
         },
       };
     } catch {
-      return { success: true, records: [], stats: { totalDays: 0, presentDays: 0, absentDays: 0, percentage: '100.0' } };
+      return { success: true, records: [], stats: { totalDays: 0, presentDays: 0, absentDays: 0, lateDays: 0, mdmDays: 0, percentage: '100.0' } };
     }
   },
 

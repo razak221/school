@@ -31,7 +31,7 @@ const DEFAULT_CLASSES: ClassSection[] = [
 ];
 
 export const AttendanceManager: React.FC = () => {
-  const { activeRole } = useAuth();
+  const { activeRole, user } = useAuth();
   const [classes, setClasses] = useState<ClassSection[]>(DEFAULT_CLASSES);
   const [selectedClassId, setSelectedClassId] = useState<string>('c0000000-0000-0000-0000-000000000001');
   const [date, setDate] = useState<string>(new Date().toISOString().split('T')[0]);
@@ -65,10 +65,19 @@ export const AttendanceManager: React.FC = () => {
     if (activeRole === 'student' || activeRole === 'parent') {
       const fetchStudentHistory = async () => {
         try {
+          if (activeRole === 'student' && user?.id) {
+            const attRes = await api.getStudentAttendance(user.id);
+            if (attRes.success && Array.isArray(attRes.records)) {
+              setStudentHistory(attRes.records);
+              if (attRes.stats) setStudentStats(attRes.stats);
+              return;
+            }
+          }
+
           const stRes = await api.getStudents();
           if (stRes.success && stRes.students?.length > 0) {
-            const firstStudentId = stRes.students[0]._id;
-            const attRes = await api.getStudentAttendance(firstStudentId);
+            const matched = stRes.students.find((s: any) => s.userId?._id === user?.id || s._id === user?.id) || stRes.students[0];
+            const attRes = await api.getStudentAttendance(matched._id);
             if (attRes.success && Array.isArray(attRes.records)) {
               setStudentHistory(attRes.records);
               if (attRes.stats) setStudentStats(attRes.stats);
@@ -80,7 +89,7 @@ export const AttendanceManager: React.FC = () => {
       };
       fetchStudentHistory();
     }
-  }, [activeRole]);
+  }, [activeRole, user?.id]);
 
   useEffect(() => {
     if (!selectedClassId) return;

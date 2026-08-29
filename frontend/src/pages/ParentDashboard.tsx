@@ -18,6 +18,12 @@ export const ParentDashboard: React.FC<{ onNavigate: (tab: string) => void }> = 
   const { user } = useAuth();
   const [children, setChildren] = useState<any[]>([]);
   const [selectedChildIndex, setSelectedChildIndex] = useState<number>(0);
+  const [childAttStats, setChildAttStats] = useState<any>({
+    totalDays: 0,
+    presentDays: 0,
+    absentDays: 0,
+    percentage: '100.0',
+  });
 
   useEffect(() => {
     const fetchChildren = async () => {
@@ -32,6 +38,22 @@ export const ParentDashboard: React.FC<{ onNavigate: (tab: string) => void }> = 
     };
     fetchChildren();
   }, []);
+
+  useEffect(() => {
+    const fetchChildAttendance = async () => {
+      if (children.length > 0) {
+        const c = children[selectedChildIndex];
+        const studentId = c?._id || c?.userId?._id;
+        if (studentId) {
+          const res = await api.getStudentAttendance(studentId);
+          if (res.success && res.stats) {
+            setChildAttStats(res.stats);
+          }
+        }
+      }
+    };
+    fetchChildAttendance();
+  }, [children, selectedChildIndex]);
 
   const activeChild = children[selectedChildIndex] || {
     userId: { name: 'Enrolled Student' },
@@ -82,9 +104,9 @@ export const ParentDashboard: React.FC<{ onNavigate: (tab: string) => void }> = 
       <div className="grid grid-cols-12 gap-4">
         <StatCard
           title="Child Attendance"
-          value="95.2%"
-          subtitle="Regular & Punctual this session"
-          trend={{ value: "Safe Zone (>75%)", isPositive: true }}
+          value={`${childAttStats.percentage}%`}
+          subtitle={childAttStats.totalDays > 0 ? `${childAttStats.presentDays} present of ${childAttStats.totalDays} recorded days` : "Regular & Punctual this session"}
+          trend={{ value: parseFloat(childAttStats.percentage) >= 75 ? "Safe Zone (>75%)" : "Attention Needed", isPositive: parseFloat(childAttStats.percentage) >= 75 }}
           icon={<CalendarCheck className="w-5 h-5" />}
           iconBg="bg-emerald-50 text-emerald-700"
           span="col-span-12 sm:col-span-4"
