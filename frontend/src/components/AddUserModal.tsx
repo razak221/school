@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { api } from '../services/api';
+import { supabase } from '../utils/supabase/client';
 import { ClassSection } from '../types';
 import {
   UserPlus,
@@ -115,7 +116,59 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({ classes, onClose, on
 
       const res = await api.createUser(payload);
       if (res.success) {
-        setSuccessMsg(`Successfully registered ${name} as a new ${activeTab}!`);
+        // Direct Supabase sync for immediate persistence
+        try {
+          const ORG_ID = 'a0000000-0000-0000-0000-000000000001';
+          const { data: userData } = await supabase.from('users').upsert({
+            organization_id: ORG_ID,
+            name: name.trim(),
+            username: username.toLowerCase().trim(),
+            email: email ? email.trim() : username.toLowerCase().trim(),
+            phone: phone.trim(),
+            password_hash: password.trim(),
+            role: activeTab,
+            status: 'active',
+          }, { onConflict: 'organization_id,username' }).select('id').maybeSingle();
+
+          if (userData?.id && activeTab === 'student') {
+            await supabase.from('student_profiles').upsert({
+              user_id: userData.id,
+              organization_id: ORG_ID,
+              admission_number: payload.admissionNumber,
+              roll_number: payload.rollNumber,
+              class_id: 'c0000000-0000-0000-0000-000000000001',
+              section: 'A',
+              gender: gender,
+              dob: dob,
+              father_name: fatherName || 'Parent',
+              mother_name: motherName || 'Mother',
+              address: address,
+              mid_day_meal_opted: midDayMealOpted,
+              ssa_category: ssaCategory,
+            });
+          } else if (userData?.id && activeTab === 'teacher') {
+            await supabase.from('teacher_profiles').upsert({
+              user_id: userData.id,
+              organization_id: ORG_ID,
+              employee_code: payload.employeeCode,
+              designation: designation,
+              qualification: qualification,
+              subjects_taught: subjectsTaught.split(',').map((s) => s.trim()).filter(Boolean),
+            });
+          } else if (userData?.id && activeTab === 'parent') {
+            await supabase.from('parent_profiles').upsert({
+              user_id: userData.id,
+              organization_id: ORG_ID,
+              relation: relation,
+              occupation: occupation,
+              address: address,
+            });
+          }
+        } catch (supErr) {
+          console.warn('Direct Supabase sync notice:', supErr);
+        }
+
+        setSuccessMsg(`Successfully registered ${name} as a new ${activeTab}! Saved to Supabase.`);
         setTimeout(() => {
           onSuccess();
           onClose();

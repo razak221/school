@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { api } from '../services/api';
+import { supabase } from '../utils/supabase/client';
 import { ClassSection } from '../types';
 import {
   Users,
@@ -68,6 +69,17 @@ export const Directory: React.FC<DirectoryProps> = ({ onNavigate }) => {
     try {
       const res = await api.deleteUser(userId);
       if (res.success) {
+        try {
+          const { data: uData } = await supabase.from('users').select('id').eq('name', userName).maybeSingle();
+          if (uData?.id) {
+            await supabase.from('student_profiles').delete().eq('user_id', uData.id);
+            await supabase.from('teacher_profiles').delete().eq('user_id', uData.id);
+            await supabase.from('parent_profiles').delete().eq('user_id', uData.id);
+            await supabase.from('users').delete().eq('id', uData.id);
+          }
+        } catch (e) {
+          console.warn('Direct Supabase delete notice:', e);
+        }
         fetchDirectoryData();
       } else {
         alert(res.message || 'Failed to delete user.');

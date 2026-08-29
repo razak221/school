@@ -4,6 +4,8 @@ import { User } from '../models/User';
 import { StudentProfile } from '../models/StudentProfile';
 import { TeacherProfile } from '../models/TeacherProfile';
 import { ParentProfile } from '../models/ParentProfile';
+import { ClassSection } from '../models/ClassSection';
+import { syncUserToSupabase, deleteUserFromSupabase } from '../config/supabase';
 
 const router = Router();
 
@@ -170,9 +172,31 @@ router.post('/create', verifyToken, requireRole(['admin']), async (req: Request,
       });
     }
 
+    // Sync real-time to Supabase
+    try {
+      let classNameStr = 'Class 1';
+      if (classId) {
+        const clsDoc = await ClassSection.findById(classId);
+        if (clsDoc) classNameStr = clsDoc.className;
+      }
+
+      await syncUserToSupabase({
+        name: user.name,
+        username: user.username,
+        email: user.email,
+        phone: user.phone,
+        passwordHash: user.passwordHash,
+        role: user.role as any,
+        profileData: profile ? profile.toObject() : req.body,
+        className: classNameStr,
+      });
+    } catch (syncErr) {
+      console.warn('⚠️ Supabase background sync notice:', syncErr);
+    }
+
     res.status(201).json({
       success: true,
-      message: `New ${role} profile created successfully.`,
+      message: `New ${role} profile created and saved to database successfully.`,
       user: {
         _id: user._id,
         name: user.name,
@@ -209,6 +233,13 @@ router.delete('/:id', verifyToken, requireRole(['admin']), async (req: Request, 
     }
 
     await User.deleteOne({ _id: id, organizationId: orgId });
+
+    // Sync deletion to Supabase
+    try {
+      await deleteUserFromSupabase(user.username);
+    } catch (syncErr) {
+      console.warn('⚠️ Supabase background delete notice:', syncErr);
+    }
 
     res.json({ success: true, message: `User ${user.name} removed successfully.` });
   } catch (error) {
