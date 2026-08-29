@@ -21,14 +21,14 @@ interface AdminDashboardProps {
 }
 
 const DEFAULT_MIDDLE_SCHOOL_CLASSES = [
-  { _id: 'c1', className: 'Class 1', section: 'A', gradeLevel: 1 },
-  { _id: 'c2', className: 'Class 2', section: 'A', gradeLevel: 2 },
-  { _id: 'c3', className: 'Class 3', section: 'A', gradeLevel: 3 },
-  { _id: 'c4', className: 'Class 4', section: 'A', gradeLevel: 4 },
-  { _id: 'c5', className: 'Class 5', section: 'A', gradeLevel: 5 },
-  { _id: 'c6', className: 'Class 6', section: 'A', gradeLevel: 6 },
-  { _id: 'c7', className: 'Class 7', section: 'A', gradeLevel: 7 },
-  { _id: 'c8', className: 'Class 8', section: 'A', gradeLevel: 8 },
+  { _id: 'c0000000-0000-0000-0000-000000000001', className: 'Class 1', section: 'A', gradeLevel: 1 },
+  { _id: 'c0000000-0000-0000-0000-000000000002', className: 'Class 2', section: 'A', gradeLevel: 2 },
+  { _id: 'c0000000-0000-0000-0000-000000000003', className: 'Class 3', section: 'A', gradeLevel: 3 },
+  { _id: 'c0000000-0000-0000-0000-000000000004', className: 'Class 4', section: 'A', gradeLevel: 4 },
+  { _id: 'c0000000-0000-0000-0000-000000000005', className: 'Class 5', section: 'A', gradeLevel: 5 },
+  { _id: 'c0000000-0000-0000-0000-000000000006', className: 'Class 6', section: 'A', gradeLevel: 6 },
+  { _id: 'c0000000-0000-0000-0000-000000000007', className: 'Class 7', section: 'A', gradeLevel: 7 },
+  { _id: 'c0000000-0000-0000-0000-000000000008', className: 'Class 8', section: 'A', gradeLevel: 8 },
 ];
 
 export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) => {
