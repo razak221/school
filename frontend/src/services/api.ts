@@ -832,7 +832,7 @@ export const api = {
             role: payload.role,
             status: 'active',
           },
-          { onConflict: 'username' }
+          { onConflict: 'organization_id,username' }
         )
         .select()
         .single();
@@ -888,9 +888,13 @@ export const api = {
         }
 
         return { success: true, message: `${payload.name} saved to Supabase successfully.` };
+      } else if (userError) {
+        console.error('Supabase createUser userError:', userError);
+        return { success: false, message: userError.message || 'Failed to insert user into Supabase.' };
       }
     } catch (err: any) {
       console.error('createUser error:', err);
+      return { success: false, message: err?.message || 'Failed to create user.' };
     }
 
     return { success: false, message: 'Failed to create user.' };
