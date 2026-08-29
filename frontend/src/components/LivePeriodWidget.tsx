@@ -3,9 +3,9 @@ import { Clock, BellRing, Utensils } from 'lucide-react';
 
 export const LivePeriodWidget: React.FC = () => {
   const [currentStatus, setCurrentStatus] = useState({
-    title: 'Period 3 • Science',
-    teacher: 'Farooq Ahmad Dar',
-    timeRange: '11:15 AM - 12:00 PM',
+    title: 'School Schedule',
+    teacher: 'Academic Routine',
+    timeRange: '09:00 AM - 03:30 PM',
     isBreak: false,
     badgeColor: 'bg-emerald-50 text-emerald-800 border-emerald-200',
   });
@@ -20,7 +20,7 @@ export const LivePeriodWidget: React.FC = () => {
       if (timeNum < 930) {
         setCurrentStatus({
           title: 'School Gates Open & Assembly Prep',
-          teacher: 'Duty Teachers',
+          teacher: 'Duty Staff',
           timeRange: '09:00 AM - 09:30 AM',
           isBreak: true,
           badgeColor: 'bg-blue-50 text-[#0c6780] border-blue-200',
@@ -28,15 +28,15 @@ export const LivePeriodWidget: React.FC = () => {
       } else if (timeNum < 945) {
         setCurrentStatus({
           title: 'Morning Assembly, National Anthem & Prayer',
-          teacher: 'Headmaster & Faculty',
+          teacher: 'Faculty & Administration',
           timeRange: '09:30 AM - 09:45 AM',
           isBreak: true,
           badgeColor: 'bg-amber-50 text-amber-900 border-amber-200',
         });
       } else if (timeNum < 1030) {
         setCurrentStatus({
-          title: 'Period 1 • English Literature',
-          teacher: 'Shabir Ahmad Shah',
+          title: 'Period 1 • English Language & Literature',
+          teacher: 'Subject Teacher',
           timeRange: '09:45 AM - 10:30 AM',
           isBreak: false,
           badgeColor: 'bg-emerald-50 text-emerald-800 border-emerald-200',
@@ -44,23 +44,23 @@ export const LivePeriodWidget: React.FC = () => {
       } else if (timeNum < 1115) {
         setCurrentStatus({
           title: 'Period 2 • Mathematics',
-          teacher: 'Nissar Ahmad Rather',
+          teacher: 'Subject Teacher',
           timeRange: '10:30 AM - 11:15 AM',
           isBreak: false,
           badgeColor: 'bg-emerald-50 text-emerald-800 border-emerald-200',
         });
       } else if (timeNum < 1200) {
         setCurrentStatus({
-          title: 'Period 3 • Science & Lab Experiments',
-          teacher: 'Farooq Ahmad Dar',
+          title: 'Period 3 • General Science',
+          teacher: 'Subject Teacher',
           timeRange: '11:15 AM - 12:00 PM',
           isBreak: false,
           badgeColor: 'bg-emerald-50 text-emerald-800 border-emerald-200',
         });
       } else if (timeNum < 1245) {
         setCurrentStatus({
-          title: 'Period 4 • Urdu Language',
-          teacher: 'Altaf Hussain',
+          title: 'Period 4 • Urdu / Regional Language',
+          teacher: 'Language Faculty',
           timeRange: '12:00 PM - 12:45 PM',
           isBreak: false,
           badgeColor: 'bg-emerald-50 text-emerald-800 border-emerald-200',
@@ -75,8 +75,8 @@ export const LivePeriodWidget: React.FC = () => {
         });
       } else if (timeNum < 1415) {
         setCurrentStatus({
-          title: 'Period 5 • Social Science (History & Civics)',
-          teacher: 'Showkat Ahmad',
+          title: 'Period 5 • Social Studies',
+          teacher: 'Subject Teacher',
           timeRange: '01:30 PM - 02:15 PM',
           isBreak: false,
           badgeColor: 'bg-emerald-50 text-emerald-800 border-emerald-200',
@@ -84,7 +84,7 @@ export const LivePeriodWidget: React.FC = () => {
       } else if (timeNum < 1500) {
         setCurrentStatus({
           title: 'Period 6 • Kashmiri & Physical Education',
-          teacher: 'Tanveer Ahmad (PET)',
+          teacher: 'Physical Education / Activity Faculty',
           timeRange: '02:15 PM - 03:00 PM',
           isBreak: false,
           badgeColor: 'bg-emerald-50 text-emerald-800 border-emerald-200',

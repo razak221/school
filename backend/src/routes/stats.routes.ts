@@ -36,31 +36,31 @@ router.get('/overview', verifyToken, async (req: Request, res: Response): Promis
     ]);
 
     const presentStudents = todayAttendance.filter((r) => r.status === 'present' || r.status === 'late').length;
-    const attendancePct = totalStudents > 0 ? ((presentStudents / totalStudents) * 100).toFixed(1) : '94.2';
+    const attendancePct = totalStudents > 0 ? ((presentStudents / totalStudents) * 100).toFixed(1) : '0.0';
 
     const totalGrantAllocated = grants
       .filter((g) => g.category === 'credit')
-      .reduce((acc, g) => acc + g.amount, 0);
+      .reduce((acc, g) => acc + (g.amount || 0), 0);
 
     const totalGrantUtilized = grants
       .filter((g) => g.category === 'debit')
-      .reduce((acc, g) => acc + g.amount, 0);
+      .reduce((acc, g) => acc + (g.amount || 0), 0);
 
     res.json({
       success: true,
       stats: {
-        totalStudents: totalStudents || 248,
-        totalTeachers: totalTeachers || 11,
-        totalClasses: totalClasses || 8,
-        noticesCount: noticesCount || 6,
+        totalStudents,
+        totalTeachers,
+        totalClasses,
+        noticesCount,
         todayAttendancePercentage: attendancePct,
-        presentToday: presentStudents || 232,
-        absentToday: (totalStudents || 248) - (presentStudents || 232),
-        midDayMealServedCount: todayMdm?.studentsServedCount || 230,
+        presentToday: presentStudents,
+        absentToday: Math.max(0, totalStudents - presentStudents),
+        midDayMealServedCount: todayMdm?.studentsServedCount || 0,
         grants: {
-          allocated: totalGrantAllocated || 250000,
-          utilized: totalGrantUtilized || 185000,
-          balance: (totalGrantAllocated || 250000) - (totalGrantUtilized || 185000),
+          allocated: totalGrantAllocated,
+          utilized: totalGrantUtilized,
+          balance: totalGrantAllocated - totalGrantUtilized,
         },
       },
     });

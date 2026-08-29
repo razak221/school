@@ -24,19 +24,22 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) =>
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [notices, setNotices] = useState<NoticeItem[]>([]);
   const [classList, setClassList] = useState<any[]>([]);
+  const [students, setStudents] = useState<any[]>([]);
   const [, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [statsRes, noticesRes, classRes] = await Promise.all([
+        const [statsRes, noticesRes, classRes, studentsRes] = await Promise.all([
           api.getOverviewStats(),
           api.getNotices(),
           api.getClasses(),
+          api.getStudents(),
         ]);
         if (statsRes.success) setStats(statsRes.stats);
         if (noticesRes.success) setNotices(noticesRes.notices.slice(0, 3));
         if (classRes.success && classRes.classes?.length > 0) setClassList(classRes.classes);
+        if (studentsRes.success && studentsRes.students) setStudents(studentsRes.students);
       } catch (err) {
         console.error('Failed to load dashboard data', err);
       } finally {
@@ -73,6 +76,13 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) =>
               Manage Attendance
             </button>
             <button
+              onClick={() => onNavigate('directory')}
+              className="px-4 py-2 rounded-xl bg-blue-500/20 text-white border border-white/20 font-bold text-xs hover:bg-white/20 transition-all shadow-sm flex items-center gap-1.5"
+            >
+              <Users className="w-3.5 h-3.5" />
+              Enrol Students & Staff
+            </button>
+            <button
               onClick={() => onNavigate('ai-assistant')}
               className="px-4 py-2 rounded-xl bg-amber-500 text-white font-bold text-xs hover:bg-amber-600 transition-all shadow-sm flex items-center gap-1.5"
             >
@@ -91,9 +101,9 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) =>
       <div className="grid grid-cols-12 gap-4">
         <StatCard
           title="Enrolled Students"
-          value={stats?.totalStudents || 248}
+          value={stats?.totalStudents ?? 0}
           subtitle="Classes 1st to 8th Standard"
-          trend={{ value: "+4 this month", isPositive: true }}
+          trend={stats?.totalStudents ? { value: `${stats.totalStudents} total`, isPositive: true } : undefined}
           icon={<GraduationCap className="w-5 h-5" />}
           iconBg="bg-blue-50 text-[#002147]"
           span="col-span-12 sm:col-span-6 lg:col-span-3"
@@ -101,9 +111,9 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) =>
 
         <StatCard
           title="Today's Attendance"
-          value={`${stats?.todayAttendancePercentage || '94.2'}%`}
-          subtitle={`${stats?.presentToday || 232} present • ${stats?.absentToday || 16} absent`}
-          trend={{ value: "+1.8% vs last week", isPositive: true }}
+          value={`${stats?.todayAttendancePercentage ?? '0.0'}%`}
+          subtitle={`${stats?.presentToday ?? 0} present • ${stats?.absentToday ?? 0} absent`}
+          trend={stats && stats.totalStudents > 0 ? { value: `${stats.presentToday}/${stats.totalStudents}`, isPositive: true } : undefined}
           icon={<CalendarCheck className="w-5 h-5" />}
           iconBg="bg-emerald-50 text-emerald-700"
           span="col-span-12 sm:col-span-6 lg:col-span-3"
@@ -111,9 +121,9 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) =>
 
         <StatCard
           title="Mid-Day Meals Served"
-          value={`${stats?.midDayMealServedCount || 230}`}
+          value={`${stats?.midDayMealServedCount ?? 0}`}
           subtitle="Hot lunch under PM-POSHAN"
-          trend={{ value: "Quality Inspected", isPositive: true }}
+          trend={{ value: "Quality Tracked", isPositive: true }}
           icon={<Utensils className="w-5 h-5" />}
           iconBg="bg-amber-50 text-amber-800"
           span="col-span-12 sm:col-span-6 lg:col-span-3"
@@ -121,9 +131,9 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) =>
 
         <StatCard
           title="SSA Grants Balance"
-          value={`₹${((stats?.grants?.balance || 65000) / 1000).toFixed(0)}k`}
-          subtitle={`₹${((stats?.grants?.utilized || 185000) / 1000).toFixed(0)}k utilized / ₹${((stats?.grants?.allocated || 250000) / 1000).toFixed(0)}k`}
-          trend={{ value: "On Budget", isPositive: true }}
+          value={`₹${(((stats?.grants?.balance ?? 75000)) / 1000).toFixed(0)}k`}
+          subtitle={`₹${(((stats?.grants?.utilized ?? 0)) / 1000).toFixed(0)}k utilized / ₹${(((stats?.grants?.allocated ?? 75000)) / 1000).toFixed(0)}k`}
+          trend={{ value: "Official Grant", isPositive: true }}
           icon={<Wallet className="w-5 h-5" />}
           iconBg="bg-indigo-50 text-indigo-700"
           span="col-span-12 sm:col-span-6 lg:col-span-3"
@@ -140,10 +150,10 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) =>
           span="col-span-12 lg:col-span-8"
           action={
             <button
-              onClick={() => onNavigate('attendance')}
+              onClick={() => onNavigate('directory')}
               className="text-xs font-bold text-[#0c6780] hover:underline flex items-center gap-1"
             >
-              Open Class Roster <ArrowRight className="w-3.5 h-3.5" />
+              Manage Students & Teachers <ArrowRight className="w-3.5 h-3.5" />
             </button>
           }
         >
@@ -160,45 +170,44 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) =>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 font-medium">
-                {(classList.length > 0
-                  ? classList.map((c) => ({
-                      name: `${c.className} - Section ${c.section || 'A'}`,
-                      teacher: (c.classTeacherId as any)?.name || 'Assigned Staff',
-                      count: 31,
-                      present: 29,
-                      pct: '93.5%',
-                    }))
-                  : [
-                      { name: 'Class 8-A', teacher: 'Nissar Ahmad Rather', count: 34, present: 32, pct: '94.1%' },
-                      { name: 'Class 7-A', teacher: 'Shabir Ahmad Shah', count: 32, present: 30, pct: '93.7%' },
-                      { name: 'Class 6-A', teacher: 'Farooq Ahmad Dar', count: 30, present: 29, pct: '96.6%' },
-                      { name: 'Class 5-A', teacher: 'Altaf Hussain', count: 31, present: 29, pct: '93.5%' },
-                      { name: 'Class 4-A', teacher: 'Rubeena Akhter', count: 30, present: 28, pct: '93.3%' },
-                      { name: 'Class 3-A', teacher: 'Showkat Ahmad', count: 30, present: 29, pct: '96.7%' },
-                      { name: 'Class 2-A', teacher: 'Tanveer Ahmad', count: 31, present: 29, pct: '93.5%' },
-                      { name: 'Class 1-A', teacher: 'Gulshan Ara', count: 30, present: 28, pct: '93.3%' },
-                    ]
-                ).map((row, idx) => (
-                  <tr key={idx} className="hover:bg-slate-50/80 transition-colors">
-                    <td className="py-2.5 font-bold text-[#002147]">{row.name}</td>
-                    <td className="py-2.5 text-slate-600">{row.teacher}</td>
-                    <td className="py-2.5 text-slate-700">{row.count}</td>
-                    <td className="py-2.5 text-emerald-700 font-semibold">{row.present}</td>
-                    <td className="py-2.5">
-                      <div className="flex items-center gap-2">
-                        <div className="w-16 h-1.5 rounded-full bg-slate-100 overflow-hidden">
-                          <div className="h-full bg-emerald-500 rounded-full" style={{ width: row.pct }} />
+                {classList.map((c, idx) => {
+                  const enrolledCount = students.filter((s) => s.classId?._id === c._id || s.classId === c._id).length;
+                  const teacherName = (c.classTeacherId as any)?.name || 'Not Assigned';
+                  return (
+                    <tr key={c._id || idx} className="hover:bg-slate-50/80 transition-colors">
+                      <td className="py-2.5 font-bold text-[#002147]">
+                        {c.className} - Section {c.section || 'A'}
+                      </td>
+                      <td className="py-2.5 text-slate-600">{teacherName}</td>
+                      <td className="py-2.5 text-slate-700 font-semibold">{enrolledCount}</td>
+                      <td className="py-2.5 text-emerald-700 font-semibold">{enrolledCount > 0 ? enrolledCount : 0}</td>
+                      <td className="py-2.5">
+                        <div className="flex items-center gap-2">
+                          <div className="w-16 h-1.5 rounded-full bg-slate-100 overflow-hidden">
+                            <div
+                              className="h-full bg-emerald-500 rounded-full"
+                              style={{ width: enrolledCount > 0 ? '100%' : '0%' }}
+                            />
+                          </div>
+                          <span className="text-[11px] font-bold text-slate-700">
+                            {enrolledCount > 0 ? '100%' : '0.0%'}
+                          </span>
                         </div>
-                        <span className="text-[11px] font-bold text-slate-700">{row.pct}</span>
-                      </div>
-                    </td>
-                    <td className="py-2.5 text-right">
-                      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                        Marked
-                      </span>
-                    </td>
-                  </tr>
-                ))}
+                      </td>
+                      <td className="py-2.5 text-right">
+                        {enrolledCount > 0 ? (
+                          <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                            Active
+                          </span>
+                        ) : (
+                          <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-50 text-slate-500 border border-slate-200">
+                            Awaiting Enrolment
+                          </span>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
@@ -221,25 +230,29 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) =>
             }
           >
             <div className="space-y-3">
-              {notices.map((n) => (
-                <div
-                  key={n._id}
-                  className="p-3 rounded-xl bg-slate-50 border border-slate-100 hover:border-slate-200 transition-all space-y-1"
-                >
-                  <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-blue-100/70 text-[#002147]">
-                      {n.category}
-                    </span>
-                    {n.translations?.ur && (
-                      <span className="text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">
-                        Urdu Available
+              {notices.length === 0 ? (
+                <p className="text-xs text-slate-500 italic py-3 text-center">No new notices posted.</p>
+              ) : (
+                notices.map((n) => (
+                  <div
+                    key={n._id}
+                    className="p-3 rounded-xl bg-slate-50 border border-slate-100 hover:border-slate-200 transition-all space-y-1"
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-blue-100/70 text-[#002147]">
+                        {n.category}
                       </span>
-                    )}
+                      {n.translations?.ur && (
+                        <span className="text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">
+                          Urdu Available
+                        </span>
+                      )}
+                    </div>
+                    <h4 className="text-xs font-bold text-slate-800 line-clamp-1">{n.title}</h4>
+                    <p className="text-[11px] text-slate-500 line-clamp-2">{n.body}</p>
                   </div>
-                  <h4 className="text-xs font-bold text-slate-800 line-clamp-1">{n.title}</h4>
-                  <p className="text-[11px] text-slate-500 line-clamp-2">{n.body}</p>
-                </div>
-              ))}
+                ))
+              )}
             </div>
           </BentoCard>
 
@@ -273,7 +286,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) =>
               >
                 <Users className="w-4 h-4 text-indigo-600 mb-1 group-hover:scale-110 transition-transform" />
                 <div className="text-xs font-bold text-slate-800">Student Directory</div>
-                <div className="text-[10px] text-slate-500">248 Enrolled Students</div>
+                <div className="text-[10px] text-slate-500">{stats?.totalStudents ?? 0} Enrolled Students</div>
               </button>
 
               <button

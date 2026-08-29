@@ -27,12 +27,12 @@ export const TimetableManager: React.FC = () => {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   const defaultPeriods = [
-    { periodNumber: 1, startTime: '09:45 AM', endTime: '10:30 AM', subject: 'English', teacherName: 'Shabir Ahmad Shah', room: 'Room 101' },
-    { periodNumber: 2, startTime: '10:30 AM', endTime: '11:15 AM', subject: 'Mathematics', teacherName: 'Nissar Ahmad Rather', room: 'Room 101' },
-    { periodNumber: 3, startTime: '11:15 AM', endTime: '12:00 PM', subject: 'Science', teacherName: 'Farooq Ahmad Dar', room: 'Science Lab' },
-    { periodNumber: 4, startTime: '12:00 PM', endTime: '12:45 PM', subject: 'Urdu', teacherName: 'Altaf Hussain', room: 'Room 101' },
-    { periodNumber: 5, startTime: '01:30 PM', endTime: '02:15 PM', subject: 'Social Science', teacherName: 'Showkat Ahmad', room: 'Room 101' },
-    { periodNumber: 6, startTime: '02:15 PM', endTime: '03:00 PM', subject: 'Kashmiri / PET', teacherName: 'Tanveer Ahmad', room: 'Playground / Room 101' },
+    { periodNumber: 1, startTime: '09:45 AM', endTime: '10:30 AM', subject: 'English', teacherName: '', room: 'Room 1' },
+    { periodNumber: 2, startTime: '10:30 AM', endTime: '11:15 AM', subject: 'Mathematics', teacherName: '', room: 'Room 1' },
+    { periodNumber: 3, startTime: '11:15 AM', endTime: '12:00 PM', subject: 'Science', teacherName: '', room: 'Science Lab' },
+    { periodNumber: 4, startTime: '12:00 PM', endTime: '12:45 PM', subject: 'Urdu', teacherName: '', room: 'Room 1' },
+    { periodNumber: 5, startTime: '01:30 PM', endTime: '02:15 PM', subject: 'Social Science', teacherName: '', room: 'Room 1' },
+    { periodNumber: 6, startTime: '02:15 PM', endTime: '03:00 PM', subject: 'Kashmiri / Physical Education', teacherName: '', room: 'Playground' },
   ];
 
   useEffect(() => {

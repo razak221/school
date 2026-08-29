@@ -68,25 +68,11 @@ export const PublicPortal: React.FC<PublicPortalProps> = ({ onOpenLogin }) => {
       subject: 'Administration & Educational Leadership',
     },
     {
-      name: 'Nissar Ahmad Rather',
-      role: 'General Line Teacher (GLT)',
-      qualification: 'M.Sc. Mathematics, B.Ed.',
-      experience: '14+ Years',
-      subject: 'Mathematics & Science In-charge',
-    },
-    {
-      name: 'Rubeena Akhter',
-      role: 'Teacher / Cultural In-charge',
-      qualification: 'M.A. English, B.Ed.',
-      experience: '11+ Years',
-      subject: 'English & Social Studies',
-    },
-    {
-      name: 'Ghulam Hassan Dar',
-      role: 'Physical Education Teacher (PET)',
-      qualification: 'B.P.Ed, Sports Coaching',
-      experience: '9+ Years',
-      subject: 'Sports, MDM Inspection & Drill',
+      name: 'Teaching & SSA Faculty',
+      role: 'General Line & Specialized Teachers',
+      qualification: 'Master Degrees & B.Ed / D.El.Ed Certified',
+      experience: 'J&K School Education Dept',
+      subject: 'Mathematics, Science, Languages & Social Sciences',
     },
   ];
 
