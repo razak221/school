@@ -6,122 +6,12 @@ import mongoose from 'mongoose';
 
 const router = Router();
 
-// Mock seed invoices & expenses if database is empty
-const defaultInvoices = [
-  {
-    invoiceNumber: 'INV-2026-001',
-    clientName: 'EduTech J&K Digital Services',
-    clientEmail: 'billing@edutechjk.in',
-    clientAddress: 'Lal Chowk, Srinagar, J&K',
-    issueDate: '2026-08-15',
-    dueDate: '2026-09-15',
-    currency: 'INR',
-    items: [
-      { description: 'School Management Cloud Hosting & Maintenance (Term 1)', quantity: 1, unitPrice: 45000, taxRate: 18, amount: 45000 },
-      { description: 'Computer Lab Digital Curriculum Licenses', quantity: 12, unitPrice: 1500, taxRate: 18, amount: 18000 },
-    ],
-    subtotal: 63000,
-    taxAmount: 11340,
-    discountAmount: 0,
-    totalAmount: 74340,
-    status: 'paid',
-    paymentMethod: 'Stripe / Card',
-    paidAt: new Date('2026-08-20'),
-    notes: 'Paid via Stripe Checkout. Transaction ID: ch_3P7aBCDeF123',
-  },
-  {
-    invoiceNumber: 'INV-2026-002',
-    clientName: 'Kashmir Valley Uniform & Sports Supplies',
-    clientEmail: 'accounts@kashmirvalleysports.com',
-    clientAddress: 'Mattan Market, Anantnag, J&K',
-    issueDate: '2026-08-22',
-    dueDate: '2026-09-05',
-    currency: 'INR',
-    items: [
-      { description: 'Annual Athletic Meet Sponsorship & Banner Display', quantity: 1, unitPrice: 25000, taxRate: 0, amount: 25000 },
-    ],
-    subtotal: 25000,
-    taxAmount: 0,
-    discountAmount: 2000,
-    totalAmount: 23000,
-    status: 'sent',
-    notes: 'Awaiting bank transfer confirmation.',
-  },
-  {
-    invoiceNumber: 'INV-2026-003',
-    clientName: 'Himalayan Book Distributors',
-    clientEmail: 'orders@himalayanbooks.co.in',
-    clientAddress: 'KP Road, Anantnag, J&K',
-    issueDate: '2026-08-01',
-    dueDate: '2026-08-20',
-    currency: 'INR',
-    items: [
-      { description: 'Library NCERT Reference Textbook Consignment', quantity: 1, unitPrice: 18500, taxRate: 5, amount: 18500 },
-    ],
-    subtotal: 18500,
-    taxAmount: 925,
-    discountAmount: 0,
-    totalAmount: 19425,
-    status: 'overdue',
-    notes: 'Reminder notice dispatched.',
-  },
-];
-
-const defaultExpenses = [
-  {
-    title: 'High-Speed Fiber Internet & Networking Subscription',
-    category: 'Technology',
-    amount: 3200,
-    currency: 'INR',
-    expenseDate: '2026-08-05',
-    vendor: 'J&K BSNL Broadband',
-    paymentMethod: 'Bank Transfer',
-    taxDeductible: true,
-    notes: 'Monthly school internet line.',
-  },
-  {
-    title: 'Classroom Stationery, Register Books & Whiteboard Markers',
-    category: 'Supplies',
-    amount: 4850,
-    currency: 'INR',
-    expenseDate: '2026-08-12',
-    vendor: 'Awanpora Local Book Depot',
-    paymentMethod: 'Cash',
-    taxDeductible: true,
-    notes: 'Term 1 supplies distribution.',
-  },
-  {
-    title: 'School Drinking Water RO Plant Filter Replacement',
-    category: 'Maintenance',
-    amount: 6500,
-    currency: 'INR',
-    expenseDate: '2026-08-18',
-    vendor: 'PureFlow Aqua Solutions',
-    paymentMethod: 'UPI',
-    taxDeductible: true,
-    notes: 'Annual filter & membrane renewal.',
-  },
-  {
-    title: 'Electricity & Solar Inverter Maintenance Bill',
-    category: 'Utilities',
-    amount: 5400,
-    currency: 'INR',
-    expenseDate: '2026-08-25',
-    vendor: 'KPDCL Electric Division Mattan',
-    paymentMethod: 'Bank Transfer',
-    taxDeductible: true,
-  },
-];
-
 // GET /api/v1/finance/summary
 router.get('/summary', verifyToken, async (req: Request, res: Response): Promise<void> => {
   try {
     const orgId = req.user?.organizationId ? new mongoose.Types.ObjectId(req.user.organizationId) : null;
-    let invoices = orgId ? await Invoice.find({ organizationId: orgId }) : [];
-    let expenses = orgId ? await Expense.find({ organizationId: orgId }) : [];
-
-    if (invoices.length === 0) invoices = defaultInvoices as any;
-    if (expenses.length === 0) expenses = defaultExpenses as any;
+    const invoices = orgId ? await Invoice.find({ organizationId: orgId }) : [];
+    const expenses = orgId ? await Expense.find({ organizationId: orgId }) : [];
 
     const totalRevenue = invoices.filter((i) => i.status === 'paid').reduce((acc, i) => acc + (i.totalAmount || 0), 0);
     const pendingReceivables = invoices.filter((i) => i.status === 'sent' || i.status === 'overdue').reduce((acc, i) => acc + (i.totalAmount || 0), 0);
@@ -151,9 +41,7 @@ router.get('/summary', verifyToken, async (req: Request, res: Response): Promise
 router.get('/invoices', verifyToken, async (req: Request, res: Response): Promise<void> => {
   try {
     const orgId = req.user?.organizationId ? new mongoose.Types.ObjectId(req.user.organizationId) : null;
-    let invoices = orgId ? await Invoice.find({ organizationId: orgId }).sort({ createdAt: -1 }) : [];
-    if (invoices.length === 0) invoices = defaultInvoices as any;
-
+    const invoices = orgId ? await Invoice.find({ organizationId: orgId }).sort({ createdAt: -1 }) : [];
     res.json({ success: true, invoices });
   } catch (error) {
     res.status(500).json({ success: false, message: 'Failed to fetch invoices.' });
@@ -216,7 +104,6 @@ router.post('/checkout', verifyToken, async (req: Request, res: Response): Promi
   try {
     const { invoiceId, invoiceNumber, amount } = req.body;
 
-    // Simulate Stripe Checkout Session generation
     const sessionId = `cs_test_${Math.random().toString(36).substring(2, 15)}`;
     const checkoutUrl = `https://checkout.stripe.com/c/pay/${sessionId}`;
 
@@ -234,8 +121,6 @@ router.post('/checkout', verifyToken, async (req: Request, res: Response): Promi
 // POST /api/v1/finance/webhook (Stripe Webhook & Auto-Reconciliation)
 router.post('/webhook', async (req: Request, res: Response): Promise<void> => {
   try {
-    const event = req.body;
-    // Auto-reconciliation simulation
     res.json({ received: true, status: 'reconciled' });
   } catch (error) {
     res.status(400).json({ success: false, message: 'Webhook processing failed.' });
@@ -246,9 +131,7 @@ router.post('/webhook', async (req: Request, res: Response): Promise<void> => {
 router.get('/expenses', verifyToken, async (req: Request, res: Response): Promise<void> => {
   try {
     const orgId = req.user?.organizationId ? new mongoose.Types.ObjectId(req.user.organizationId) : null;
-    let expenses = orgId ? await Expense.find({ organizationId: orgId }).sort({ expenseDate: -1 }) : [];
-    if (expenses.length === 0) expenses = defaultExpenses as any;
-
+    const expenses = orgId ? await Expense.find({ organizationId: orgId }).sort({ expenseDate: -1 }) : [];
     res.json({ success: true, expenses });
   } catch (error) {
     res.status(500).json({ success: false, message: 'Failed to fetch expenses.' });

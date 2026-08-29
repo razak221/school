@@ -121,47 +121,7 @@ export const seedDatabase = async (): Promise<void> => {
       },
     ]);
 
-    // 6. Create SSA Grant Records
-    await GrantAndFee.create([
-      {
-        organizationId: orgId,
-        type: 'ssa_grant',
-        title: 'SSA Annual Composite School Grant 2026-27',
-        amount: 50000,
-        financialYear: '2026-2027',
-        category: 'credit',
-        sanctionNumber: 'SED/SSA/ANT/2026/0491',
-        description: 'Annual infrastructure, sanitation, and learning aids grant released by Directorate of Samagra Shiksha.',
-        status: 'allocated',
-        recordedBy: adminUser._id,
-      },
-      {
-        organizationId: orgId,
-        type: 'library_grant',
-        title: 'SSA Library & Reading Corner Grant',
-        amount: 13000,
-        financialYear: '2026-2027',
-        category: 'credit',
-        sanctionNumber: 'SED/SSA/LIB/2026/012',
-        description: 'Grant for purchasing children literature, science encyclopedias, and regional storybooks.',
-        status: 'allocated',
-        recordedBy: adminUser._id,
-      },
-      {
-        organizationId: orgId,
-        type: 'sports_grant',
-        title: 'Sports & Physical Education Equipment Fund',
-        amount: 10000,
-        financialYear: '2026-2027',
-        category: 'credit',
-        sanctionNumber: 'SED/SSA/SPT/2026/884',
-        description: 'Procurement of cricket kits, footballs, volleyball sets, and carrom boards.',
-        status: 'allocated',
-        recordedBy: adminUser._id,
-      },
-    ]);
-
-    console.log('✅ Clean database ready: Only real admin account (admin@me) initialized. Directory is ready for admin to create real users.');
+    console.log('✅ Clean database ready: Only real admin account (admin@me) and 8 empty class sections initialized. Grants and users are ready for admin entry.');
   } catch (error) {
     console.error('Database seeding failed:', error);
   }

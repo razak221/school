@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { api } from '../services/api';
 import { BentoCard } from '../components/BentoCard';
 import { StatCard } from '../components/StatCard';
-import { Wallet, Utensils, ArrowUpRight, CheckCircle2, ShieldCheck, Plus, Download } from 'lucide-react';
+import { Wallet, Utensils, ArrowUpRight, CheckCircle2, ShieldCheck, Plus } from 'lucide-react';
 
 export const GrantsAndFunds: React.FC = () => {
   const [grants, setGrants] = useState<any[]>([]);
-  const [summary, setSummary] = useState<any>({ totalAllocated: 250000, totalUtilized: 185000, balanceAvailable: 65000 });
+  const [summary, setSummary] = useState<any>({ totalAllocated: 0, totalUtilized: 0, balanceAvailable: 0 });
   const [mdmLogs, setMdmLogs] = useState<any[]>([]);
   const [, setLoading] = useState(false);
 
@@ -23,11 +23,11 @@ export const GrantsAndFunds: React.FC = () => {
   // MDM Log Modal State
   const [showMdmModal, setShowMdmModal] = useState(false);
   const [mdmDate, setMdmDate] = useState(new Date().toISOString().split('T')[0]);
-  const [mdmMenu, setMdmMenu] = useState('Rajma Chawal with Mixed Vegetable Greens');
-  const [mdmRiceKg, setMdmRiceKg] = useState(25);
-  const [mdmExpense, setMdmExpense] = useState(480);
-  const [mdmServed, setMdmServed] = useState(232);
-  const [mdmRemarks, setMdmRemarks] = useState('Fresh nutritious lunch inspected and approved by VEC committee.');
+  const [mdmMenu, setMdmMenu] = useState('Fresh Steamed Rice & Dal');
+  const [mdmRiceKg, setMdmRiceKg] = useState(15);
+  const [mdmExpense, setMdmExpense] = useState(250);
+  const [mdmServed, setMdmServed] = useState(0);
+  const [mdmRemarks, setMdmRemarks] = useState('Nutritious warm lunch served to enrolled students.');
   const [savingMdm, setSavingMdm] = useState(false);
 
   const fetchData = async () => {
@@ -35,11 +35,15 @@ export const GrantsAndFunds: React.FC = () => {
     try {
       const [gRes, mRes] = await Promise.all([api.getGrants(), api.getMdmLogs()]);
       if (gRes.success) {
-        setGrants(gRes.grants);
-        if (gRes.summary) setSummary(gRes.summary);
+        setGrants(gRes.grants || []);
+        if (gRes.summary) {
+          setSummary(gRes.summary);
+        } else {
+          setSummary({ totalAllocated: 0, totalUtilized: 0, balanceAvailable: 0 });
+        }
       }
       if (mRes.success) {
-        setMdmLogs(mRes.logs);
+        setMdmLogs(mRes.logs || []);
       }
     } catch (err) {
       console.error('Failed to load grant data', err);
@@ -88,7 +92,7 @@ export const GrantsAndFunds: React.FC = () => {
         riceConsumedKg: Number(mdmRiceKg),
         vegetablesExpense: Number(mdmExpense),
         studentsServedCount: Number(mdmServed),
-        totalEnrolledCount: 248,
+        totalEnrolledCount: Number(mdmServed) || 0,
         remarks: mdmRemarks,
       });
       if (res.success) {
@@ -102,99 +106,61 @@ export const GrantsAndFunds: React.FC = () => {
     }
   };
 
-  const handleExportCsv = () => {
-    if (!grants.length) return;
-    const headers = ['Date', 'Title', 'Category', 'Scheme Type', 'Amount (INR)', 'Sanction / Bill No', 'Description'];
-    const rows = grants.map((g) => [
-      new Date(g.allocatedDate).toISOString().split('T')[0],
-      `"${g.title}"`,
-      g.category.toUpperCase(),
-      g.type,
-      g.amount,
-      `"${g.sanctionNumber || 'N/A'}"`,
-      `"${g.description || ''}"`,
-    ]);
-    const csvContent = [headers.join(','), ...rows.map((r) => r.join(','))].join('\n');
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.setAttribute('href', url);
-    link.setAttribute('download', `SSA_Grants_Ledger_GMS_Awanpora_${new Date().toISOString().split('T')[0]}.csv`);
-    link.click();
-  };
-
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      {/* Header with Title & Action */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2">
-            <h2 className="text-xl font-bold text-[#002147]">SSA Grants & Mid-Day Meal (PM-POSHAN)</h2>
-            <span className="px-2 py-0.5 text-[10px] font-bold rounded-full bg-blue-50 text-[#0c6780] border border-blue-200">
-              Session 2026-27
-            </span>
-          </div>
-          <p className="text-xs text-slate-500">
-            Govt Middle School Awanpora • Transparent fund tracking and daily nutritional distribution
+          <h2 className="text-xl md:text-2xl font-black tracking-tight text-slate-900">
+            SSA Grants, Funds & PM-POSHAN (MDM)
+          </h2>
+          <p className="text-xs md:text-sm text-slate-500 font-medium">
+            Manage Samagra Shiksha Abhiyan funds, school expenditure, and daily mid-day meal logs.
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex items-center gap-2">
           <button
-            onClick={handleExportCsv}
-            title="Download Grants Statement CSV"
-            className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 transition-all flex items-center gap-1.5 text-xs font-bold"
-          >
-            <Download className="w-4 h-4" />
-            <span className="hidden sm:inline">Export Statement</span>
-          </button>
-          <button
+            type="button"
             onClick={() => setShowGrantModal(true)}
-            className="px-3.5 py-1.5 rounded-xl bg-[#002147] text-white text-xs font-bold hover:bg-[#0c6780] transition-all flex items-center gap-1.5 shadow-sm"
+            className="px-3.5 py-2 rounded-xl bg-[#002147] hover:bg-[#0c6780] text-white text-xs font-bold transition-all shadow-sm flex items-center gap-1.5"
           >
             <Plus className="w-3.5 h-3.5" />
-            Record Transaction
+            <span>Record Grant / Fund</span>
           </button>
           <button
+            type="button"
             onClick={() => setShowMdmModal(true)}
-            className="px-3.5 py-1.5 rounded-xl bg-amber-500 text-white text-xs font-bold hover:bg-amber-600 transition-all flex items-center gap-1.5 shadow-sm"
+            className="px-3.5 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold transition-all shadow-sm flex items-center gap-1.5"
           >
             <Utensils className="w-3.5 h-3.5" />
-            Log Today's Meal
+            <span>Record Daily Meal</span>
           </button>
         </div>
       </div>
 
-      {/* KPI Stats */}
-      <div className="grid grid-cols-12 gap-4">
+      {/* KPI Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <StatCard
-          title="Total Grants Sanctioned"
-          value={`₹${(summary.totalAllocated / 1000).toFixed(0)},000`}
-          subtitle="Annual Composite & Special Grants"
-          trend={{ value: "All Schemes Active", isPositive: true }}
+          title="Total Grants Allocated"
+          value={`₹${(summary.totalAllocated || 0).toLocaleString()}`}
+          subtitle="All Sanctioned SSA Allocations"
           icon={<Wallet className="w-5 h-5" />}
           iconBg="bg-blue-50 text-[#002147]"
-          span="col-span-12 sm:col-span-6 lg:col-span-4"
         />
-
         <StatCard
-          title="Grants Utilized"
-          value={`₹${(summary.totalUtilized / 1000).toFixed(0)},000`}
-          subtitle="School infrastructure, library & repair"
-          trend={{ value: "VEC Approved", isPositive: true }}
+          title="Total Funds Utilized"
+          value={`₹${(summary.totalUtilized || 0).toLocaleString()}`}
+          subtitle="Disbursed Vouchers & Invoices"
           icon={<ArrowUpRight className="w-5 h-5" />}
-          iconBg="bg-indigo-50 text-indigo-700"
-          span="col-span-12 sm:col-span-6 lg:col-span-4"
+          iconBg="bg-rose-50 text-rose-700"
         />
-
         <StatCard
           title="Available Balance"
-          value={`₹${(summary.balanceAvailable / 1000).toFixed(0)},000`}
-          subtitle="Unspent balance in school account"
-          trend={{ value: "Audited", isPositive: true }}
+          value={`₹${(summary.balanceAvailable || 0).toLocaleString()}`}
+          subtitle="Unspent Balance"
           icon={<ShieldCheck className="w-5 h-5" />}
           iconBg="bg-emerald-50 text-emerald-700"
-          span="col-span-12 sm:col-span-6 lg:col-span-4"
         />
       </div>
 
@@ -207,46 +173,63 @@ export const GrantsAndFunds: React.FC = () => {
           icon={<Wallet className="w-4 h-4" />}
           span="col-span-12 lg:col-span-7"
         >
-          <div className="space-y-3">
-            {grants.map((g) => (
-              <div
-                key={g._id}
-                className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-between gap-3 hover:border-slate-300 transition-all"
+          {grants.length === 0 ? (
+            <div className="p-8 text-center space-y-3 bg-slate-50 rounded-xl border border-slate-200">
+              <Wallet className="w-8 h-8 text-slate-400 mx-auto" />
+              <div>
+                <p className="text-xs font-bold text-slate-700">No Grants or Expenditures Recorded Yet</p>
+                <p className="text-[11px] text-slate-500">Record your first SSA composite grant sanction or expense voucher.</p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowGrantModal(true)}
+                className="px-3 py-1.5 rounded-lg bg-[#002147] text-white text-xs font-bold"
               >
-                <div className="space-y-1">
-                  <div className="flex items-center gap-2">
-                    <span
-                      className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-full ${
-                        g.category === 'credit'
-                          ? 'bg-emerald-100 text-emerald-800'
-                          : 'bg-rose-100 text-rose-800'
+                + Record Grant
+              </button>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {grants.map((g) => (
+                <div
+                  key={g._id}
+                  className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-between gap-3 hover:border-slate-300 transition-all"
+                >
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <span
+                        className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-full ${
+                          g.category === 'credit'
+                            ? 'bg-emerald-100 text-emerald-800'
+                            : 'bg-rose-100 text-rose-800'
+                        }`}
+                      >
+                        {g.category === 'credit' ? 'Sanctioned' : 'Disbursed'}
+                      </span>
+                      <span className="text-[11px] text-slate-500 font-mono">
+                        {g.sanctionNumber || 'GEN-EXP'}
+                      </span>
+                    </div>
+                    <h4 className="text-xs font-bold text-slate-900">{g.title}</h4>
+                    <p className="text-[11px] text-slate-500">{g.description}</p>
+                  </div>
+
+                  <div className="text-right shrink-0">
+                    <div
+                      className={`text-sm font-extrabold ${
+                        g.category === 'credit' ? 'text-emerald-700' : 'text-slate-800'
                       }`}
                     >
-                      {g.category === 'credit' ? 'Sanctioned' : 'Disbursed'}
-                    </span>
-                    <span className="text-[11px] text-slate-500 font-mono">
-                      {g.sanctionNumber || 'GEN-EXP'}
+                      {g.category === 'credit' ? '+' : '-'}₹{g.amount.toLocaleString()}
+                    </div>
+                    <span className="text-[10px] text-slate-400">
+                      {new Date(g.allocatedDate).toLocaleDateString()}
                     </span>
                   </div>
-                  <h4 className="text-xs font-bold text-slate-900">{g.title}</h4>
-                  <p className="text-[11px] text-slate-500">{g.description}</p>
                 </div>
-
-                <div className="text-right shrink-0">
-                  <div
-                    className={`text-sm font-extrabold ${
-                      g.category === 'credit' ? 'text-emerald-700' : 'text-slate-800'
-                    }`}
-                  >
-                    {g.category === 'credit' ? '+' : '-'}₹{g.amount.toLocaleString()}
-                  </div>
-                  <span className="text-[10px] text-slate-400">
-                    {new Date(g.allocatedDate).toLocaleDateString()}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </BentoCard>
 
         {/* Mid-Day Meal Daily Log */}
@@ -256,45 +239,62 @@ export const GrantsAndFunds: React.FC = () => {
           icon={<Utensils className="w-4 h-4" />}
           span="col-span-12 lg:col-span-5"
         >
-          <div className="space-y-3">
-            {mdmLogs.map((m) => (
-              <div
-                key={m._id}
-                className="p-3.5 rounded-xl bg-gradient-to-br from-amber-50/50 to-white border border-amber-200/70 space-y-2"
-              >
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-[#002147]">{m.date}</span>
-                  <span className="text-[10px] font-bold text-amber-900 bg-amber-100 px-2 py-0.5 rounded-full">
-                    {m.studentsServedCount} / {m.totalEnrolledCount} Served
-                  </span>
-                </div>
-
-                <div className="text-xs font-bold text-slate-800">
-                  🍲 Menu: {m.menuServed}
-                </div>
-
-                <div className="grid grid-cols-2 gap-2 text-[11px] text-slate-600 bg-white/80 p-2 rounded-lg border border-amber-100">
-                  <div>
-                    Rice: <strong>{m.riceConsumedKg} kg</strong>
-                  </div>
-                  <div>
-                    Veg Expense: <strong>₹{m.vegetablesExpense}</strong>
-                  </div>
-                </div>
-
-                <p className="text-[11px] text-slate-500 italic">
-                  "{m.remarks}"
-                </p>
-
-                <div className="pt-1 border-t border-amber-100 flex items-center justify-between text-[10px] text-slate-400">
-                  <span>Inspected: <strong>MDM Committee In-Charge</strong></span>
-                  <span className="text-emerald-700 font-bold flex items-center gap-1">
-                    <CheckCircle2 className="w-3 h-3" /> Certified
-                  </span>
-                </div>
+          {mdmLogs.length === 0 ? (
+            <div className="p-8 text-center space-y-3 bg-amber-50/50 rounded-xl border border-amber-200">
+              <Utensils className="w-8 h-8 text-amber-700 mx-auto" />
+              <div>
+                <p className="text-xs font-bold text-slate-700">No Mid-Day Meal Logs Recorded Yet</p>
+                <p className="text-[11px] text-slate-500">Log today's meal menu and count of served students.</p>
               </div>
-            ))}
-          </div>
+              <button
+                type="button"
+                onClick={() => setShowMdmModal(true)}
+                className="px-3 py-1.5 rounded-lg bg-amber-600 text-white text-xs font-bold"
+              >
+                + Record Daily Meal
+              </button>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {mdmLogs.map((m) => (
+                <div
+                  key={m._id}
+                  className="p-3.5 rounded-xl bg-gradient-to-br from-amber-50/50 to-white border border-amber-200/70 space-y-2"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-[#002147]">{m.date}</span>
+                    <span className="text-[10px] font-bold text-amber-900 bg-amber-100 px-2 py-0.5 rounded-full">
+                      {m.studentsServedCount} Served
+                    </span>
+                  </div>
+
+                  <div className="text-xs font-bold text-slate-800">
+                    🍲 Menu: {m.menuServed}
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2 text-[11px] text-slate-600 bg-white/80 p-2 rounded-lg border border-amber-100">
+                    <div>
+                      Rice: <strong>{m.riceConsumedKg} kg</strong>
+                    </div>
+                    <div>
+                      Veg Expense: <strong>₹{m.vegetablesExpense}</strong>
+                    </div>
+                  </div>
+
+                  <p className="text-[11px] text-slate-500 italic">
+                    "{m.remarks}"
+                  </p>
+
+                  <div className="pt-1 border-t border-amber-100 flex items-center justify-between text-[10px] text-slate-400">
+                    <span>Inspected: <strong>MDM Committee In-Charge</strong></span>
+                    <span className="text-emerald-700 font-bold flex items-center gap-1">
+                      <CheckCircle2 className="w-3 h-3" /> Certified
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </BentoCard>
       </div>
 

@@ -308,14 +308,7 @@ VALUES
     ('d0000000-0000-0000-0000-000000000001', 'a0000000-0000-0000-0000-000000000001', 'Mohammad Ashraf Bhat', 'admin@me', 'admin@me', '+91-9419011122', '$2a$10$tZ8k2hDkWFj6kL2fA6l60.R.Cclp7y5O.0/aE2N7U0gU6o18I8fuy', 'admin')
 ON CONFLICT (organization_id, username) DO NOTHING;
 
--- 4.4 Insert SSA Composite Grants Ledger
-INSERT INTO grants_and_fees (organization_id, scheme_type, fund_name, transaction_type, amount, category, description, bill_number)
-VALUES
-    ('a0000000-0000-0000-0000-000000000001', 'Samagra Shiksha Abhiyan (SSA)', 'SSA Annual Composite School Grant 2026-27', 'credit', 50000.0, 'Composite School Grant', 'Sanctioned by ZEO Mattan under Project Approval Board (PAB) 2026-27 allocation.', 'ZEO-MTN-2026-091'),
-    ('a0000000-0000-0000-0000-000000000001', 'Samagra Shiksha Abhiyan (SSA)', 'School Library & Reading Corner Grant', 'credit', 15000.0, 'Library Grant', 'Procurement of bilingual storybooks, encyclopedias, and science journals.', 'ZEO-MTN-2026-114'),
-    ('a0000000-0000-0000-0000-000000000001', 'Samagra Shiksha Abhiyan (SSA)', 'Sports & Physical Education Equipment Grant', 'credit', 10000.0, 'Sports Fund', 'Purchase of cricket kits, volleyballs, carrom boards, and badminton sets.', 'ZEO-MTN-2026-128');
-
--- 4.5 Insert Multilingual Notices & Circulars
+-- 4.4 Insert Multilingual Notices & Circulars
 INSERT INTO notices (organization_id, title, body, category, target_audience, is_pinned, translations)
 VALUES
     (

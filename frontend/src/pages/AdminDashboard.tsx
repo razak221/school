@@ -131,9 +131,9 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) =>
 
         <StatCard
           title="SSA Grants Balance"
-          value={`₹${(((stats?.grants?.balance ?? 75000)) / 1000).toFixed(0)}k`}
-          subtitle={`₹${(((stats?.grants?.utilized ?? 0)) / 1000).toFixed(0)}k utilized / ₹${(((stats?.grants?.allocated ?? 75000)) / 1000).toFixed(0)}k`}
-          trend={{ value: "Official Grant", isPositive: true }}
+          value={`₹${(((stats?.grants?.balance ?? 0)) / 1000).toFixed(0)}k`}
+          subtitle={`₹${(((stats?.grants?.utilized ?? 0)) / 1000).toFixed(0)}k utilized / ₹${(((stats?.grants?.allocated ?? 0)) / 1000).toFixed(0)}k`}
+          trend={stats?.grants?.allocated ? { value: "Live Balance", isPositive: true } : undefined}
           icon={<Wallet className="w-5 h-5" />}
           iconBg="bg-indigo-50 text-indigo-700"
           span="col-span-12 sm:col-span-6 lg:col-span-3"
