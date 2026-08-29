@@ -90,9 +90,9 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ onNavigate }
           <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-white/10 text-xs font-semibold backdrop-blur-md">
             Teacher Portal • Teaching Faculty
           </div>
-          <h2 className="text-2xl font-extrabold">{user?.name}</h2>
+          <h2 className="text-2xl font-extrabold">{user?.name || 'Assigned Faculty'}</h2>
           <p className="text-xs text-slate-200">
-            Assigned: <strong>Class 8-A (Class Teacher)</strong> • Subjects: Mathematics & Science
+            Govt Middle School Awanpora • Zone Mattan, District Anantnag
           </p>
         </div>
 

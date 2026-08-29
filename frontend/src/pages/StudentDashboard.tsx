@@ -52,9 +52,9 @@ export const StudentDashboard: React.FC<{ onNavigate: (tab: string) => void }> =
           <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-white/10 text-xs font-semibold backdrop-blur-md">
             Student Portal • Class 8-A (Roll #1)
           </div>
-          <h2 className="text-2xl font-extrabold">{user?.name || 'Aaqib Nissar Mir'}</h2>
+          <h2 className="text-2xl font-extrabold">{user?.name || 'Enrolled Student'}</h2>
           <p className="text-xs text-slate-200">
-            Govt Middle School Awanpora • Admission No: <strong>GMS-AWN-2022-084</strong>
+            Govt Middle School Awanpora • Department of School Education J&K
           </p>
         </div>
 

@@ -16,9 +16,9 @@ import { Homework } from '../models/Homework';
 
 export const seedDatabase = async (): Promise<void> => {
   try {
-    const existingOrg = await Organization.findOne({ name: /Awanpora/i });
+    const existingOrg = await Organization.findOne({ code: '01061102301' });
     if (existingOrg) {
-      console.log('✨ GMS Awanpora demo data already initialized.');
+      console.log('✨ Govt Middle School Awanpora institutional data already initialized.');
       return;
     }
 

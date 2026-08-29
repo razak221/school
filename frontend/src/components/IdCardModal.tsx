@@ -8,15 +8,15 @@ interface IdCardModalProps {
 export const IdCardModal: React.FC<IdCardModalProps> = ({ student, onClose }) => {
   if (!student) return null;
 
-  const studentName = student.userId?.name || 'Aaqib Nissar Mir';
-  const className = student.classId?.className || 'Class 8';
+  const studentName = student.userId?.name || student.name || 'Enrolled Student';
+  const className = student.classId?.className || student.className || 'Class 8';
   const section = student.section || student.classId?.section || 'A';
-  const rollNumber = student.rollNumber || 1;
-  const admissionNumber = student.admissionNumber || 'GMS-AWN-2022-084';
-  const fatherName = student.fatherName || 'Nissar Ahmad Mir';
-  const address = student.address || 'Awanpora, Salia, Anantnag';
-  const phone = student.userId?.phone || '+91-9419055566';
-  const category = student.ssaCategory || 'RBA / SSA';
+  const rollNumber = student.rollNumber || student.roll || 1;
+  const admissionNumber = student.admissionNumber || student.admissionNo || 'GMS-AWN-2026';
+  const fatherName = student.fatherName || 'Parent / Guardian';
+  const address = student.address || 'Awanpora, Salia, Mattan, Anantnag';
+  const phone = student.userId?.phone || student.phone || '+91-9419000000';
+  const category = student.ssaCategory || student.category || 'General';
 
   return (
     <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">

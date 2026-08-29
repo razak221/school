@@ -215,6 +215,53 @@ export const api = {
     return res.json();
   },
 
+  // Finance
+  getFinanceSummary: async () => {
+    const res = await fetch(`${API_BASE}/finance/summary`, {
+      headers: { ...getAuthHeader() },
+    });
+    return res.json();
+  },
+
+  getInvoices: async () => {
+    const res = await fetch(`${API_BASE}/finance/invoices`, {
+      headers: { ...getAuthHeader() },
+    });
+    return res.json();
+  },
+
+  createInvoice: async (payload: any) => {
+    const res = await fetch(`${API_BASE}/finance/invoices`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', ...getAuthHeader() },
+      body: JSON.stringify(payload),
+    });
+    return res.json();
+  },
+
+  getExpenses: async () => {
+    const res = await fetch(`${API_BASE}/finance/expenses`, {
+      headers: { ...getAuthHeader() },
+    });
+    return res.json();
+  },
+
+  createExpense: async (payload: any) => {
+    const res = await fetch(`${API_BASE}/finance/expenses`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', ...getAuthHeader() },
+      body: JSON.stringify(payload),
+    });
+    return res.json();
+  },
+
+  getBankAccounts: async () => {
+    const res = await fetch(`${API_BASE}/finance/bank-accounts`, {
+      headers: { ...getAuthHeader() },
+    });
+    return res.json();
+  },
+
   // AI Service
   generateAiRemarks: async (payload: any) => {
     const res = await fetch(`${API_BASE}/ai/generate-remarks`, {

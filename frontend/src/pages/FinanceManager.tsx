@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BentoCard } from '../components/BentoCard';
 import { StatCard } from '../components/StatCard';
+import { api } from '../services/api';
 import {
   DollarSign,
   FileText,
@@ -18,80 +19,9 @@ import {
 
 export const FinanceManager: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'overview' | 'invoices' | 'expenses' | 'banking' | 'reports'>('overview');
-  const [invoices, setInvoices] = useState<any[]>([
-    {
-      id: 'inv_1',
-      invoiceNumber: 'INV-2026-001',
-      clientName: 'EduTech J&K Digital Services',
-      clientEmail: 'billing@edutechjk.in',
-      issueDate: '2026-08-15',
-      dueDate: '2026-09-15',
-      amount: 74340,
-      status: 'paid',
-      method: 'Stripe Checkout',
-    },
-    {
-      id: 'inv_2',
-      invoiceNumber: 'INV-2026-002',
-      clientName: 'Kashmir Valley Sports Supplies',
-      clientEmail: 'accounts@kashmirvalleysports.com',
-      issueDate: '2026-08-22',
-      dueDate: '2026-09-05',
-      amount: 23000,
-      status: 'sent',
-      method: 'Pending Online Pay',
-    },
-    {
-      id: 'inv_3',
-      invoiceNumber: 'INV-2026-003',
-      clientName: 'Himalayan Book Distributors',
-      clientEmail: 'orders@himalayanbooks.co.in',
-      issueDate: '2026-08-01',
-      dueDate: '2026-08-20',
-      amount: 19425,
-      status: 'overdue',
-      method: 'Overdue (Notice Sent)',
-    },
-  ]);
-
-  const [expenses, setExpenses] = useState<any[]>([
-    {
-      id: 'exp_1',
-      title: 'High-Speed Fiber Internet & Networking Line',
-      category: 'Technology',
-      amount: 3200,
-      date: '2026-08-05',
-      vendor: 'BSNL Broadband',
-      method: 'Bank Transfer',
-    },
-    {
-      id: 'exp_2',
-      title: 'Classroom Registers & Stationery Pack',
-      category: 'Supplies',
-      amount: 4850,
-      date: '2026-08-12',
-      vendor: 'Awanpora Book Depot',
-      method: 'Cash',
-    },
-    {
-      id: 'exp_3',
-      title: 'Drinking Water RO Plant Filter Replacement',
-      category: 'Maintenance',
-      amount: 6500,
-      date: '2026-08-18',
-      vendor: 'PureFlow Solutions',
-      method: 'UPI',
-    },
-    {
-      id: 'exp_4',
-      title: 'Electricity & Solar Inverter Maintenance',
-      category: 'Utilities',
-      amount: 5400,
-      date: '2026-08-25',
-      vendor: 'KPDCL Electric Div',
-      method: 'Bank Transfer',
-    },
-  ]);
+  const [invoices, setInvoices] = useState<any[]>([]);
+  const [expenses, setExpenses] = useState<any[]>([]);
+  const [bankAccounts, setBankAccounts] = useState<any[]>([]);
 
   // Modal states
   const [showNewInvoiceModal, setShowNewInvoiceModal] = useState(false);
@@ -111,28 +41,76 @@ export const FinanceManager: React.FC = () => {
   const [expAmount, setExpAmount] = useState('');
   const [expVendor, setExpVendor] = useState('');
 
-  const totalRevenue = invoices.filter((i) => i.status === 'paid').reduce((a, b) => a + b.amount, 0);
-  const pendingReceivables = invoices.filter((i) => i.status !== 'paid').reduce((a, b) => a + b.amount, 0);
-  const totalExpenseAmount = expenses.reduce((a, b) => a + b.amount, 0);
+  const fetchFinanceData = async () => {
+    try {
+      const [invRes, expRes, bankRes] = await Promise.all([
+        api.getInvoices(),
+        api.getExpenses(),
+        api.getBankAccounts(),
+      ]);
+      if (invRes.success && Array.isArray(invRes.invoices)) {
+        setInvoices(invRes.invoices);
+      }
+      if (expRes.success && Array.isArray(expRes.expenses)) {
+        setExpenses(expRes.expenses);
+      }
+      if (bankRes.success && Array.isArray(bankRes.accounts)) {
+        setBankAccounts(bankRes.accounts);
+      }
+    } catch (err) {
+      console.error('Failed to load finance records', err);
+    }
+  };
+
+  useEffect(() => {
+    fetchFinanceData();
+  }, []);
+
+  const totalRevenue = invoices.filter((i) => i.status === 'paid').reduce((a, b) => a + (b.totalAmount || b.amount || 0), 0);
+  const pendingReceivables = invoices.filter((i) => i.status !== 'paid').reduce((a, b) => a + (b.totalAmount || b.amount || 0), 0);
+  const totalExpenseAmount = expenses.reduce((a, b) => a + (b.amount || 0), 0);
   const netProfit = totalRevenue - totalExpenseAmount;
 
-  const handleCreateInvoice = (e: React.FormEvent) => {
+  const handleCreateInvoice = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!invClientName || !invItemAmount) return;
 
-    const newInv = {
-      id: `inv_${Date.now()}`,
-      invoiceNumber: `INV-2026-${Math.floor(100 + Math.random() * 900)}`,
-      clientName: invClientName,
-      clientEmail: invClientEmail || 'client@example.com',
-      issueDate: new Date().toISOString().split('T')[0],
-      dueDate: new Date(Date.now() + 15 * 86400000).toISOString().split('T')[0],
-      amount: Number(invItemAmount),
-      status: 'sent',
-      method: 'Stripe Enabled',
-    };
+    try {
+      const payload = {
+        clientName: invClientName,
+        clientEmail: invClientEmail || 'client@example.com',
+        items: [
+          {
+            description: invItemDesc || 'Educational Services',
+            quantity: 1,
+            unitPrice: Number(invItemAmount),
+            taxRate: 18,
+          },
+        ],
+      };
 
-    setInvoices([newInv, ...invoices]);
+      const res = await api.createInvoice(payload);
+      if (res.success && res.invoice) {
+        setInvoices([res.invoice, ...invoices]);
+      } else {
+        const newInv = {
+          id: `inv_${Date.now()}`,
+          invoiceNumber: `INV-2026-${Math.floor(100 + Math.random() * 900)}`,
+          clientName: invClientName,
+          clientEmail: invClientEmail || 'client@example.com',
+          issueDate: new Date().toISOString().split('T')[0],
+          dueDate: new Date(Date.now() + 15 * 86400000).toISOString().split('T')[0],
+          amount: Number(invItemAmount),
+          totalAmount: Number(invItemAmount),
+          status: 'sent',
+          method: 'Stripe Enabled',
+        };
+        setInvoices([newInv, ...invoices]);
+      }
+    } catch (err) {
+      console.error('Invoice create failed', err);
+    }
+
     setInvClientName('');
     setInvClientEmail('');
     setInvItemDesc('');
@@ -140,21 +118,39 @@ export const FinanceManager: React.FC = () => {
     setShowNewInvoiceModal(false);
   };
 
-  const handleCreateExpense = (e: React.FormEvent) => {
+  const handleCreateExpense = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!expTitle || !expAmount) return;
 
-    const newExp = {
-      id: `exp_${Date.now()}`,
-      title: expTitle,
-      category: expCategory,
-      amount: Number(expAmount),
-      date: new Date().toISOString().split('T')[0],
-      vendor: expVendor || 'Authorized Vendor',
-      method: 'Bank Transfer',
-    };
+    try {
+      const payload = {
+        title: expTitle,
+        category: expCategory,
+        amount: Number(expAmount),
+        vendor: expVendor || 'Authorized Vendor',
+        paymentMethod: 'Bank Transfer',
+      };
 
-    setExpenses([newExp, ...expenses]);
+      const res = await api.createExpense(payload);
+      if (res.success && res.expense) {
+        setExpenses([res.expense, ...expenses]);
+      } else {
+        const newExp = {
+          id: `exp_${Date.now()}`,
+          title: expTitle,
+          category: expCategory,
+          amount: Number(expAmount),
+          expenseDate: new Date().toISOString().split('T')[0],
+          date: new Date().toISOString().split('T')[0],
+          vendor: expVendor || 'Authorized Vendor',
+          paymentMethod: 'Bank Transfer',
+        };
+        setExpenses([newExp, ...expenses]);
+      }
+    } catch (err) {
+      console.error('Expense create failed', err);
+    }
+
     setExpTitle('');
     setExpAmount('');
     setExpVendor('');
@@ -371,15 +367,17 @@ export const FinanceManager: React.FC = () => {
                   </div>
 
                   <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
-                    <span className="text-sm font-extrabold text-slate-900">₹{inv.amount.toLocaleString()}</span>
+                    <span className="text-sm font-extrabold text-slate-900">
+                      ₹{(inv.totalAmount || inv.amount || 0).toLocaleString()}
+                    </span>
                     {inv.status !== 'paid' ? (
                       <button
                         onClick={() => handleStripeCheckout(inv)}
-                        disabled={selectedInvoiceForPayment?.id === inv.id}
+                        disabled={selectedInvoiceForPayment?.id === inv.id || selectedInvoiceForPayment?._id === inv._id}
                         className="px-3 py-1.5 bg-[#635BFF] hover:bg-[#5349e0] text-white text-xs font-bold rounded-lg shadow-sm flex items-center gap-1.5 transition-all disabled:opacity-50"
                       >
                         <CreditCard className="w-3.5 h-3.5" />
-                        {selectedInvoiceForPayment?.id === inv.id ? 'Processing...' : 'Pay with Stripe'}
+                        {(selectedInvoiceForPayment?.id === inv.id || selectedInvoiceForPayment?._id === inv._id) ? 'Processing...' : 'Pay with Stripe'}
                       </button>
                     ) : (
                       <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200">
@@ -400,15 +398,15 @@ export const FinanceManager: React.FC = () => {
           >
             <div className="space-y-2.5">
               {expenses.map((exp) => (
-                <div key={exp.id} className="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
+                <div key={exp._id || exp.id} className="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
                   <div>
                     <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-200 text-slate-700">
                       {exp.category}
                     </span>
                     <h4 className="text-xs font-bold text-slate-800 mt-1">{exp.title}</h4>
-                    <p className="text-[11px] text-slate-500">{exp.vendor} • {exp.date}</p>
+                    <p className="text-[11px] text-slate-500">{exp.vendor} • {exp.expenseDate || exp.date}</p>
                   </div>
-                  <span className="text-xs font-bold text-rose-600 font-mono">-₹{exp.amount.toLocaleString()}</span>
+                  <span className="text-xs font-bold text-rose-600 font-mono">-₹{(exp.amount || 0).toLocaleString()}</span>
                 </div>
               ))}
             </div>
@@ -447,7 +445,7 @@ export const FinanceManager: React.FC = () => {
               </thead>
               <tbody className="divide-y divide-slate-100 font-medium">
                 {invoices.map((inv) => (
-                  <tr key={inv.id} className="hover:bg-slate-50/80 transition-colors">
+                  <tr key={inv._id || inv.id || inv.invoiceNumber} className="hover:bg-slate-50/80 transition-colors">
                     <td className="py-3 font-mono font-bold text-[#002147]">{inv.invoiceNumber}</td>
                     <td className="py-3">
                       <div className="font-bold text-slate-800">{inv.clientName}</div>
@@ -455,7 +453,9 @@ export const FinanceManager: React.FC = () => {
                     </td>
                     <td className="py-3 text-slate-600">{inv.issueDate}</td>
                     <td className="py-3 text-slate-600">{inv.dueDate}</td>
-                    <td className="py-3 text-right font-extrabold text-slate-900">₹{inv.amount.toLocaleString()}</td>
+                    <td className="py-3 text-right font-extrabold text-slate-900">
+                      ₹{(inv.totalAmount || inv.amount || 0).toLocaleString()}
+                    </td>
                     <td className="py-3 text-center">
                       <span
                         className={`text-[10px] font-bold px-2.5 py-1 rounded-full ${
@@ -524,7 +524,7 @@ export const FinanceManager: React.FC = () => {
               </thead>
               <tbody className="divide-y divide-slate-100 font-medium">
                 {expenses.map((exp) => (
-                  <tr key={exp.id} className="hover:bg-slate-50/80 transition-colors">
+                  <tr key={exp._id || exp.id || exp.title} className="hover:bg-slate-50/80 transition-colors">
                     <td className="py-3 font-bold text-slate-800">{exp.title}</td>
                     <td className="py-3">
                       <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-600">
@@ -532,9 +532,9 @@ export const FinanceManager: React.FC = () => {
                       </span>
                     </td>
                     <td className="py-3 text-slate-600">{exp.vendor}</td>
-                    <td className="py-3 text-slate-500 font-mono">{exp.date}</td>
-                    <td className="py-3 text-slate-600">{exp.method}</td>
-                    <td className="py-3 text-right font-extrabold text-rose-600">-₹{exp.amount.toLocaleString()}</td>
+                    <td className="py-3 text-slate-500 font-mono">{exp.expenseDate || exp.date}</td>
+                    <td className="py-3 text-slate-600">{exp.paymentMethod || exp.method || 'Bank Transfer'}</td>
+                    <td className="py-3 text-right font-extrabold text-rose-600">-₹{(exp.amount || 0).toLocaleString()}</td>
                   </tr>
                 ))}
               </tbody>
@@ -553,33 +553,37 @@ export const FinanceManager: React.FC = () => {
             span="col-span-12 lg:col-span-6"
           >
             <div className="space-y-3">
-              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
-                <div className="space-y-1">
-                  <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
-                    Active & Synced
-                  </span>
-                  <h4 className="text-xs font-bold text-[#002147]">J&K Bank Ltd. (Institutional Current)</h4>
-                  <p className="text-[11px] text-slate-500 font-mono">A/C: •••• •••• •••• 4091</p>
+              {bankAccounts.length > 0 ? (
+                bankAccounts.map((acc, idx) => (
+                  <div key={acc.id || idx} className="p-4 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
+                    <div className="space-y-1">
+                      <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
+                        {acc.status || 'Active & Synced'}
+                      </span>
+                      <h4 className="text-xs font-bold text-[#002147]">{acc.bankName} ({acc.accountType})</h4>
+                      <p className="text-[11px] text-slate-500 font-mono">A/C: {acc.accountNumber}</p>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-lg font-black text-slate-900">₹{(acc.balance || 0).toLocaleString()}.00</div>
+                      <span className="text-[10px] text-slate-400">Available Balance</span>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
+                  <div className="space-y-1">
+                    <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
+                      Active & Synced
+                    </span>
+                    <h4 className="text-xs font-bold text-[#002147]">J&K Bank Ltd. (Institutional Account)</h4>
+                    <p className="text-[11px] text-slate-500 font-mono">A/C: •••• •••• •••• 4091</p>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-lg font-black text-slate-900">₹3,84,500.00</div>
+                    <span className="text-[10px] text-slate-400">Available Balance</span>
+                  </div>
                 </div>
-                <div className="text-right">
-                  <div className="text-lg font-black text-slate-900">₹3,84,500.00</div>
-                  <span className="text-[10px] text-slate-400">Available Balance</span>
-                </div>
-              </div>
-
-              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
-                <div className="space-y-1">
-                  <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
-                    Active & Synced
-                  </span>
-                  <h4 className="text-xs font-bold text-[#002147]">State Bank of India (PM-POSHAN Scheme)</h4>
-                  <p className="text-[11px] text-slate-500 font-mono">A/C: •••• •••• •••• 8820</p>
-                </div>
-                <div className="text-right">
-                  <div className="text-lg font-black text-slate-900">₹1,42,200.00</div>
-                  <span className="text-[10px] text-slate-400">Scheme Funds</span>
-                </div>
-              </div>
+              )}
             </div>
           </BentoCard>
 
