@@ -102,7 +102,12 @@ export const Directory: React.FC<DirectoryProps> = ({ onNavigate }) => {
 
   // Filter students based on class selection and search query
   const filteredStudents = students.filter((s) => {
-    const matchesClass = !selectedClassId || s.classId?._id === selectedClassId;
+    const sClassId = typeof s.classId === 'object' ? s.classId?._id : s.classId;
+    const matchesClass =
+      !selectedClassId ||
+      sClassId === selectedClassId ||
+      (selectedClassId.startsWith('c0000000-0000-0000-0000-00000000000') &&
+        s.classId?.gradeLevel === parseInt(selectedClassId.slice(-1), 10));
     const name = s.userId?.name?.toLowerCase() || '';
     const adm = s.admissionNumber?.toLowerCase() || '';
     const roll = s.rollNumber?.toString() || '';
