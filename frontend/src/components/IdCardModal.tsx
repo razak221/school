@@ -25,7 +25,7 @@ export const IdCardModal: React.FC<IdCardModalProps> = ({ student, onClose }) =>
         <div className="flex items-center justify-between border-b border-slate-100 pb-3">
           <div className="flex items-center gap-2">
             <span className="px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase bg-blue-100 text-[#002147]">
-              Beta v1.0 Feature
+              Official Student ID
             </span>
             <h3 className="font-bold text-sm text-[#002147]">Student Identity Card Generator</h3>
           </div>

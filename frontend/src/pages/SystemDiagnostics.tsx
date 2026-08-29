@@ -141,7 +141,7 @@ export const SystemDiagnostics: React.FC = () => {
           <div className="space-y-2.5 text-xs">
             {[
               {
-                event: 'Beta v1.0 Release Activated',
+                event: 'Production v1.0 Live Activated',
                 by: 'System Administrator',
                 time: 'Just now',
                 status: 'Success',

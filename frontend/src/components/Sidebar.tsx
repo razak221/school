@@ -63,7 +63,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentTab, setCurrentTab }) =
           { id: 'academics', label: 'Academics & AI Marks', icon: <Award className="w-4 h-4" />, badge: 'Term 1' },
           { id: 'notices', label: 'Notice Board & Translations', icon: <Bell className="w-4 h-4" />, badge: 'Regional' },
           { id: 'grants', label: 'SSA Grants & MDM Logs', icon: <Wallet className="w-4 h-4" />, badge: 'PM-POSHAN' },
-          { id: 'diagnostics', label: 'System Diagnostics & Cloud', icon: <Shield className="w-4 h-4" />, badge: 'Beta' },
+          { id: 'diagnostics', label: 'System Diagnostics & Cloud', icon: <Shield className="w-4 h-4" />, badge: 'Cloud' },
           { id: 'ai-assistant', label: 'Gemini AI Assistant', icon: <Sparkles className="w-4 h-4" />, badge: 'Active', highlight: true },
         ];
     }

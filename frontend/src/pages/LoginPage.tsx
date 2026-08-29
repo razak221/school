@@ -26,71 +26,22 @@ interface LoginPageProps {
 export const LoginPage: React.FC<LoginPageProps> = ({ initialAdminMode = false, onBackToPublic }) => {
   const { login } = useAuth();
   const [isAdminMode, setIsAdminMode] = useState<boolean>(
-    initialAdminMode || window.location.pathname === '/admin'
+    initialAdminMode || (typeof window !== 'undefined' && window.location.pathname === '/admin')
   );
   const [selectedRole, setSelectedRole] = useState<UserRole>('teacher');
-  const [username, setUsername] = useState<string>('teacher@gmsawanpora.edu.in');
-  const [password, setPassword] = useState<string>('teacher123');
+  const [username, setUsername] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
-  // Demo accounts
-  const demoAccounts = {
-    teacher: {
-      username: 'teacher@gmsawanpora.edu.in',
-      pass: 'teacher123',
-      title: 'General Line Teacher',
-      desc: 'Attendance roster, exam marks entry, homework publishing',
-      name: 'Nissar Ahmad Rather',
-      color: 'from-[#0c6780] to-[#002147]',
-      icon: <UserCheck className="w-5 h-5" />,
-    },
-    parent: {
-      username: 'parent@gmsawanpora.edu.in',
-      pass: 'parent123',
-      title: 'Parent & Guardian',
-      desc: 'Track child attendance, SCERT marks card, MDM hot lunch',
-      name: 'Nissar Ahmad Mir',
-      color: 'from-[#FF8C00] to-[#ea580c]',
-      icon: <Users className="w-5 h-5" />,
-    },
-    student: {
-      username: 'student@gmsawanpora.edu.in',
-      pass: 'student123',
-      title: 'Class 8-A Student',
-      desc: 'Daily timetable, assignments, report card evaluation',
-      name: 'Aaqib Nissar Mir',
-      color: 'from-[#22C55E] to-[#15803d]',
-      icon: <GraduationCap className="w-5 h-5" />,
-    },
-    admin: {
-      username: 'admin@gmsawanpora.edu.in',
-      pass: 'admin123',
-      title: 'Headmaster / Admin',
-      desc: 'Centralized school ERP, SSA grants, staff, PM-POSHAN',
-      name: 'Mohammad Ashraf Bhat',
-      color: 'from-[#002147] to-[#0c6780]',
-      icon: <Shield className="w-5 h-5" />,
-    },
-  };
-
   useEffect(() => {
     if (isAdminMode) {
       setSelectedRole('admin');
-      setUsername(demoAccounts.admin.username);
-      setPassword(demoAccounts.admin.pass);
-    } else {
-      if (selectedRole === 'admin') {
-        setSelectedRole('teacher');
-        setUsername(demoAccounts.teacher.username);
-        setPassword(demoAccounts.teacher.pass);
-      } else {
-        setUsername(demoAccounts[selectedRole].username);
-        setPassword(demoAccounts[selectedRole].pass);
-      }
+    } else if (selectedRole === 'admin') {
+      setSelectedRole('teacher');
     }
-  }, [isAdminMode, selectedRole]);
+  }, [isAdminMode]);
 
   const handleRoleSelect = (role: UserRole) => {
     setSelectedRole(role);
@@ -101,11 +52,6 @@ export const LoginPage: React.FC<LoginPageProps> = ({ initialAdminMode = false, 
     } else {
       setIsAdminMode(false);
       window.history.replaceState(null, '', '/');
-    }
-    const acc = demoAccounts[role];
-    if (acc) {
-      setUsername(acc.username);
-      setPassword(acc.pass);
     }
   };
 
@@ -122,7 +68,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ initialAdminMode = false, 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!username.trim() || !password.trim()) {
-      setErrorMsg('Please enter your username/email and password.');
+      setErrorMsg('Please enter your registered username/email and password.');
       return;
     }
 
@@ -131,27 +77,10 @@ export const LoginPage: React.FC<LoginPageProps> = ({ initialAdminMode = false, 
     try {
       const success = await login(username.trim(), password.trim());
       if (!success) {
-        setErrorMsg('Invalid login credentials. Please verify username and password.');
+        setErrorMsg('Invalid login credentials. Please check your username and password.');
       }
     } catch {
       setErrorMsg('An unexpected connection error occurred. Please try again.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleQuickDemoLogin = async (roleToLogin: UserRole) => {
-    const acc = demoAccounts[roleToLogin];
-    if (!acc) return;
-    setLoading(true);
-    setErrorMsg(null);
-    try {
-      const success = await login(acc.username, acc.pass);
-      if (!success) {
-        setErrorMsg(`Failed to log in as ${acc.title}.`);
-      }
-    } catch {
-      setErrorMsg('Connection error during quick sign in.');
     } finally {
       setLoading(false);
     }
@@ -424,58 +353,6 @@ export const LoginPage: React.FC<LoginPageProps> = ({ initialAdminMode = false, 
                   )}
                 </button>
               </form>
-
-              {/* 1-Click Quick Demo Sign In */}
-              <div className="mt-4 pt-4 border-t border-slate-100">
-                <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400 text-center mb-2.5">
-                  — Quick Demo 1-Click Access —
-                </div>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                  <button
-                    type="button"
-                    onClick={() => handleQuickDemoLogin('teacher')}
-                    className="p-2 rounded-xl bg-slate-50 hover:bg-blue-50 border border-slate-200 text-left transition-all group"
-                  >
-                    <div className="text-[11px] font-bold text-[#0c6780] flex items-center gap-1">
-                      <UserCheck className="w-3 h-3" /> Teacher
-                    </div>
-                    <div className="text-[10px] text-slate-500 truncate">Nissar Ahmad</div>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => handleQuickDemoLogin('parent')}
-                    className="p-2 rounded-xl bg-slate-50 hover:bg-orange-50 border border-slate-200 text-left transition-all group"
-                  >
-                    <div className="text-[11px] font-bold text-[#FF8C00] flex items-center gap-1">
-                      <Users className="w-3 h-3" /> Parent
-                    </div>
-                    <div className="text-[10px] text-slate-500 truncate">Nissar Mir</div>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => handleQuickDemoLogin('student')}
-                    className="p-2 rounded-xl bg-slate-50 hover:bg-emerald-50 border border-slate-200 text-left transition-all group"
-                  >
-                    <div className="text-[11px] font-bold text-emerald-700 flex items-center gap-1">
-                      <GraduationCap className="w-3 h-3" /> Student
-                    </div>
-                    <div className="text-[10px] text-slate-500 truncate">Aaqib Nissar</div>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => handleQuickDemoLogin('admin')}
-                    className="p-2 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-left transition-all group"
-                  >
-                    <div className="text-[11px] font-bold text-[#002147] flex items-center gap-1">
-                      <Shield className="w-3 h-3" /> Admin (/admin)
-                    </div>
-                    <div className="text-[10px] text-slate-500 truncate">Headmaster</div>
-                  </button>
-                </div>
-              </div>
             </div>
 
             {/* Bottom Role Switcher Helper */}

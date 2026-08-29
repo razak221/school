@@ -35,8 +35,8 @@ export const BetaFeedbackModal: React.FC<BetaFeedbackModalProps> = ({ onClose })
               <MessageSquarePlus className="w-4 h-4" />
             </div>
             <div>
-              <h3 className="font-bold text-sm text-[#002147]">Beta Feedback & Support Desk</h3>
-              <p className="text-[10px] text-slate-500">Govt Middle School Awanpora (v1.0-beta)</p>
+              <h3 className="font-bold text-sm text-[#002147]">Institutional IT Support & Feedback</h3>
+              <p className="text-[10px] text-slate-500">Govt Middle School Awanpora • Zone Mattan</p>
             </div>
           </div>
           <button

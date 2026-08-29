@@ -12,13 +12,6 @@ interface AuthContextType {
   switchRole: (role: UserRole) => Promise<void>;
 }
 
-const DEMO_CREDENTIALS: Record<UserRole, { username: string; pass: string }> = {
-  admin: { username: 'admin@gmsawanpora.edu.in', pass: 'admin123' },
-  teacher: { username: 'teacher@gmsawanpora.edu.in', pass: 'teacher123' },
-  parent: { username: 'parent@gmsawanpora.edu.in', pass: 'parent123' },
-  student: { username: 'student@gmsawanpora.edu.in', pass: 'student123' },
-};
-
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -48,10 +41,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const switchRole = async (role: UserRole) => {
-    const creds = DEMO_CREDENTIALS[role];
-    if (creds) {
-      await loginWithCreds(creds.username, creds.pass);
-    }
+    setActiveRole(role);
   };
 
   const logout = () => {

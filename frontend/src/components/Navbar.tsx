@@ -80,10 +80,10 @@ export const Navbar: React.FC<NavbarProps> = ({ currentTab, setCurrentTab }) => 
                 type="button"
                 onClick={() => setShowChangelog(true)}
                 className="px-2 py-0.5 text-[9px] font-black uppercase rounded-full bg-emerald-100 text-emerald-900 hover:bg-emerald-200 border border-emerald-300 transition-all flex items-center gap-1 shadow-xs"
-                title="View Release Notes (v1.0.0 Production)"
+                title="Official Session 2026-27 Production Portal"
               >
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                v1.0.0 Live
+                Session 2026-27
               </button>
             </div>
             <p className="text-[11px] text-slate-500 font-medium mt-0.5 hidden sm:block">
@@ -105,15 +105,15 @@ export const Navbar: React.FC<NavbarProps> = ({ currentTab, setCurrentTab }) => 
             <span>Public Site</span>
           </button>
 
-          {/* Beta Feedback Button */}
+          {/* Support & Feedback Button */}
           <button
             type="button"
             onClick={() => setShowFeedback(true)}
             className="hidden md:flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold border border-slate-200 transition-all"
-            title="Submit Beta Feedback or Bug Report"
+            title="School Support & Feedback Desk"
           >
             <MessageSquarePlus className="w-3.5 h-3.5 text-amber-600" />
-            <span>Feedback</span>
+            <span>Support Desk</span>
           </button>
 
           {/* Active Role Indicator Badge */}
