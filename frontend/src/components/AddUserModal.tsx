@@ -19,7 +19,19 @@ interface AddUserModalProps {
   onSuccess: () => void;
 }
 
+const DEFAULT_CLASS_OPTIONS: ClassSection[] = [
+  { _id: 'c1', className: 'Class 1', section: 'A', gradeLevel: 1, subjects: [] },
+  { _id: 'c2', className: 'Class 2', section: 'A', gradeLevel: 2, subjects: [] },
+  { _id: 'c3', className: 'Class 3', section: 'A', gradeLevel: 3, subjects: [] },
+  { _id: 'c4', className: 'Class 4', section: 'A', gradeLevel: 4, subjects: [] },
+  { _id: 'c5', className: 'Class 5', section: 'A', gradeLevel: 5, subjects: [] },
+  { _id: 'c6', className: 'Class 6', section: 'A', gradeLevel: 6, subjects: [] },
+  { _id: 'c7', className: 'Class 7', section: 'A', gradeLevel: 7, subjects: [] },
+  { _id: 'c8', className: 'Class 8', section: 'A', gradeLevel: 8, subjects: [] },
+];
+
 export const AddUserModal: React.FC<AddUserModalProps> = ({ classes, onClose, onSuccess }) => {
+  const classOptions = classes && classes.length > 0 ? classes : DEFAULT_CLASS_OPTIONS;
   const [activeTab, setActiveTab] = useState<'student' | 'teacher' | 'parent'>('student');
   const [submitting, setSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -33,7 +45,7 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({ classes, onClose, on
   const [email, setEmail] = useState('');
 
   // Student Fields
-  const [classId, setClassId] = useState(classes[0]?._id || '');
+  const [classId, setClassId] = useState(classOptions[0]?._id || '');
   const [rollNumber, setRollNumber] = useState('');
   const [admissionNumber, setAdmissionNumber] = useState('');
   const [fatherName, setFatherName] = useState('');
@@ -358,9 +370,9 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({ classes, onClose, on
                     onChange={(e) => setClassId(e.target.value)}
                     className="w-full mt-1 px-2.5 py-1.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-[#0c6780] focus:outline-none text-xs"
                   >
-                    {classes.map((cls) => (
+                    {classOptions.map((cls) => (
                       <option key={cls._id} value={cls._id}>
-                        {cls.className} - Section {cls.section}
+                        {cls.className} - Section {cls.section || 'A'}
                       </option>
                     ))}
                   </select>

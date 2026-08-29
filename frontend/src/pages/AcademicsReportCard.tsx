@@ -3,9 +3,20 @@ import { api } from '../services/api';
 import { ExamResultItem, ClassSection } from '../types';
 import { Sparkles, Printer, CheckCircle, RefreshCw, Plus } from 'lucide-react';
 
+const DEFAULT_CLASSES: ClassSection[] = [
+  { _id: 'c1', className: 'Class 1', section: 'A', gradeLevel: 1, subjects: [] },
+  { _id: 'c2', className: 'Class 2', section: 'A', gradeLevel: 2, subjects: [] },
+  { _id: 'c3', className: 'Class 3', section: 'A', gradeLevel: 3, subjects: [] },
+  { _id: 'c4', className: 'Class 4', section: 'A', gradeLevel: 4, subjects: [] },
+  { _id: 'c5', className: 'Class 5', section: 'A', gradeLevel: 5, subjects: [] },
+  { _id: 'c6', className: 'Class 6', section: 'A', gradeLevel: 6, subjects: [] },
+  { _id: 'c7', className: 'Class 7', section: 'A', gradeLevel: 7, subjects: [] },
+  { _id: 'c8', className: 'Class 8', section: 'A', gradeLevel: 8, subjects: [] },
+];
+
 export const AcademicsReportCard: React.FC = () => {
   const [results, setResults] = useState<ExamResultItem[]>([]);
-  const [classes, setClasses] = useState<ClassSection[]>([]);
+  const [classes, setClasses] = useState<ClassSection[]>(DEFAULT_CLASSES);
   const [selectedClassId, setSelectedClassId] = useState<string>('');
   const [selectedResult, setSelectedResult] = useState<ExamResultItem | null>(null);
   const [students, setStudents] = useState<any[]>([]);

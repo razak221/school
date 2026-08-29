@@ -20,10 +20,21 @@ interface AdminDashboardProps {
   onNavigate: (tab: string) => void;
 }
 
+const DEFAULT_MIDDLE_SCHOOL_CLASSES = [
+  { _id: 'c1', className: 'Class 1', section: 'A', gradeLevel: 1 },
+  { _id: 'c2', className: 'Class 2', section: 'A', gradeLevel: 2 },
+  { _id: 'c3', className: 'Class 3', section: 'A', gradeLevel: 3 },
+  { _id: 'c4', className: 'Class 4', section: 'A', gradeLevel: 4 },
+  { _id: 'c5', className: 'Class 5', section: 'A', gradeLevel: 5 },
+  { _id: 'c6', className: 'Class 6', section: 'A', gradeLevel: 6 },
+  { _id: 'c7', className: 'Class 7', section: 'A', gradeLevel: 7 },
+  { _id: 'c8', className: 'Class 8', section: 'A', gradeLevel: 8 },
+];
+
 export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) => {
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [notices, setNotices] = useState<NoticeItem[]>([]);
-  const [classList, setClassList] = useState<any[]>([]);
+  const [classList, setClassList] = useState<any[]>(DEFAULT_MIDDLE_SCHOOL_CLASSES);
   const [students, setStudents] = useState<any[]>([]);
   const [, setLoading] = useState(true);
 

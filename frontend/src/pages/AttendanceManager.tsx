@@ -19,10 +19,21 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
+const DEFAULT_CLASSES: ClassSection[] = [
+  { _id: 'c1', className: 'Class 1', section: 'A', gradeLevel: 1, subjects: [] },
+  { _id: 'c2', className: 'Class 2', section: 'A', gradeLevel: 2, subjects: [] },
+  { _id: 'c3', className: 'Class 3', section: 'A', gradeLevel: 3, subjects: [] },
+  { _id: 'c4', className: 'Class 4', section: 'A', gradeLevel: 4, subjects: [] },
+  { _id: 'c5', className: 'Class 5', section: 'A', gradeLevel: 5, subjects: [] },
+  { _id: 'c6', className: 'Class 6', section: 'A', gradeLevel: 6, subjects: [] },
+  { _id: 'c7', className: 'Class 7', section: 'A', gradeLevel: 7, subjects: [] },
+  { _id: 'c8', className: 'Class 8', section: 'A', gradeLevel: 8, subjects: [] },
+];
+
 export const AttendanceManager: React.FC = () => {
   const { activeRole } = useAuth();
-  const [classes, setClasses] = useState<ClassSection[]>([]);
-  const [selectedClassId, setSelectedClassId] = useState<string>('');
+  const [classes, setClasses] = useState<ClassSection[]>(DEFAULT_CLASSES);
+  const [selectedClassId, setSelectedClassId] = useState<string>('c1');
   const [date, setDate] = useState<string>(new Date().toISOString().split('T')[0]);
   const [roster, setRoster] = useState<AttendanceRosterItem[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -35,9 +46,7 @@ export const AttendanceManager: React.FC = () => {
       const res = await api.getClasses();
       if (res.success && res.classes.length > 0) {
         setClasses(res.classes);
-        // Default to Class 8 (or first class)
-        const c8 = res.classes.find((c: any) => c.gradeLevel === 8) || res.classes[0];
-        setSelectedClassId(c8._id);
+        setSelectedClassId(res.classes[0]._id);
       }
     };
     fetchClasses();

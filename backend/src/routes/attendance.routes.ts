@@ -11,13 +11,69 @@ const router = Router();
 // GET /api/v1/attendance/classes
 router.get('/classes', verifyToken, async (req: Request, res: Response): Promise<void> => {
   try {
-    const classes = await ClassSection.find({ organizationId: req.user?.organizationId })
+    let classes = await ClassSection.find({ organizationId: req.user?.organizationId })
       .populate('classTeacherId', 'name username')
       .sort({ gradeLevel: 1 });
+
+    if (classes.length === 0 && req.user?.organizationId) {
+      const classConfigs = [
+        { name: 'Class 1', grade: 1, subjects: ['English', 'Mathematics', 'Urdu', 'EVS'] },
+        { name: 'Class 2', grade: 2, subjects: ['English', 'Mathematics', 'Urdu', 'EVS'] },
+        { name: 'Class 3', grade: 3, subjects: ['English', 'Mathematics', 'Urdu', 'EVS', 'Kashmiri'] },
+        { name: 'Class 4', grade: 4, subjects: ['English', 'Mathematics', 'Urdu', 'Science', 'Social Studies'] },
+        { name: 'Class 5', grade: 5, subjects: ['English', 'Mathematics', 'Urdu', 'Science', 'Social Studies'] },
+        { name: 'Class 6', grade: 6, subjects: ['English', 'Mathematics', 'Urdu', 'Science', 'Social Science', 'Kashmiri'] },
+        { name: 'Class 7', grade: 7, subjects: ['English', 'Mathematics', 'Urdu', 'Science', 'Social Science', 'Kashmiri'] },
+        { name: 'Class 8', grade: 8, subjects: ['English', 'Mathematics', 'Urdu', 'Science', 'Social Science', 'Kashmiri'] },
+      ];
+
+      for (const c of classConfigs) {
+        await ClassSection.create({
+          organizationId: req.user.organizationId,
+          className: c.name,
+          gradeLevel: c.grade,
+          section: 'A',
+          roomNumber: `Room ${c.grade}`,
+          capacity: 35,
+          academicYear: '2026-2027',
+          subjects: c.subjects,
+        });
+      }
+
+      classes = await ClassSection.find({ organizationId: req.user.organizationId })
+        .populate('classTeacherId', 'name username')
+        .sort({ gradeLevel: 1 });
+    }
 
     res.json({ success: true, classes });
   } catch (error) {
     res.status(500).json({ success: false, message: 'Failed to fetch class sections.' });
+  }
+});
+
+// POST /api/v1/attendance/classes (Create / Add new class section)
+router.post('/classes', verifyToken, requireRole(['admin']), async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { className, section = 'A', gradeLevel, roomNumber, capacity = 35, subjects } = req.body;
+    if (!className || !gradeLevel) {
+      res.status(400).json({ success: false, message: 'Class name and grade level (1-8) are required.' });
+      return;
+    }
+
+    const newClass = await ClassSection.create({
+      organizationId: req.user?.organizationId,
+      className,
+      gradeLevel: Number(gradeLevel),
+      section,
+      roomNumber: roomNumber || `Room ${gradeLevel}`,
+      capacity: Number(capacity),
+      academicYear: '2026-2027',
+      subjects: Array.isArray(subjects) ? subjects : ['English', 'Mathematics', 'Urdu', 'Science'],
+    });
+
+    res.status(201).json({ success: true, message: `Class section ${className}-${section} created successfully.`, classSection: newClass });
+  } catch (error: any) {
+    res.status(500).json({ success: false, message: error?.message || 'Failed to create class section.' });
   }
 });
 
