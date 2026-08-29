@@ -26,8 +26,8 @@ export const StudentDashboard: React.FC<{ onNavigate: (tab: string) => void }> =
         const [ttRes, hwRes] = await Promise.all([api.getTimetable(), api.getHomework()]);
         if (ttRes.success && ttRes.timetable) {
           const periods = Array.isArray(ttRes.timetable)
-            ? (ttRes.timetable[0]?.periods || [])
-            : (ttRes.timetable?.periods || []);
+            ? ((ttRes.timetable[0] as any)?.periods || [])
+            : ((ttRes.timetable as any)?.periods || []);
           setTimetable(periods);
         }
         if (hwRes.success) {

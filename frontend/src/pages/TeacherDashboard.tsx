@@ -37,8 +37,8 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ onNavigate }
         const [ttRes, hwRes, clsRes] = await Promise.all([api.getTimetable(), api.getHomework(), api.getClasses()]);
         if (ttRes.success && ttRes.timetable) {
           const periods = Array.isArray(ttRes.timetable)
-            ? (ttRes.timetable[0]?.periods || [])
-            : (ttRes.timetable?.periods || []);
+            ? ((ttRes.timetable[0] as any)?.periods || [])
+            : ((ttRes.timetable as any)?.periods || []);
           setTimetable(periods);
         }
         if (hwRes.success) {
