@@ -302,128 +302,32 @@ VALUES
     ('c0000000-0000-0000-0000-000000000008', 'a0000000-0000-0000-0000-000000000001', 'Class 8', 'A', 8, 'Room 108')
 ON CONFLICT (organization_id, class_name, section) DO NOTHING;
 
--- 4.3 Insert Admin & Staff Users (Valid UUIDs with hex digits)
+--- 4.3 Insert Admin User
 INSERT INTO users (id, organization_id, name, username, email, phone, password_hash, role)
 VALUES
-    ('d0000000-0000-0000-0000-000000000001', 'a0000000-0000-0000-0000-000000000001', 'Mohammad Ashraf Bhat', 'admin@me', 'admin@me', '+91-9419011122', '$2a$10$tZ8k2hDkWFj6kL2fA6l60.R.Cclp7y5O.0/aE2N7U0gU6o18I8fuy', 'admin'),
-    ('d0000000-0000-0000-0000-000000000002', 'a0000000-0000-0000-0000-000000000001', 'Shabir Ahmad Shah', 'shabir.teacher@gms.edu', 'shabir@gmsawanpora.edu.in', '+91-9419022233', '$2a$10$tZ8k2hDkWFj6kL2fA6l60.R.Cclp7y5O.0/aE2N7U0gU6o18I8fuy', 'teacher'),
-    ('d0000000-0000-0000-0000-000000000003', 'a0000000-0000-0000-0000-000000000001', 'Nissar Ahmad Rather', 'nissar.teacher@gms.edu', 'nissar@gmsawanpora.edu.in', '+91-9419033344', '$2a$10$tZ8k2hDkWFj6kL2fA6l60.R.Cclp7y5O.0/aE2N7U0gU6o18I8fuy', 'teacher'),
-    ('d0000000-0000-0000-0000-000000000004', 'a0000000-0000-0000-0000-000000000001', 'Farooq Ahmad Dar', 'farooq.teacher@gms.edu', 'farooq@gmsawanpora.edu.in', '+91-9419044455', '$2a$10$tZ8k2hDkWFj6kL2fA6l60.R.Cclp7y5O.0/aE2N7U0gU6o18I8fuy', 'teacher'),
-    ('d0000000-0000-0000-0000-000000000005', 'a0000000-0000-0000-0000-000000000001', 'Altaf Hussain', 'altaf.teacher@gms.edu', 'altaf@gmsawanpora.edu.in', '+91-9419055566', '$2a$10$tZ8k2hDkWFj6kL2fA6l60.R.Cclp7y5O.0/aE2N7U0gU6o18I8fuy', 'teacher'),
-    ('d0000000-0000-0000-0000-000000000006', 'a0000000-0000-0000-0000-000000000001', 'Nissar Ahmad Mir (Parent)', 'nissar.parent@gms.edu', 'parent.nissar@gmail.com', '+91-9419055566', '$2a$10$tZ8k2hDkWFj6kL2fA6l60.R.Cclp7y5O.0/aE2N7U0gU6o18I8fuy', 'parent'),
-    ('d0000000-0000-0000-0000-000000000007', 'a0000000-0000-0000-0000-000000000001', 'Aaqib Nissar Mir', 'aaqib.student@gms.edu', 'aaqib.mir@gms.edu', '+91-9419055566', '$2a$10$tZ8k2hDkWFj6kL2fA6l60.R.Cclp7y5O.0/aE2N7U0gU6o18I8fuy', 'student'),
-    ('d0000000-0000-0000-0000-000000000008', 'a0000000-0000-0000-0000-000000000001', 'Mehak Nissar Mir', 'mehak.student@gms.edu', 'mehak.mir@gms.edu', '+91-9419055566', '$2a$10$tZ8k2hDkWFj6kL2fA6l60.R.Cclp7y5O.0/aE2N7U0gU6o18I8fuy', 'student')
+    ('d0000000-0000-0000-0000-000000000001', 'a0000000-0000-0000-0000-000000000001', 'Mohammad Ashraf Bhat', 'admin@me', 'admin@me', '+91-9419011122', '$2a$10$tZ8k2hDkWFj6kL2fA6l60.R.Cclp7y5O.0/aE2N7U0gU6o18I8fuy', 'admin')
 ON CONFLICT (organization_id, username) DO NOTHING;
 
--- 4.4 Insert Teacher Profiles
-INSERT INTO teacher_profiles (user_id, organization_id, employee_code, designation, qualification, subjects_taught)
-VALUES
-    ('d0000000-0000-0000-0000-000000000002', 'a0000000-0000-0000-0000-000000000001', 'TCH-001', 'General Line Teacher (SSA)', 'M.A (English), B.Ed', ARRAY['English', 'Social Science']),
-    ('d0000000-0000-0000-0000-000000000003', 'a0000000-0000-0000-0000-000000000001', 'TCH-002', 'Master (Maths)', 'M.Sc (Mathematics), B.Ed', ARRAY['Mathematics', 'Science']),
-    ('d0000000-0000-0000-0000-000000000004', 'a0000000-0000-0000-0000-000000000001', 'TCH-003', 'General Line Teacher (SSA)', 'M.Sc (Physics), B.Ed', ARRAY['Science', 'Mathematics']),
-    ('d0000000-0000-0000-0000-000000000005', 'a0000000-0000-0000-0000-000000000001', 'TCH-004', 'Language Teacher (Urdu/Kashmiri)', 'M.A (Urdu), B.Ed', ARRAY['Urdu', 'Kashmiri'])
-ON CONFLICT (user_id) DO NOTHING;
-
--- 4.5 Insert Student Profiles
-INSERT INTO student_profiles (id, user_id, organization_id, admission_number, roll_number, class_id, section, gender, father_name, mother_name, address, ssa_category)
-VALUES
-    ('e0000000-0000-0000-0000-000000000001', 'd0000000-0000-0000-0000-000000000007', 'a0000000-0000-0000-0000-000000000001', 'GMS-AWN-2022-084', 1, 'c0000000-0000-0000-0000-000000000008', 'A', 'male', 'Nissar Ahmad Mir', 'Fareeda Begum', 'Awanpora, Mattan, Anantnag', 'RBA'),
-    ('e0000000-0000-0000-0000-000000000002', 'd0000000-0000-0000-0000-000000000008', 'a0000000-0000-0000-0000-000000000001', 'GMS-AWN-2024-112', 6, 'c0000000-0000-0000-0000-000000000004', 'A', 'female', 'Nissar Ahmad Mir', 'Fareeda Begum', 'Awanpora, Mattan, Anantnag', 'RBA')
-ON CONFLICT (user_id) DO NOTHING;
-
--- 4.6 Insert Parent Profiles
-INSERT INTO parent_profiles (user_id, organization_id, relation, occupation, address)
-VALUES
-    ('d0000000-0000-0000-0000-000000000006', 'a0000000-0000-0000-0000-000000000001', 'father', 'Horticulture & Agriculture', 'Awanpora, Mattan, Anantnag')
-ON CONFLICT (user_id) DO NOTHING;
-
--- 4.7 Insert PM-POSHAN Mid-Day Meal Daily Log
-INSERT INTO mid_day_meals (organization_id, date, menu_served, students_served, rice_consumed_kg, vegetable_cost, cook_name, quality_checked_by, remarks)
-VALUES (
-    'a0000000-0000-0000-0000-000000000001',
-    CURRENT_DATE,
-    'Steamed Rice, Rajmash (Kidney Beans Dal) & Fresh Sautéed Spinach',
-    230,
-    28.5,
-    520.0,
-    'Fatima Begum & Shameema Bano',
-    'Farooq Ahmad Dar (Duty Teacher)',
-    'Nutritious, warm, and hygienic lunch served on time to all present students.'
-) ON CONFLICT (date) DO NOTHING;
-
--- 4.8 Insert SSA Composite Grants Ledger
+-- 4.4 Insert SSA Composite Grants Ledger
 INSERT INTO grants_and_fees (organization_id, scheme_type, fund_name, transaction_type, amount, category, description, bill_number)
 VALUES
     ('a0000000-0000-0000-0000-000000000001', 'Samagra Shiksha Abhiyan (SSA)', 'SSA Annual Composite School Grant 2026-27', 'credit', 50000.0, 'Composite School Grant', 'Sanctioned by ZEO Mattan under Project Approval Board (PAB) 2026-27 allocation.', 'ZEO-MTN-2026-091'),
     ('a0000000-0000-0000-0000-000000000001', 'Samagra Shiksha Abhiyan (SSA)', 'School Library & Reading Corner Grant', 'credit', 15000.0, 'Library Grant', 'Procurement of bilingual storybooks, encyclopedias, and science journals.', 'ZEO-MTN-2026-114'),
-    ('a0000000-0000-0000-0000-000000000001', 'Samagra Shiksha Abhiyan (SSA)', 'Sports & Physical Education Equipment Grant', 'credit', 10000.0, 'Sports Fund', 'Purchase of cricket kits, volleyballs, carrom boards, and badminton sets.', 'ZEO-MTN-2026-128'),
-    ('a0000000-0000-0000-0000-000000000001', 'Samagra Shiksha Abhiyan (SSA)', 'Classroom Whitewash & Minor Window Glazing', 'debit', 10500.0, 'Infrastructure & Maintenance', 'Repair of broken classroom window panes and wall whitewashing before winter.', 'VOUCH-AWN-004'),
-    ('a0000000-0000-0000-0000-000000000001', 'Samagra Shiksha Abhiyan (SSA)', 'Science Demonstration Models & Charts', 'debit', 4800.0, 'Teaching Learning Material (TLM)', 'Solar system 3D models, human anatomy charts, and litmus test kits for Class 8.', 'TLM-AWN-019');
+    ('a0000000-0000-0000-0000-000000000001', 'Samagra Shiksha Abhiyan (SSA)', 'Sports & Physical Education Equipment Grant', 'credit', 10000.0, 'Sports Fund', 'Purchase of cricket kits, volleyballs, carrom boards, and badminton sets.', 'ZEO-MTN-2026-128');
 
--- 4.9 Insert Multilingual Notices & Circulars
+-- 4.5 Insert Multilingual Notices & Circulars
 INSERT INTO notices (organization_id, title, body, category, target_audience, is_pinned, translations)
 VALUES
     (
         'a0000000-0000-0000-0000-000000000001',
-        'Term 1 (T1) SCERT Evaluation & Parent-Teacher Meeting (PTM)',
-        'All teachers, students and parents are notified that Term 1 Continuous Comprehensive Evaluation (CCE) results are prepared. The Parent-Teacher interaction will be held on Saturday from 01:30 PM to 03:30 PM.',
+        'Academic Session 2026-27 Portal Initialized',
+        'Welcome to the official ERP portal of Govt Middle School Awanpora. Teaching faculty, student enrolments, and parent accounts will be registered directly by school administration.',
         'Academic',
         'All',
         true,
         jsonb_build_object(
-            'ur', jsonb_build_object('title', 'اطلاع: ٹرم اول امتحانات اور پی ٹی ایم میٹنگ', 'body', 'تمام اساتذہ، طلباء اور والدین کو مطلع کیا جاتا ہے کہ ٹرم اول کے امتحانات کے نتائج تیار ہیں۔ سنیچر کو پیرنٹ ٹیچر میٹنگ منعقد ہوگی۔'),
-            'ks', jsonb_build_object('title', 'نوٹس: ٹرم گوڈنیک امتحانات تہ مول ماج میٹنگ', 'body', 'تمام استادن، شرین تہ مول ماجن چھ مطلع کرنہ یوان زہ ٹرم اولک رزلٹ چھ تیار۔ بٹوارس چھ اسکولس منز پی ٹی ایم میٹنگ۔'),
-            'hi', jsonb_build_object('title', 'सूचना: प्रथम सत्र परीक्षा परिणाम एवं अभिभावक-शिक्षक बैठक', 'body', 'सभी शिक्षकों, छात्रों और अभिभावकों को सूचित किया जाता है कि प्रथम सत्र के परिणाम तैयार हैं। शनिवार को बैठक आयोजित की जाएगी।')
-        )
-    ),
-    (
-        'a0000000-0000-0000-0000-000000000001',
-        'Distribution of Free SSA Uniforms & Winter Sweaters',
-        'Under the Samagra Shiksha Abhiyan scheme, all enrolled students of Classes 1st through 8th will receive their winter school uniforms and warm sweaters tomorrow morning during assembly.',
-        'SSA Scheme',
-        'All',
-        false,
-        jsonb_build_object(
-            'ur', jsonb_build_object('title', 'مفت ایس ایس اے یونیفارم اور سویٹر کی تقسیم', 'body', 'سماگرا شیکشا ابھیان کے تحت جماعت اول تا ہشتم کے تمام طلباء کو کل صبح اسمبلی کے دوران مفت اسکول یونیفارم تقسیم کی جائے گی۔'),
-            'ks', jsonb_build_object('title', 'مفت ایس ایس اے وردی تہ گرم سویٹر تقسیم', 'body', 'سماگرا شیکشا ابھیان تحت ییہ پگاہ صوبہ اسمبلی منز سارنی شرین مفت یونیفارم تہ سویٹر دنہ۔'),
-            'hi', jsonb_build_object('title', 'निःशुल्क एसएसए स्कूल यूनिफॉर्म एवं स्वेटर वितरण', 'body', 'समग्र शिक्षा अभियान के अंतर्गत कक्षा 1 से 8 तक के सभी विद्यार्थियों को कल सुबह निःशुल्क स्कूल यूनिफॉर्म और स्वेटर वितरित किए जाएंगे।')
+            'ur', jsonb_build_object('title', 'اطلاع: تعلیمی سیشن 2026-27 پورٹل فعال کر دیا گیا ہے', 'body', 'گورنمنٹ مڈل اسکول اونپورہ کے ای آر پی پورٹل میں خوش آمدید۔'),
+            'ks', jsonb_build_object('title', 'نوٹس: تعلیمی سیشن پورٹل چالو', 'body', 'گورنمنٹ مڈل اسکول اونپورہ ای آر پی پورٹلس منز خوش آمدید۔'),
+            'hi', jsonb_build_object('title', 'सूचना: शैक्षणिक सत्र 2026-27 पोर्टल प्रारंभ', 'body', 'राजकीय मध्य विद्यालय अवनपोरा के आधिकारिक ईआरपी पोर्टल में आपका स्वागत है।')
         )
     );
-
--- 4.10 Insert Class 8 Timetable (Monday)
-INSERT INTO timetables (organization_id, class_id, day_of_week, periods)
-VALUES (
-    'a0000000-0000-0000-0000-000000000001',
-    'c0000000-0000-0000-0000-000000000008',
-    'Monday',
-    jsonb_build_array(
-        jsonb_build_object('periodNumber', 1, 'startTime', '09:45 AM', 'endTime', '10:30 AM', 'subject', 'English Literature', 'teacherName', 'Shabir Ahmad Shah', 'room', 'Room 108'),
-        jsonb_build_object('periodNumber', 2, 'startTime', '10:30 AM', 'endTime', '11:15 AM', 'subject', 'Mathematics', 'teacherName', 'Nissar Ahmad Rather', 'room', 'Room 108'),
-        jsonb_build_object('periodNumber', 3, 'startTime', '11:15 AM', 'endTime', '12:00 PM', 'subject', 'Science & Lab Experiments', 'teacherName', 'Farooq Ahmad Dar', 'room', 'Science Lab'),
-        jsonb_build_object('periodNumber', 4, 'startTime', '12:00 PM', 'endTime', '12:45 PM', 'subject', 'Urdu Language', 'teacherName', 'Altaf Hussain', 'room', 'Room 108'),
-        jsonb_build_object('periodNumber', 5, 'startTime', '01:30 PM', 'endTime', '02:15 PM', 'subject', 'Social Science (History/Civics)', 'teacherName', 'Showkat Ahmad', 'room', 'Room 108'),
-        jsonb_build_object('periodNumber', 6, 'startTime', '02:15 PM', 'endTime', '03:00 PM', 'subject', 'Kashmiri & Physical Education', 'teacherName', 'Tanveer Ahmad (PET)', 'room', 'Playground')
-    )
-) ON CONFLICT (organization_id, class_id, day_of_week) DO NOTHING;
-
--- 4.11 Insert Sample Exam Result for Aaqib Nissar
-INSERT INTO exam_results (organization_id, student_id, class_id, exam_name, term, subject_marks, total_max, total_obtained, percentage, overall_grade, ai_remarks)
-VALUES (
-    'a0000000-0000-0000-0000-000000000001',
-    'e0000000-0000-0000-0000-000000000001',
-    'c0000000-0000-0000-0000-000000000008',
-    'Term 1 Summative Assessment (T1)',
-    'Term 1',
-    jsonb_build_array(
-        jsonb_build_object('subjectName', 'English', 'obtainedMarks', 88, 'maxMarks', 100),
-        jsonb_build_object('subjectName', 'Mathematics', 'obtainedMarks', 94, 'maxMarks', 100),
-        jsonb_build_object('subjectName', 'Science', 'obtainedMarks', 91, 'maxMarks', 100),
-        jsonb_build_object('subjectName', 'Social Science', 'obtainedMarks', 82, 'maxMarks', 100),
-        jsonb_build_object('subjectName', 'Urdu', 'obtainedMarks', 87, 'maxMarks', 100)
-    ),
-    500,
-    442,
-    88.4,
-    'A+',
-    'Aaqib demonstrates outstanding academic diligence and active classroom participation with an impressive 88.4% score and 94.2% attendance. Consistently shows exemplary analytical thinking in Science and Mathematics.'
-);
