@@ -9,7 +9,7 @@ export const IdCardModal: React.FC<IdCardModalProps> = ({ student, onClose }) =>
   if (!student) return null;
 
   const studentName = student.userId?.name || student.name || 'Enrolled Student';
-  const className = student.classId?.className || student.className || 'Class 8';
+  const className = student.classId?.className || student.className || 'Class 1';
   const section = student.section || student.classId?.section || 'A';
   const rollNumber = student.rollNumber || student.roll || 1;
   const admissionNumber = student.admissionNumber || student.admissionNo || 'GMS-AWN-2026';
@@ -18,11 +18,212 @@ export const IdCardModal: React.FC<IdCardModalProps> = ({ student, onClose }) =>
   const phone = student.userId?.phone || student.phone || '+91-9419000000';
   const category = student.ssaCategory || student.category || 'General';
 
+  const handlePrint = () => {
+    const printWindow = window.open('', '_blank', 'width=750,height=550');
+    if (!printWindow) {
+      window.print();
+      return;
+    }
+
+    printWindow.document.write(`
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>Student ID Card - ${studentName}</title>
+          <style>
+            @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap');
+            * {
+              margin: 0;
+              padding: 0;
+              box-sizing: border-box;
+              font-family: 'Montserrat', sans-serif;
+              -webkit-print-color-adjust: exact !important;
+              print-color-adjust: exact !important;
+            }
+            body {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              min-height: 100vh;
+              background-color: #ffffff;
+              padding: 20px;
+            }
+            .id-card-wrapper {
+              width: 86mm;
+              height: 54mm;
+              border-radius: 8px;
+              padding: 3px;
+              background: linear-gradient(135deg, #002147 0%, #09325e 50%, #0c6780 100%);
+              border: 1.5px solid #f59e0b;
+              box-shadow: 0 4px 15px rgba(0, 33, 71, 0.15);
+            }
+            .id-card-inner {
+              background: #ffffff;
+              border-radius: 6px;
+              height: 100%;
+              padding: 7px 10px;
+              display: flex;
+              flex-direction: column;
+              justify-content: space-between;
+            }
+            .header-title {
+              text-align: center;
+              border-bottom: 1px solid #e2e8f0;
+              padding-bottom: 3px;
+            }
+            .dept {
+              font-size: 6.5px;
+              font-weight: 800;
+              letter-spacing: 0.5px;
+              color: #0c6780;
+              text-transform: uppercase;
+            }
+            .school-name {
+              font-size: 9.5px;
+              font-weight: 900;
+              color: #002147;
+              line-height: 1.1;
+              margin-top: 1px;
+            }
+            .school-sub {
+              font-size: 6.5px;
+              color: #64748b;
+              font-weight: 600;
+            }
+            .middle-row {
+              display: flex;
+              align-items: center;
+              gap: 8px;
+              margin-top: 2px;
+            }
+            .photo-box {
+              width: 20mm;
+              height: 25mm;
+              border-radius: 5px;
+              border: 1px solid #cbd5e1;
+              background: linear-gradient(135deg, #002147, #0c6780);
+              color: #ffffff;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              justify-content: center;
+              text-align: center;
+              flex-shrink: 0;
+            }
+            .photo-label {
+              font-size: 7px;
+              font-weight: 800;
+              text-transform: uppercase;
+              letter-spacing: 0.5px;
+              margin-top: 3px;
+              color: #fde68a;
+            }
+            .student-info {
+              flex: 1;
+              font-size: 7.5px;
+              line-height: 1.35;
+              color: #334155;
+            }
+            .student-name {
+              font-size: 11px;
+              font-weight: 900;
+              color: #002147;
+              margin-bottom: 2px;
+            }
+            .badge {
+              display: inline-block;
+              background: #fef3c7;
+              color: #78350f;
+              font-weight: 800;
+              font-size: 6.5px;
+              padding: 1px 4px;
+              border-radius: 3px;
+            }
+            .footer-row {
+              border-top: 1px solid #e2e8f0;
+              padding-top: 3px;
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              font-size: 6.5px;
+              color: #64748b;
+            }
+            .sign-name {
+              font-family: serif;
+              font-style: italic;
+              font-weight: bold;
+              font-size: 8px;
+              color: #1e293b;
+            }
+            .sign-title {
+              font-size: 5.5px;
+              font-weight: 700;
+              text-transform: uppercase;
+              border-top: 0.5px solid #94a3b8;
+              color: #64748b;
+            }
+            @media print {
+              body {
+                padding: 0;
+                min-height: auto;
+              }
+              .id-card-wrapper {
+                box-shadow: none;
+                margin: 20px auto;
+              }
+            }
+          </style>
+        </head>
+        <body>
+          <div class="id-card-wrapper">
+            <div class="id-card-inner">
+              <div class="header-title">
+                <div class="dept">Directorate of School Education Kashmir</div>
+                <div class="school-name">GOVT MIDDLE SCHOOL AWANPORA</div>
+                <div class="school-sub">Zone Mattan, District Anantnag (UDISE: 01061102301)</div>
+              </div>
+              <div class="middle-row">
+                <div class="photo-box">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+                  <span class="photo-label">Photo</span>
+                </div>
+                <div class="student-info">
+                  <div class="student-name">${studentName}</div>
+                  <div>Class: <strong>${className} - Sec ${section}</strong></div>
+                  <div>Roll No: <strong style="color: #0c6780;">#${rollNumber}</strong> | Adm: <span style="font-family: monospace;">${admissionNumber}</span></div>
+                  <div>Parent: <strong>${fatherName}</strong></div>
+                  <div>Category: <span class="badge">${category}</span></div>
+                </div>
+              </div>
+              <div class="footer-row">
+                <div>
+                  <div>📍 ${address}</div>
+                  <div>📞 ${phone} • Academic Session 2026-27</div>
+                </div>
+                <div style="text-align: center;">
+                  <div class="sign-name">M.A. Bhat</div>
+                  <div class="sign-title">Headmaster</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <script>
+            window.onload = function() {
+              window.print();
+              setTimeout(function() { window.close(); }, 500);
+            };
+          </script>
+        </body>
+      </html>
+    `);
+    printWindow.document.close();
+  };
+
   return (
-    <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
-      <div className="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-5 border border-slate-200 animate-scaleUp">
+    <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 print:p-0 print:bg-transparent print:static">
+      <div className="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-5 border border-slate-200 animate-scaleUp print:p-0 print:border-none print:shadow-none print:max-w-none">
         {/* Modal Header */}
-        <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div className="flex items-center justify-between border-b border-slate-100 pb-3 no-print print:hidden">
           <div className="flex items-center gap-2">
             <span className="px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase bg-blue-100 text-[#002147]">
               Official Student ID
@@ -108,7 +309,7 @@ export const IdCardModal: React.FC<IdCardModalProps> = ({ student, onClose }) =>
         </div>
 
         {/* Action Buttons */}
-        <div className="flex items-center justify-between pt-2">
+        <div className="flex items-center justify-between pt-2 no-print print:hidden">
           <span className="text-[11px] text-slate-400">
             Valid for Academic Session 2026-27
           </span>
@@ -122,7 +323,7 @@ export const IdCardModal: React.FC<IdCardModalProps> = ({ student, onClose }) =>
             </button>
             <button
               type="button"
-              onClick={() => window.print()}
+              onClick={handlePrint}
               className="px-4 py-2 rounded-xl bg-[#002147] hover:bg-[#0c6780] text-white text-xs font-bold transition-all shadow-md flex items-center gap-1.5"
             >
               <Printer className="w-3.5 h-3.5" />
