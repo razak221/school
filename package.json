@@ -1,0 +1,11 @@
+{
+  "name": "gms-awanpora-school-erp",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "npm run build --prefix frontend",
+    "install:frontend": "npm install --prefix frontend",
+    "install:backend": "npm install --prefix backend",
+    "dev": "npm run dev --prefix frontend"
+  }
+}
