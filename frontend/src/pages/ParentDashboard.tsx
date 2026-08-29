@@ -39,20 +39,30 @@ export const ParentDashboard: React.FC<{ onNavigate: (tab: string) => void }> = 
     fetchChildren();
   }, []);
 
+  const [childExamResult, setChildExamResult] = useState<any>(null);
+
   useEffect(() => {
-    const fetchChildAttendance = async () => {
+    const fetchChildAcademic = async () => {
       if (children.length > 0) {
         const c = children[selectedChildIndex];
         const studentId = c?._id || c?.userId?._id;
         if (studentId) {
-          const res = await api.getStudentAttendance(studentId);
-          if (res.success && res.stats) {
-            setChildAttStats(res.stats);
+          const [attRes, examRes] = await Promise.all([
+            api.getStudentAttendance(studentId),
+            api.getExamResults(undefined, studentId),
+          ]);
+          if (attRes.success && attRes.stats) {
+            setChildAttStats(attRes.stats);
+          }
+          if (examRes.success && examRes.results?.length > 0) {
+            setChildExamResult(examRes.results[0]);
+          } else {
+            setChildExamResult(null);
           }
         }
       }
     };
-    fetchChildAttendance();
+    fetchChildAcademic();
   }, [children, selectedChildIndex]);
 
   const activeChild = children[selectedChildIndex] || {
@@ -104,9 +114,18 @@ export const ParentDashboard: React.FC<{ onNavigate: (tab: string) => void }> = 
       <div className="grid grid-cols-12 gap-4">
         <StatCard
           title="Child Attendance"
-          value={`${childAttStats.percentage}%`}
-          subtitle={childAttStats.totalDays > 0 ? `${childAttStats.presentDays} present of ${childAttStats.totalDays} recorded days` : "Regular & Punctual this session"}
-          trend={{ value: parseFloat(childAttStats.percentage) >= 75 ? "Safe Zone (>75%)" : "Attention Needed", isPositive: parseFloat(childAttStats.percentage) >= 75 }}
+          value={childAttStats.totalDays > 0 ? `${childAttStats.percentage}%` : '100%'}
+          subtitle={
+            childAttStats.totalDays > 0
+              ? `${childAttStats.presentDays} present of ${childAttStats.totalDays} recorded days`
+              : 'Session Active • 0 Days Marked'
+          }
+          trend={{
+            value: childAttStats.totalDays > 0
+              ? (parseFloat(childAttStats.percentage) >= 75 ? 'Safe Zone (>75%)' : 'Attendance Shortage')
+              : 'Awaiting Roll Call',
+            isPositive: childAttStats.totalDays === 0 || parseFloat(childAttStats.percentage) >= 75,
+          }}
           icon={<CalendarCheck className="w-5 h-5" />}
           iconBg="bg-emerald-50 text-emerald-700"
           span="col-span-12 sm:col-span-4"
@@ -114,9 +133,16 @@ export const ParentDashboard: React.FC<{ onNavigate: (tab: string) => void }> = 
 
         <StatCard
           title="Academic Score"
-          value="Grade A+"
-          subtitle="Continuous Evaluation (CCE)"
-          trend={{ value: "Excellent", isPositive: true }}
+          value={childExamResult ? `${childExamResult.percentage}%` : 'In Progress'}
+          subtitle={
+            childExamResult
+              ? `Grade ${childExamResult.overallGrade} • ${childExamResult.examName || 'Term 1 Evaluation'}`
+              : 'Continuous Evaluation (CCE) Active'
+          }
+          trend={{
+            value: childExamResult ? `Grade ${childExamResult.overallGrade}` : 'Evaluation Active',
+            isPositive: true,
+          }}
           icon={<Award className="w-5 h-5" />}
           iconBg="bg-blue-50 text-[#002147]"
           span="col-span-12 sm:col-span-4"

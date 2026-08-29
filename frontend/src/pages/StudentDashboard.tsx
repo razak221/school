@@ -19,6 +19,8 @@ export const StudentDashboard: React.FC<{ onNavigate: (tab: string) => void }> =
   const [timetable, setTimetable] = useState<any[]>([]);
   const [homeworkList, setHomeworkList] = useState<any[]>([]);
   const [completedHw, setCompletedHw] = useState<Record<string, boolean>>({});
+  const [profile, setProfile] = useState<any>(null);
+  const [examResult, setExamResult] = useState<any>(null);
 
   const [attStats, setAttStats] = useState<any>({
     totalDays: 0,
@@ -41,9 +43,22 @@ export const StudentDashboard: React.FC<{ onNavigate: (tab: string) => void }> =
           setHomeworkList(hwRes.homework);
         }
         if (user?.id) {
-          const attRes = await api.getStudentAttendance(user.id);
+          const [attRes, examRes, stdRes] = await Promise.all([
+            api.getStudentAttendance(user.id),
+            api.getExamResults(undefined, user.id),
+            api.getStudents(),
+          ]);
           if (attRes.success && attRes.stats) {
             setAttStats(attRes.stats);
+          }
+          if (examRes.success && examRes.results?.length > 0) {
+            setExamResult(examRes.results[0]);
+          }
+          if (stdRes.success && stdRes.students?.length > 0) {
+            const matched = stdRes.students.find(
+              (s: any) => s.userId?._id === user.id || s._id === user.id
+            );
+            if (matched) setProfile(matched);
           }
         }
       } catch (err) {
@@ -66,11 +81,11 @@ export const StudentDashboard: React.FC<{ onNavigate: (tab: string) => void }> =
       <div className="p-6 rounded-2xl bg-gradient-to-r from-[#002147] via-[#09325e] to-[#22C55E] text-white shadow-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div className="space-y-1">
           <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-white/10 text-xs font-semibold backdrop-blur-md">
-            Student Portal • Enrolled Student
+            Student Portal • {profile?.classId?.className || 'Class 1'} • Roll #{profile?.rollNumber || 1}
           </div>
           <h2 className="text-2xl font-extrabold">{user?.name || 'Enrolled Student'}</h2>
           <p className="text-xs text-slate-200">
-            Govt Middle School Awanpora • Department of School Education J&K
+            Govt Middle School Awanpora • Admission No: {profile?.admissionNumber || 'GMS-AWN-2026'}
           </p>
         </div>
 
@@ -103,9 +118,18 @@ export const StudentDashboard: React.FC<{ onNavigate: (tab: string) => void }> =
       <div className="grid grid-cols-12 gap-4">
         <StatCard
           title="Attendance Rate"
-          value={`${attStats.percentage}%`}
-          subtitle={attStats.totalDays > 0 ? `${attStats.presentDays} present of ${attStats.totalDays} days` : "Regular & Punctual"}
-          trend={{ value: parseFloat(attStats.percentage) >= 75 ? "Safe Regular" : "Attention", isPositive: parseFloat(attStats.percentage) >= 75 }}
+          value={attStats.totalDays > 0 ? `${attStats.percentage}%` : '100%'}
+          subtitle={
+            attStats.totalDays > 0
+              ? `${attStats.presentDays} Present • ${attStats.absentDays} Absent (${attStats.totalDays} Days)`
+              : 'Session Active • 0 Roll Calls Recorded'
+          }
+          trend={{
+            value: attStats.totalDays > 0
+              ? (parseFloat(attStats.percentage) >= 75 ? 'Safe Regular' : 'Attendance Shortage')
+              : 'Awaiting Roll Call',
+            isPositive: attStats.totalDays === 0 || parseFloat(attStats.percentage) >= 75,
+          }}
           icon={<CalendarCheck className="w-5 h-5" />}
           iconBg="bg-emerald-50 text-emerald-700"
           span="col-span-12 sm:col-span-4"
@@ -113,9 +137,16 @@ export const StudentDashboard: React.FC<{ onNavigate: (tab: string) => void }> =
 
         <StatCard
           title="Term 1 Score"
-          value="Grade A+"
-          subtitle="Continuous Evaluation (CCE)"
-          trend={{ value: "Exemplary", isPositive: true }}
+          value={examResult ? `${examResult.percentage}%` : 'In Progress'}
+          subtitle={
+            examResult
+              ? `Grade ${examResult.overallGrade} • ${examResult.examName || 'Term 1 Evaluation'}`
+              : 'Continuous Evaluation (CCE) Active'
+          }
+          trend={{
+            value: examResult ? `Grade ${examResult.overallGrade}` : 'Evaluation Active',
+            isPositive: true,
+          }}
           icon={<Award className="w-5 h-5" />}
           iconBg="bg-blue-50 text-[#002147]"
           span="col-span-12 sm:col-span-4"
@@ -123,9 +154,9 @@ export const StudentDashboard: React.FC<{ onNavigate: (tab: string) => void }> =
 
         <StatCard
           title="Mid-Day Meal (MDM)"
-          value="Opted In"
-          subtitle="Fresh hot lunch provided"
-          trend={{ value: "PM-POSHAN", isPositive: true }}
+          value={profile ? (profile.midDayMealOpted !== false ? 'Opted In' : 'Not Opted') : 'Opted In'}
+          subtitle={profile?.midDayMealOpted !== false ? 'Fresh hot lunch served daily' : 'Self-arranged lunch'}
+          trend={{ value: 'PM-POSHAN', isPositive: profile?.midDayMealOpted !== false }}
           icon={<Utensils className="w-5 h-5" />}
           iconBg="bg-amber-50 text-amber-800"
           span="col-span-12 sm:col-span-4"

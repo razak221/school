@@ -362,15 +362,27 @@ export const api = {
   // ==========================================
   // 4. ACADEMICS & EXAM RESULTS (CCE)
   // ==========================================
-  getExamResults: async (classId?: string, studentId?: string) => {
+  getExamResults: async (classId?: string, studentOrUserId?: string) => {
     try {
+      let targetStudentId = studentOrUserId;
+      if (studentOrUserId) {
+        const { data: stdProfile } = await supabase
+          .from('student_profiles')
+          .select('id')
+          .or(`id.eq.${studentOrUserId},user_id.eq.${studentOrUserId}`)
+          .maybeSingle();
+        if (stdProfile?.id) {
+          targetStudentId = stdProfile.id;
+        }
+      }
+
       let query = supabase.from('exam_results').select('*, student:student_profiles(*, user:users(*)), class:class_sections(*)');
       if (classId) {
         const normalized = normalizeClassId(classId);
         query = query.eq('class_id', normalized);
       }
-      if (studentId) {
-        query = query.eq('student_id', studentId);
+      if (targetStudentId) {
+        query = query.eq('student_id', targetStudentId);
       }
 
       const { data } = await query;
