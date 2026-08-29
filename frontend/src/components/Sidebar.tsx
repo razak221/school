@@ -57,9 +57,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentTab, setCurrentTab }) =
         return [
           { id: 'admin-dashboard', label: 'Main ERP Dashboard', icon: <LayoutDashboard className="w-4 h-4" />, badge: 'Bento' },
           { id: 'finance', label: 'FinFlow & Invoicing', icon: <DollarSign className="w-4 h-4 text-amber-500" />, badge: 'Stripe' },
-          { id: 'directory', label: 'Student & Staff Directory', icon: <Users className="w-4 h-4" />, badge: '248 Enrolled' },
+          { id: 'directory', label: 'Student & Staff Directory', icon: <Users className="w-4 h-4" />, badge: 'Roster' },
           { id: 'timetable', label: 'Timetable & Schedule Master', icon: <CalendarDays className="w-4 h-4" />, badge: 'All Classes' },
-          { id: 'attendance', label: 'Attendance & MDM Tracker', icon: <CalendarCheck className="w-4 h-4" />, badge: '94.2%' },
+          { id: 'attendance', label: 'Attendance & MDM Tracker', icon: <CalendarCheck className="w-4 h-4" />, badge: 'Daily' },
           { id: 'academics', label: 'Academics & AI Marks', icon: <Award className="w-4 h-4" />, badge: 'Term 1' },
           { id: 'notices', label: 'Notice Board & Translations', icon: <Bell className="w-4 h-4" />, badge: 'Regional' },
           { id: 'grants', label: 'SSA Grants & MDM Logs', icon: <Wallet className="w-4 h-4" />, badge: 'PM-POSHAN' },
@@ -120,17 +120,17 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentTab, setCurrentTab }) =
         <div className="p-3.5 rounded-2xl bg-gradient-to-br from-slate-50 to-blue-50/50 border border-blue-100 space-y-2">
           <div className="flex items-center gap-2 text-[#002147]">
             <BookOpen className="w-4 h-4" />
-            <span className="text-xs font-bold">Academic Session</span>
+            <span className="text-xs font-bold">Academic Profile</span>
           </div>
           <p className="text-[11px] text-slate-600 leading-relaxed">
             Classes: <strong className="text-slate-800">1st to 8th Standard</strong>
             <br />
-            Enrolment: <strong className="text-slate-800">248 Students</strong>
+            Scheme: <strong className="text-slate-800">Samagra Shiksha (SSA)</strong>
             <br />
-            Faculty: <strong className="text-slate-800">11 Staff Members</strong>
+            UDISE: <strong className="text-slate-800 font-mono">01061102301</strong>
           </p>
           <div className="pt-1 border-t border-blue-100/80 flex items-center justify-between text-[10px] text-slate-500">
-            <span>SCERT J&K Curriculum</span>
+            <span>SCERT J&K Pattern</span>
             <span className="font-semibold text-[#0c6780]">Active</span>
           </div>
         </div>

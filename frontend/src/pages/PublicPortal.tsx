@@ -158,15 +158,15 @@ export const PublicPortal: React.FC<PublicPortalProps> = ({ onOpenLogin }) => {
           {/* Quick Metrics Bento Card in Hero */}
           <div className="lg:col-span-5 grid grid-cols-2 gap-3.5">
             <div className="p-5 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 space-y-1">
-              <div className="text-2xl lg:text-3xl font-black text-amber-300">248</div>
-              <div className="text-xs font-bold text-white uppercase tracking-wider">Enrolled Students</div>
-              <p className="text-[11px] text-slate-300">Classes 1st to 8th Standard</p>
+              <div className="text-2xl lg:text-3xl font-black text-amber-300">1st - 8th</div>
+              <div className="text-xs font-bold text-white uppercase tracking-wider">Academic Classes</div>
+              <p className="text-[11px] text-slate-300">Co-educational Curriculum</p>
             </div>
 
             <div className="p-5 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 space-y-1">
-              <div className="text-2xl lg:text-3xl font-black text-emerald-400">11</div>
-              <div className="text-xs font-bold text-white uppercase tracking-wider">Dedicated Faculty</div>
-              <p className="text-[11px] text-slate-300">Trained & B.Ed Certified</p>
+              <div className="text-2xl lg:text-3xl font-black text-emerald-400">SSA</div>
+              <div className="text-xs font-bold text-white uppercase tracking-wider">Samagra Shiksha</div>
+              <p className="text-[11px] text-slate-300">Govt Funded & Supported</p>
             </div>
 
             <div className="p-5 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 space-y-1">
@@ -178,7 +178,7 @@ export const PublicPortal: React.FC<PublicPortalProps> = ({ onOpenLogin }) => {
             <div className="p-5 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 space-y-1">
               <div className="text-2xl lg:text-3xl font-black text-purple-300">SCERT</div>
               <div className="text-xs font-bold text-white uppercase tracking-wider">J&K Curriculum</div>
-              <p className="text-[11px] text-slate-300">CCE Pattern Marks Cards</p>
+              <p className="text-[11px] text-slate-300">CCE Continuous Assessment</p>
             </div>
           </div>
         </div>
