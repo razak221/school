@@ -1,5 +1,4 @@
-import { createBrowserClient } from "@supabase/ssr";
-import { createClient as createSupabaseClient } from "@supabase/supabase-js";
+import { createClient } from "@supabase/supabase-js";
 
 const getEnv = (key: string, fallback: string): string => {
   if (typeof import.meta !== 'undefined' && (import.meta as any).env && (import.meta as any).env[key]) {
@@ -14,10 +13,4 @@ const getEnv = (key: string, fallback: string): string => {
 const supabaseUrl = getEnv('VITE_SUPABASE_URL', getEnv('NEXT_PUBLIC_SUPABASE_URL', 'https://ryhtbvczmtuyfacjqfnm.supabase.co'));
 const supabaseKey = getEnv('VITE_SUPABASE_ANON_KEY', getEnv('NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY', 'sb_publishable_0jXMf-UljXH-10w0n_pFIw_U3DKDj_r'));
 
-export const createClient = () =>
-  createBrowserClient(
-    supabaseUrl,
-    supabaseKey,
-  );
-
-export const supabase = createSupabaseClient(supabaseUrl, supabaseKey);
+export const supabase = createClient(supabaseUrl, supabaseKey);

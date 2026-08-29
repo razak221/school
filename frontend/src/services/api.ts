@@ -1,13 +1,7 @@
 import { supabase } from '../utils/supabase/client';
 import bcrypt from 'bcryptjs';
+import { ORG_ID, ORG_INFO, DEFAULT_CLASSES } from '../constants';
 
-const API_BASE = '/api/v1';
-const ORG_ID = 'a0000000-0000-0000-0000-000000000001';
-
-export const getAuthHeader = (): Record<string, string> => {
-  const token = localStorage.getItem('gms_token');
-  return token ? { Authorization: `Bearer ${token}` } : {};
-};
 
 // Helper: map short class id ('c1'..'c8') to UUID
 export const normalizeClassId = (classId?: string): string => {
@@ -60,17 +54,6 @@ export const api = {
           if (!isMatch && storedHash === cleanPassword) {
             isMatch = true;
           }
-          if (!isMatch && cleanPassword.includes(' ')) {
-            const noSpace = cleanPassword.replace(/\s+/g, '');
-            try {
-              isMatch = bcrypt.compareSync(noSpace, storedHash);
-            } catch {
-              isMatch = false;
-            }
-            if (!isMatch && storedHash === noSpace) {
-              isMatch = true;
-            }
-          }
         }
 
         // Master verification for admin
@@ -100,15 +83,7 @@ export const api = {
               phone: supaUser.phone,
               role: supaUser.role,
               avatarUrl: supaUser.avatar_url,
-              organization: {
-                id: supaUser.organization_id || ORG_ID,
-                name: 'Govt Middle School Awanpora',
-                affiliation: 'SCERT Jammu & Kashmir',
-                zone: 'Mattan',
-                district: 'Anantnag',
-                state: 'Jammu and Kashmir',
-                code: '01061102301',
-              },
+              organization: { ...ORG_INFO, id: supaUser.organization_id || ORG_ID },
             },
           };
         } else {
@@ -118,17 +93,6 @@ export const api = {
     } catch (supaErr) {
       console.warn('Supabase login check notice:', supaErr);
     }
-
-    // 2. Backend API fallback
-    try {
-      const res = await fetch(`${API_BASE}/auth/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: cleanUser, password: cleanPassword }),
-      });
-      const data = await res.json();
-      if (data.success && data.token) return data;
-    } catch {}
 
     return { success: false, message: 'Invalid credentials. User not found.' };
   },
@@ -149,28 +113,12 @@ export const api = {
               email: supaUser.email,
               phone: supaUser.phone,
               role: supaUser.role,
-              organization: {
-                id: supaUser.organization_id || ORG_ID,
-                name: 'Govt Middle School Awanpora',
-                affiliation: 'SCERT Jammu & Kashmir',
-                zone: 'Mattan',
-                district: 'Anantnag',
-                state: 'Jammu and Kashmir',
-                code: '01061102301',
-              },
+              organization: { ...ORG_INFO, id: supaUser.organization_id || ORG_ID },
             },
           };
         }
       } catch {}
     }
-
-    try {
-      const res = await fetch(`${API_BASE}/auth/me`, {
-        headers: { ...getAuthHeader() },
-      });
-      const data = await res.json();
-      if (data.success && data.user) return data;
-    } catch {}
 
     return { success: false, message: 'Session expired.' };
   },
@@ -274,16 +222,7 @@ export const api = {
 
     return {
       success: true,
-      classes: [
-        { _id: 'c0000000-0000-0000-0000-000000000001', className: 'Class 1', section: 'A', gradeLevel: 1, subjects: ['English', 'Mathematics', 'Urdu', 'EVS'] },
-        { _id: 'c0000000-0000-0000-0000-000000000002', className: 'Class 2', section: 'A', gradeLevel: 2, subjects: ['English', 'Mathematics', 'Urdu', 'EVS'] },
-        { _id: 'c0000000-0000-0000-0000-000000000003', className: 'Class 3', section: 'A', gradeLevel: 3, subjects: ['English', 'Mathematics', 'Urdu', 'EVS', 'Kashmiri'] },
-        { _id: 'c0000000-0000-0000-0000-000000000004', className: 'Class 4', section: 'A', gradeLevel: 4, subjects: ['English', 'Mathematics', 'Urdu', 'Science', 'Social Studies'] },
-        { _id: 'c0000000-0000-0000-0000-000000000005', className: 'Class 5', section: 'A', gradeLevel: 5, subjects: ['English', 'Mathematics', 'Urdu', 'Science', 'Social Studies'] },
-        { _id: 'c0000000-0000-0000-0000-000000000006', className: 'Class 6', section: 'A', gradeLevel: 6, subjects: ['English', 'Mathematics', 'Urdu', 'Science', 'Social Science', 'Kashmiri'] },
-        { _id: 'c0000000-0000-0000-0000-000000000007', className: 'Class 7', section: 'A', gradeLevel: 7, subjects: ['English', 'Mathematics', 'Urdu', 'Science', 'Social Science', 'Kashmiri'] },
-        { _id: 'c0000000-0000-0000-0000-000000000008', className: 'Class 8', section: 'A', gradeLevel: 8, subjects: ['English', 'Mathematics', 'Urdu', 'Science', 'Social Science', 'Kashmiri'] },
-      ],
+      classes: DEFAULT_CLASSES,
     };
   },
 
@@ -635,9 +574,6 @@ export const api = {
     }
   },
 
-  translateNotice: async (_id: string, _language: string) => {
-    return { success: true, message: 'Notice translation ready.' };
-  },
 
   // ==========================================
   // 7. SSA GRANTS & PM-POSHAN (MDM)
