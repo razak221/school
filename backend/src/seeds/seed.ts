@@ -60,8 +60,8 @@ export const seedDatabase = async (): Promise<void> => {
     const adminUser = await User.create({
       organizationId: orgId,
       name: 'Mohammad Ashraf Bhat (Headmaster)',
-      username: 'admin@gmsawanpora.edu.in',
-      email: 'ashraf.headmaster@gmsawanpora.edu.in',
+      username: 'admin@me',
+      email: 'admin@me',
       phone: '+91-9419011122',
       passwordHash: adminPasswordHash,
       role: 'admin',

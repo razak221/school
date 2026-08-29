@@ -111,7 +111,7 @@ docker compose up --build -d
 
 | Role | Username | Password | Access Scope |
 | :--- | :--- | :--- | :--- |
-| **👑 Admin (Headmaster)** | `admin@gmsawanpora.edu.in` | `admin123` | Full access, user creation, grants, timetables, finflow |
+| **👑 Admin (Headmaster)** | `admin@me` | `admin123` | Full access, user creation, grants, timetables, finflow |
 | **👨‍🏫 Teacher** | `teacher@gmsawanpora.edu.in` | `teacher123` | Class 8-A roll call, exam marks entry, CCE grades |
 | **👨‍👩‍👧 Parent** | `parent@gmsawanpora.edu.in` | `parent123` | Child progress, report card, PM-POSHAN meal record |
 | **🎓 Student** | `student@gmsawanpora.edu.in` | `student123` | Class schedule, exam results, attendance logs |

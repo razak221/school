@@ -305,7 +305,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ initialAdminMode = false, 
                       required
                       value={username}
                       onChange={(e) => setUsername(e.target.value)}
-                      placeholder="e.g. teacher@gmsawanpora.edu.in"
+                      placeholder={isAdminMode ? "e.g. admin@me" : "e.g. teacher@gmsawanpora.edu.in"}
                       className="w-full pl-9 pr-3 py-2.5 text-xs bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-[#0c6780] focus:bg-white focus:outline-none transition-all font-medium text-slate-800"
                     />
                   </div>
@@ -324,7 +324,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ initialAdminMode = false, 
                       required
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      placeholder="Enter password"
+                      placeholder={isAdminMode ? "e.g. admin123" : "Enter password"}
                       className="w-full pl-9 pr-10 py-2.5 text-xs bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-[#0c6780] focus:bg-white focus:outline-none transition-all font-medium text-slate-800"
                     />
                     <button

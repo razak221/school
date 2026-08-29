@@ -305,7 +305,7 @@ ON CONFLICT (organization_id, class_name, section) DO NOTHING;
 -- 4.3 Insert Admin & Staff Users (Valid UUIDs with hex digits)
 INSERT INTO users (id, organization_id, name, username, email, phone, password_hash, role)
 VALUES
-    ('d0000000-0000-0000-0000-000000000001', 'a0000000-0000-0000-0000-000000000001', 'Mohammad Ashraf Bhat', 'admin@gmsawanpora.edu.in', 'headmaster@gmsawanpora.edu.in', '+91-9419011122', '$2a$10$tZ8k2hDkWFj6kL2fA6l60.R.Cclp7y5O.0/aE2N7U0gU6o18I8fuy', 'admin'),
+    ('d0000000-0000-0000-0000-000000000001', 'a0000000-0000-0000-0000-000000000001', 'Mohammad Ashraf Bhat', 'admin@me', 'admin@me', '+91-9419011122', '$2a$10$tZ8k2hDkWFj6kL2fA6l60.R.Cclp7y5O.0/aE2N7U0gU6o18I8fuy', 'admin'),
     ('d0000000-0000-0000-0000-000000000002', 'a0000000-0000-0000-0000-000000000001', 'Shabir Ahmad Shah', 'shabir.teacher@gms.edu', 'shabir@gmsawanpora.edu.in', '+91-9419022233', '$2a$10$tZ8k2hDkWFj6kL2fA6l60.R.Cclp7y5O.0/aE2N7U0gU6o18I8fuy', 'teacher'),
     ('d0000000-0000-0000-0000-000000000003', 'a0000000-0000-0000-0000-000000000001', 'Nissar Ahmad Rather', 'nissar.teacher@gms.edu', 'nissar@gmsawanpora.edu.in', '+91-9419033344', '$2a$10$tZ8k2hDkWFj6kL2fA6l60.R.Cclp7y5O.0/aE2N7U0gU6o18I8fuy', 'teacher'),
     ('d0000000-0000-0000-0000-000000000004', 'a0000000-0000-0000-0000-000000000001', 'Farooq Ahmad Dar', 'farooq.teacher@gms.edu', 'farooq@gmsawanpora.edu.in', '+91-9419044455', '$2a$10$tZ8k2hDkWFj6kL2fA6l60.R.Cclp7y5O.0/aE2N7U0gU6o18I8fuy', 'teacher'),
