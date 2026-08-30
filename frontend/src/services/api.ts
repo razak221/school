@@ -257,7 +257,7 @@ export const api = {
       const roster = matched.map((s) => {
         const saved = recordMap.get(s.id);
         const status = saved?.status || 'present';
-        const mdmTaken = saved !== undefined ? saved.mid_day_meal_consumed : s.mid_day_meal_opted;
+        const mdmTaken = saved !== undefined ? saved.mid_day_meal_served : s.mid_day_meal_opted;
         return {
           studentId: s.id,
           userId: s.user?.id,
@@ -303,11 +303,10 @@ export const api = {
         class_id: normalizedClass,
         date: date,
         status: r.status || 'present',
-        mid_day_meal_consumed: r.midDayMealConsumed !== false,
-        remarks: r.remarks || '',
+        mid_day_meal_served: r.midDayMealConsumed !== false,
       }));
 
-      await supabase.from('attendance_records').upsert(rows, { onConflict: 'student_id,date' });
+      await supabase.from('attendance_records').upsert(rows, { onConflict: 'organization_id,student_id,date' });
       return { success: true, message: 'Attendance saved to Supabase.' };
     } catch (supaErr) {
       console.error('Supabase markAttendance error:', supaErr);
@@ -340,7 +339,7 @@ export const api = {
       const present = records.filter((r) => r.status === 'present').length;
       const absent = records.filter((r) => r.status === 'absent').length;
       const late = records.filter((r) => r.status === 'late' || r.status === 'leave').length;
-      const mdm = records.filter((r) => r.mid_day_meal_consumed).length;
+      const mdm = records.filter((r) => r.mid_day_meal_served).length;
       const total = records.length;
       const percentage = total > 0 ? ((present / total) * 100).toFixed(1) : '100.0';
 
