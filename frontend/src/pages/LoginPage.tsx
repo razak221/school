@@ -86,6 +86,19 @@ export const LoginPage: React.FC<LoginPageProps> = ({ initialAdminMode = false, 
     }
   };
 
+  const handleAutoFill = (u: string, p: string, role?: UserRole) => {
+    setUsername(u);
+    setPassword(p);
+    setErrorMsg(null);
+    if (role === 'admin') {
+      setIsAdminMode(true);
+      setSelectedRole('admin');
+    } else if (role) {
+      setIsAdminMode(false);
+      setSelectedRole(role);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#f0f4f8] via-[#e2eaf2] to-[#d8e3ed] flex flex-col justify-between font-sans selection:bg-[#9ae1ff] selection:text-[#002147]">
       {/* Top institution bar */}
@@ -289,6 +302,29 @@ export const LoginPage: React.FC<LoginPageProps> = ({ initialAdminMode = false, 
                   <span>{errorMsg}</span>
                 </div>
               )}
+
+              {/* Quick Fill Demo Credentials */}
+              <div className="mb-4 p-2.5 rounded-xl bg-slate-50 border border-slate-200 flex flex-wrap items-center justify-between gap-2 text-xs">
+                <span className="text-[11px] font-bold text-slate-600">Quick Test Credentials:</span>
+                <div className="flex items-center gap-1.5 flex-wrap">
+                  <button
+                    type="button"
+                    onClick={() => handleAutoFill('admin@me', 'admin123', 'admin')}
+                    className="px-2 py-1 rounded-lg bg-[#002147] hover:bg-[#0c6780] text-white text-[10px] font-bold shadow-xs transition-all flex items-center gap-1"
+                  >
+                    <Shield className="w-3 h-3 text-amber-300" />
+                    <span>Admin (admin@me / admin123)</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleAutoFill('test.std799@gms.edu', 'Welcome@123', 'student')}
+                    className="px-2 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-bold shadow-xs transition-all flex items-center gap-1"
+                  >
+                    <GraduationCap className="w-3 h-3 text-white" />
+                    <span>Student (test / Welcome@123)</span>
+                  </button>
+                </div>
+              </div>
 
               {/* Login Form */}
               <form onSubmit={handleSubmit} className="space-y-3.5">
