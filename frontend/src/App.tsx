@@ -2,6 +2,7 @@ import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { Navbar } from './components/Navbar';
 import { Sidebar } from './components/Sidebar';
+import { MobileBottomNav } from './components/MobileBottomNav';
 
 // Lazy-loaded page components for optimal bundle chunking
 const AdminDashboard = lazy(() => import('./pages/AdminDashboard').then((m) => ({ default: m.AdminDashboard })));
@@ -24,7 +25,7 @@ const PublicPortal = lazy(() => import('./pages/PublicPortal').then((m) => ({ de
 const PageLoadingSkeleton: React.FC = () => (
   <div className="space-y-4 animate-pulse p-2">
     <div className="h-28 bg-gradient-to-r from-slate-200 to-slate-100 rounded-3xl" />
-    <div className="grid grid-cols-12 gap-4">
+    <div className="grid grid-cols-12 gap-3 sm:gap-4">
       <div className="col-span-12 sm:col-span-6 lg:col-span-3 h-24 bg-slate-200/80 rounded-2xl" />
       <div className="col-span-12 sm:col-span-6 lg:col-span-3 h-24 bg-slate-200/80 rounded-2xl" />
       <div className="col-span-12 sm:col-span-6 lg:col-span-3 h-24 bg-slate-200/80 rounded-2xl" />
@@ -40,6 +41,7 @@ const PageLoadingSkeleton: React.FC = () => (
 const AppContent: React.FC = () => {
   const { user, token, activeRole, loading } = useAuth();
   const [currentTab, setCurrentTab] = useState<string>('admin-dashboard');
+  const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
   const [showLogin, setShowLogin] = useState<boolean>(
     typeof window !== 'undefined' && (window.location.pathname === '/admin' || window.location.pathname === '/login')
   );
@@ -54,18 +56,24 @@ const AppContent: React.FC = () => {
     }
   }, [user?.role]);
 
+  // Close mobile drawer whenever tab changes
+  const handleSelectTab = (tab: string) => {
+    setCurrentTab(tab);
+    setMobileMenuOpen(false);
+  };
+
   const renderContent = () => {
     switch (currentTab) {
       case 'admin-dashboard':
-        return <AdminDashboard onNavigate={setCurrentTab} />;
+        return <AdminDashboard onNavigate={handleSelectTab} />;
       case 'teacher-dashboard':
-        return <TeacherDashboard onNavigate={setCurrentTab} />;
+        return <TeacherDashboard onNavigate={handleSelectTab} />;
       case 'student-dashboard':
-        return <StudentDashboard onNavigate={setCurrentTab} />;
+        return <StudentDashboard onNavigate={handleSelectTab} />;
       case 'parent-dashboard':
-        return <ParentDashboard onNavigate={setCurrentTab} />;
+        return <ParentDashboard onNavigate={handleSelectTab} />;
       case 'directory':
-        return <Directory onNavigate={setCurrentTab} />;
+        return <Directory onNavigate={handleSelectTab} />;
       case 'attendance':
         return <AttendanceManager />;
       case 'academics':
@@ -83,11 +91,11 @@ const AppContent: React.FC = () => {
       case 'ai-assistant':
         return <AIAssistant />;
       default:
-        if (activeRole === 'admin') return <AdminDashboard onNavigate={setCurrentTab} />;
-        if (activeRole === 'teacher') return <TeacherDashboard onNavigate={setCurrentTab} />;
-        if (activeRole === 'student') return <StudentDashboard onNavigate={setCurrentTab} />;
-        if (activeRole === 'parent') return <ParentDashboard onNavigate={setCurrentTab} />;
-        return <AdminDashboard onNavigate={setCurrentTab} />;
+        if (activeRole === 'admin') return <AdminDashboard onNavigate={handleSelectTab} />;
+        if (activeRole === 'teacher') return <TeacherDashboard onNavigate={handleSelectTab} />;
+        if (activeRole === 'student') return <StudentDashboard onNavigate={handleSelectTab} />;
+        if (activeRole === 'parent') return <ParentDashboard onNavigate={handleSelectTab} />;
+        return <AdminDashboard onNavigate={handleSelectTab} />;
     }
   };
 
@@ -124,17 +132,33 @@ const AppContent: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#f7f9fb] flex flex-col font-sans">
-      <Navbar currentTab={currentTab} setCurrentTab={setCurrentTab} />
+      <Navbar
+        currentTab={currentTab}
+        setCurrentTab={handleSelectTab}
+        onToggleMobileMenu={() => setMobileMenuOpen((prev) => !prev)}
+      />
 
       <div className="flex-1 flex flex-col md:flex-row max-w-[1440px] w-full mx-auto">
-        <Sidebar currentTab={currentTab} setCurrentTab={setCurrentTab} />
+        <Sidebar
+          currentTab={currentTab}
+          setCurrentTab={handleSelectTab}
+          isOpenMobile={mobileMenuOpen}
+          onCloseMobile={() => setMobileMenuOpen(false)}
+        />
 
-        <main className="flex-1 p-4 lg:p-8 overflow-y-auto">
+        <main className="flex-1 p-3.5 sm:p-5 lg:p-8 overflow-y-auto pb-24 md:pb-8">
           <Suspense fallback={<PageLoadingSkeleton />}>
             {renderContent()}
           </Suspense>
         </main>
       </div>
+
+      {/* Mobile Sticky Bottom Navigation Bar */}
+      <MobileBottomNav
+        currentTab={currentTab}
+        setCurrentTab={handleSelectTab}
+        onOpenMenu={() => setMobileMenuOpen(true)}
+      />
     </div>
   );
 };
