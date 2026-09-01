@@ -285,15 +285,15 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onNavigate }
         {/* Term 1 CCE Exam Score */}
         <StatCard
           title="Term 1 CCE Score"
-          value={examResult ? `${examResult.percentage}%` : '89.8%'}
+          value={examResult ? `${examResult.percentage}%` : 'Pending'}
           subtitle={
             examResult
-              ? `Overall Grade ${examResult.overallGrade} • ${examResult.totalObtained}/${examResult.totalMax} Marks`
-              : 'Grade A • Continuous Evaluation'
+              ? `Grade ${examResult.overallGrade} • ${examResult.totalObtained}/${examResult.totalMax} Marks`
+              : 'Awaiting CCE Evaluation Entry'
           }
           trend={{
-            value: examResult ? `Grade ${examResult.overallGrade}` : 'Grade A (SCERT)',
-            isPositive: true,
+            value: examResult ? `Grade ${examResult.overallGrade}` : 'Evaluation Pending',
+            isPositive: !!examResult,
           }}
           icon={<Award className="w-5 h-5" />}
           iconBg="bg-blue-50 text-[#002147]"
@@ -344,83 +344,97 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onNavigate }
               </button>
             }
           >
-            <div className="space-y-4">
-              {/* Subject Marks Table */}
-              <div className="overflow-x-auto rounded-xl border border-slate-200">
-                <table className="w-full text-left text-xs">
-                  <thead className="bg-slate-50 text-slate-600 font-bold border-b border-slate-200">
-                    <tr>
-                      <th className="py-2.5 px-3">Subject</th>
-                      <th className="py-2.5 px-3 text-center">Max Marks</th>
-                      <th className="py-2.5 px-3 text-center">Obtained Marks</th>
-                      <th className="py-2.5 px-3 text-center">Grade</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-100 font-medium text-slate-700">
-                    {(examResult?.subjectMarks && examResult.subjectMarks.length > 0
-                      ? examResult.subjectMarks
-                      : [
-                          { subjectName: 'English Language', maxMarks: 100, obtainedMarks: 88, grade: 'A' },
-                          { subjectName: 'Mathematics', maxMarks: 100, obtainedMarks: 94, grade: 'A+' },
-                          { subjectName: 'General Science', maxMarks: 100, obtainedMarks: 91, grade: 'A+' },
-                          { subjectName: 'Urdu', maxMarks: 100, obtainedMarks: 86, grade: 'A' },
-                          { subjectName: 'Social Science', maxMarks: 100, obtainedMarks: 89, grade: 'A' },
-                          { subjectName: 'Kashmiri', maxMarks: 50, obtainedMarks: 46, grade: 'A+' },
-                        ]
-                    ).map((sub: any, idx: number) => (
-                      <tr key={idx} className="hover:bg-slate-50/80 transition-colors">
-                        <td className="py-2 px-3 font-bold text-[#002147] flex items-center gap-2">
-                          <BookOpen className="w-3.5 h-3.5 text-[#0c6780]" />
-                          <span>{sub.subjectName}</span>
-                        </td>
-                        <td className="py-2 px-3 text-center text-slate-500">{sub.maxMarks}</td>
-                        <td className="py-2 px-3 text-center font-bold text-slate-900">{sub.obtainedMarks}</td>
-                        <td className="py-2 px-3 text-center">
-                          <span
-                            className={`px-2 py-0.5 rounded-md text-[10px] font-black ${
-                              sub.grade === 'A+'
-                                ? 'bg-emerald-100 text-emerald-800'
-                                : sub.grade === 'A'
-                                ? 'bg-blue-100 text-blue-800'
-                                : 'bg-amber-100 text-amber-800'
-                            }`}
-                          >
-                            {sub.grade}
+            {examResult && examResult.subjectMarks && examResult.subjectMarks.length > 0 ? (
+              <div className="space-y-4">
+                {/* Subject Marks Table */}
+                <div className="overflow-x-auto rounded-xl border border-slate-200">
+                  <table className="w-full text-left text-xs">
+                    <thead className="bg-slate-50 text-slate-600 font-bold border-b border-slate-200">
+                      <tr>
+                        <th className="py-2.5 px-3">Subject</th>
+                        <th className="py-2.5 px-3 text-center">Max Marks</th>
+                        <th className="py-2.5 px-3 text-center">Obtained Marks</th>
+                        <th className="py-2.5 px-3 text-center">Grade</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100 font-medium text-slate-700">
+                      {examResult.subjectMarks.map((sub: any, idx: number) => (
+                        <tr key={idx} className="hover:bg-slate-50/80 transition-colors">
+                          <td className="py-2 px-3 font-bold text-[#002147] flex items-center gap-2">
+                            <BookOpen className="w-3.5 h-3.5 text-[#0c6780]" />
+                            <span>{sub.subjectName}</span>
+                          </td>
+                          <td className="py-2 px-3 text-center text-slate-500">{sub.maxMarks}</td>
+                          <td className="py-2 px-3 text-center font-bold text-slate-900">{sub.obtainedMarks}</td>
+                          <td className="py-2 px-3 text-center">
+                            <span
+                              className={`px-2 py-0.5 rounded-md text-[10px] font-black ${
+                                sub.grade === 'A+'
+                                  ? 'bg-emerald-100 text-emerald-800'
+                                  : sub.grade === 'A'
+                                  ? 'bg-blue-100 text-blue-800'
+                                  : sub.grade === 'B+' || sub.grade === 'B'
+                                  ? 'bg-amber-100 text-amber-800'
+                                  : 'bg-slate-100 text-slate-700'
+                              }`}
+                            >
+                              {sub.grade}
+                            </span>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                    <tfoot className="bg-slate-50 font-bold text-slate-800 border-t border-slate-200">
+                      <tr>
+                        <td className="py-2.5 px-3 text-[#002147]">Overall Total & Grade</td>
+                        <td className="py-2.5 px-3 text-center text-slate-600">{examResult.totalMax}</td>
+                        <td className="py-2.5 px-3 text-center text-emerald-700 text-sm">{examResult.totalObtained}</td>
+                        <td className="py-2.5 px-3 text-center">
+                          <span className="px-2.5 py-1 rounded-lg text-xs font-extrabold bg-[#002147] text-white">
+                            {examResult.overallGrade} ({examResult.percentage}%)
                           </span>
                         </td>
                       </tr>
-                    ))}
-                  </tbody>
-                  <tfoot className="bg-slate-50 font-bold text-slate-800 border-t border-slate-200">
-                    <tr>
-                      <td className="py-2.5 px-3 text-[#002147]">Overall Total & Grade</td>
-                      <td className="py-2.5 px-3 text-center text-slate-600">{examResult?.totalMax || 550}</td>
-                      <td className="py-2.5 px-3 text-center text-emerald-700 text-sm">{examResult?.totalObtained || 494}</td>
-                      <td className="py-2.5 px-3 text-center">
-                        <span className="px-2.5 py-1 rounded-lg text-xs font-extrabold bg-[#002147] text-white">
-                          {examResult?.overallGrade || 'A'} ({examResult?.percentage || 89.82}%)
-                        </span>
-                      </td>
-                    </tr>
-                  </tfoot>
-                </table>
-              </div>
+                    </tfoot>
+                  </table>
+                </div>
 
-              {/* Remarks Box */}
-              <div className="p-3.5 rounded-2xl bg-gradient-to-br from-amber-50/70 to-orange-50/40 border border-amber-200 space-y-2">
-                <div className="flex items-center gap-2 text-amber-900 font-extrabold text-xs uppercase tracking-wider">
-                  <Sparkles className="w-4 h-4 text-amber-600 fill-amber-400" />
-                  <span>Evaluation & AI Scholastic Remarks</span>
-                </div>
-                <p className="text-xs text-slate-700 leading-relaxed font-medium bg-white/90 p-3 rounded-xl border border-amber-100 shadow-xs">
-                  "{examResult?.aiRemarks || 'Faizan demonstrates exemplary scholastic acumen with 89.82% overall score and Grade A in SCERT CCE evaluation. Recommended for zonal science talent exhibitions.'}"
-                </p>
-                <div className="text-[11px] text-slate-500 flex items-center justify-between px-1">
-                  <span>Class Teacher: <strong>Farooq Ahmad Dar (GLT)</strong></span>
-                  <span>Evaluated under SCERT J&K Guidelines</span>
+                {/* Remarks Box */}
+                <div className="p-3.5 rounded-2xl bg-gradient-to-br from-amber-50/70 to-orange-50/40 border border-amber-200 space-y-2">
+                  <div className="flex items-center gap-2 text-amber-900 font-extrabold text-xs uppercase tracking-wider">
+                    <Sparkles className="w-4 h-4 text-amber-600 fill-amber-400" />
+                    <span>Evaluation & Scholastic Remarks</span>
+                  </div>
+                  <p className="text-xs text-slate-700 leading-relaxed font-medium bg-white/90 p-3 rounded-xl border border-amber-100 shadow-xs">
+                    "{examResult.aiRemarks || examResult.teacherRemarks || 'Continuous academic progress recorded.'}"
+                  </p>
+                  <div className="text-[11px] text-slate-500 flex items-center justify-between px-1">
+                    <span>Class Teacher In-Charge</span>
+                    <span>Evaluated under SCERT J&K Guidelines</span>
+                  </div>
                 </div>
               </div>
-            </div>
+            ) : (
+              <div className="p-8 text-center bg-slate-50 rounded-2xl border border-dashed border-slate-200 space-y-3">
+                <div className="w-12 h-12 rounded-full bg-blue-50 text-[#002147] flex items-center justify-center mx-auto">
+                  <Award className="w-6 h-6" />
+                </div>
+                <div className="space-y-1">
+                  <h4 className="text-sm font-bold text-[#002147]">No Exam Records Yet</h4>
+                  <p className="text-xs text-slate-500 max-w-md mx-auto">
+                    Evaluation marks have not been entered for <strong>{studentName}</strong> yet. You can submit Term 1 CCE marks in the Academics portal.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => onNavigate('academics')}
+                  className="px-4 py-2 rounded-xl bg-[#002147] text-white text-xs font-bold hover:bg-[#0c6780] transition-all shadow-sm inline-flex items-center gap-1.5"
+                >
+                  <Award className="w-3.5 h-3.5" />
+                  <span>Go to Academics & Marksheet Portal</span>
+                </button>
+              </div>
+            )}
           </BentoCard>
 
           {/* Student Profile & Institutional Records Card */}

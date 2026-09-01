@@ -41,36 +41,64 @@ export const academicService = {
       }
 
       if (studentId) {
-        query = query.or(`student_id.eq.${studentId},student.user_id.eq.${studentId}`);
+        // Resolve student profile ID if a user ID was provided
+        const { data: stdProfile } = await supabase
+          .from('student_profiles')
+          .select('id')
+          .or(`id.eq.${studentId},user_id.eq.${studentId}`)
+          .maybeSingle();
+
+        const validStudentId = stdProfile?.id || studentId;
+        query = query.eq('student_id', validStudentId);
       }
 
-      const { data, error } = await query;
+      const { data, error } = await query.order('created_at', { ascending: false });
       if (error) throw error;
 
-      const results = (data || []).map((r) => ({
-        _id: r.id,
-        examName: r.exam_name || 'Term 1 Mid-Evaluation',
-        term: r.term || 'Term 1',
-        percentage: r.percentage || 0,
-        overallGrade: r.overall_grade || 'A',
-        aiRemarks: r.ai_remarks || 'Consistent academic performance.',
-        teacherRemarks: r.teacher_remarks || 'Diligent classroom participation.',
-        studentId: {
-          _id: r.student?.id || r.student_id,
-          rollNumber: r.student?.roll_number || 1,
-          userId: {
-            name: r.student?.user?.name || 'Student',
-            avatarUrl: r.student?.user?.avatar_url,
+      const results = (data || []).map((r) => {
+        const subjectMarks = (r.subject_marks || []).map((s: any) => {
+          const max = Number(s.maxMarks) || 100;
+          const obt = Number(s.obtainedMarks) || 0;
+          const pct = max > 0 ? (obt / max) * 100 : 0;
+          const grade = s.grade || (pct >= 90 ? 'A+' : pct >= 80 ? 'A' : pct >= 70 ? 'B+' : pct >= 60 ? 'B' : pct >= 50 ? 'C' : pct >= 33 ? 'D' : 'E');
+          return {
+            subjectName: s.subjectName || 'Subject',
+            maxMarks: max,
+            obtainedMarks: obt,
+            grade,
+          };
+        });
+
+        const totalMax = subjectMarks.reduce((acc: number, s: any) => acc + s.maxMarks, 0) || Number(r.total_max) || 500;
+        const totalObtained = subjectMarks.reduce((acc: number, s: any) => acc + s.obtainedMarks, 0) || Number(r.total_obtained) || 0;
+        const percentage = totalMax > 0 ? parseFloat(((totalObtained / totalMax) * 100).toFixed(2)) : (Number(r.percentage) || 0);
+        const overallGrade = percentage >= 90 ? 'A+' : percentage >= 80 ? 'A' : percentage >= 70 ? 'B+' : percentage >= 60 ? 'B' : percentage >= 50 ? 'C' : percentage >= 33 ? 'D' : 'E';
+
+        return {
+          _id: r.id,
+          examName: r.exam_name || 'Term 1 Mid-Evaluation',
+          term: r.term || 'Term 1',
+          percentage,
+          overallGrade,
+          aiRemarks: r.ai_remarks || 'Consistent academic performance.',
+          teacherRemarks: r.teacher_remarks || 'Diligent classroom participation.',
+          studentId: {
+            _id: r.student?.id || r.student_id,
+            rollNumber: r.student?.roll_number || 1,
+            userId: {
+              name: r.student?.user?.name || 'Student',
+              avatarUrl: r.student?.user?.avatar_url,
+            },
           },
-        },
-        classId: {
-          className: r.class?.class_name || 'Class 1',
-          section: r.class?.section || 'A',
-        },
-        subjectMarks: r.subject_marks || [],
-        totalMax: r.total_max || 500,
-        totalObtained: r.total_obtained || 0,
-      }));
+          classId: {
+            className: r.class?.class_name || 'Class 1',
+            section: r.class?.section || 'A',
+          },
+          subjectMarks,
+          totalMax,
+          totalObtained,
+        };
+      });
 
       return { success: true, results };
     } catch (err: any) {
