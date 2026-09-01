@@ -54,6 +54,81 @@ export const directoryService = {
     }
   },
 
+  getParentStudents: async (parentIdOrUser: string | any) => {
+    try {
+      let parentUserId = typeof parentIdOrUser === 'string' ? parentIdOrUser : parentIdOrUser?.id;
+      let parentName = typeof parentIdOrUser === 'object' ? parentIdOrUser?.name : undefined;
+      let parentPhone = typeof parentIdOrUser === 'object' ? parentIdOrUser?.phone : undefined;
+
+      if (parentUserId && (!parentName || !parentPhone)) {
+        const { data: pUser } = await supabase
+          .from('users')
+          .select('id, name, phone')
+          .eq('id', parentUserId)
+          .maybeSingle();
+
+        if (pUser) {
+          if (!parentName) parentName = pUser.name;
+          if (!parentPhone) parentPhone = pUser.phone;
+        }
+      }
+
+      const { data, error } = await supabase
+        .from('student_profiles')
+        .select('*, user:users(*), class:class_sections(*)');
+
+      if (error) throw error;
+
+      const cleanParentName = (parentName || '').trim().toLowerCase();
+      const matched = (data || []).filter((s) => {
+        const father = (s.father_name || '').trim().toLowerCase();
+        const mother = (s.mother_name || '').trim().toLowerCase();
+        const studentPhone = (s.user?.phone || '').trim();
+
+        if (!cleanParentName && !parentPhone) return false;
+
+        const matchesFather = cleanParentName.length > 2 && (cleanParentName.includes(father) || father.includes(cleanParentName));
+        const matchesMother = cleanParentName.length > 2 && (cleanParentName.includes(mother) || mother.includes(cleanParentName));
+        const matchesPhone = !!parentPhone && !!studentPhone && parentPhone === studentPhone;
+
+        return matchesFather || matchesMother || matchesPhone;
+      });
+
+      const formatted = matched.map((s) => ({
+        _id: s.id,
+        userId: {
+          _id: s.user?.id || s.id,
+          name: s.user?.name || 'Student',
+          username: s.user?.username || '',
+          email: s.user?.email,
+          phone: s.user?.phone,
+          avatarUrl: s.user?.avatar_url,
+          status: s.user?.status || 'active',
+        },
+        rollNumber: s.roll_number,
+        admissionNumber: s.admission_number,
+        gender: s.gender || 'male',
+        fatherName: s.father_name,
+        motherName: s.mother_name,
+        address: s.address,
+        bloodGroup: s.blood_group,
+        ssaCategory: s.ssa_category,
+        midDayMealOpted: s.mid_day_meal_opted !== false,
+        classId: {
+          _id: s.class?.id || s.class_id,
+          className: s.class?.class_name || 'Class 1',
+          section: s.class?.section || 'A',
+          gradeLevel: s.class?.grade_level || 1,
+        },
+      }));
+
+      return { success: true, count: formatted.length, students: formatted };
+    } catch (err: any) {
+      logger.error('Failed to load parent students', 'getParentStudents', { error: err?.message });
+      return { success: true, count: 0, students: [] };
+    }
+  },
+
   getTeachers: async () => {
     try {
       const { data, error } = await supabase

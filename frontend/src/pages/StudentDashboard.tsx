@@ -71,19 +71,30 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onNavigate }
         }
 
         if (stdRes.success && stdRes.students && stdRes.students.length > 0) {
-          setAllStudents(stdRes.students);
-
-          // Find matching student by logged in user ID or username, or fallback to first student
-          const matchedIdx = stdRes.students.findIndex(
-            (s: any) =>
-              s.userId?._id === user?.id ||
-              s._id === user?.id ||
-              s.userId?.username?.toLowerCase() === user?.username?.toLowerCase()
-          );
-
-          const defaultIdx = matchedIdx !== -1 ? matchedIdx : 0;
-          setActiveStudentIndex(defaultIdx);
-          setSelectedStudent(stdRes.students[defaultIdx]);
+          // If logged in as student, restrict strictly to own profile
+          if (user?.role === 'student') {
+            const myProfile = stdRes.students.filter(
+              (s: any) =>
+                s.userId?._id === user?.id ||
+                s._id === user?.id ||
+                s.userId?.username?.toLowerCase() === user?.username?.toLowerCase()
+            );
+            const activeList = myProfile.length > 0 ? myProfile : [stdRes.students[0]];
+            setAllStudents(activeList);
+            setActiveStudentIndex(0);
+            setSelectedStudent(activeList[0]);
+          } else {
+            setAllStudents(stdRes.students);
+            const matchedIdx = stdRes.students.findIndex(
+              (s: any) =>
+                s.userId?._id === user?.id ||
+                s._id === user?.id ||
+                s.userId?.username?.toLowerCase() === user?.username?.toLowerCase()
+            );
+            const defaultIdx = matchedIdx !== -1 ? matchedIdx : 0;
+            setActiveStudentIndex(defaultIdx);
+            setSelectedStudent(stdRes.students[defaultIdx]);
+          }
         }
       } catch (err) {
         console.error('Failed to load initial student data', err);
@@ -233,8 +244,8 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onNavigate }
           </div>
         </div>
 
-        {/* Student Switcher Tab (If multiple students exist in school) */}
-        {allStudents.length > 1 && (
+        {/* Student Switcher Tab (Only for Admin/Teacher preview when multiple students exist) */}
+        {user?.role !== 'student' && allStudents.length > 1 && (
           <div className="mt-5 pt-4 border-t border-white/10 flex flex-wrap items-center gap-2">
             <span className="text-[11px] font-bold text-slate-300">Switch Student Profile:</span>
             {allStudents.slice(0, 4).map((s, idx) => {
