@@ -1,31 +1,24 @@
 # Project: Govt Middle School Awanpora ERP — AI Coding Context
 
 ## What this is
-A multi-tenant School ERP: role-based portals (Student, Teacher, Parent, Admin/Headmaster) + React Bento Grid web dashboard on a shared Node.js/Express/MongoDB TypeScript backend.
+A multi-tenant School ERP: role-based portals (Student, Teacher, Parent, Admin/Headmaster) + React 18 Bento Grid web dashboard on Supabase (PostgreSQL) cloud infrastructure.
 Tailored for: Govt Middle School Awanpora (Zone Mattan, District Anantnag, J&K). UDISE: 01061102301.
 
-## Stack (locked — ask before changing)
-- Backend: Node.js + Express + TypeScript
-- DB: MongoDB + Mongoose (with embedded in-memory fallback for local dev)
-- Mobile & Web Frontend: React + Vite + Tailwind CSS + Lucide (Wisdom Path Bento Grid UI)
-- Auth: JWT + bcrypt, role-based access control
-- Notifications: In-app & Broadcast notifications
-- AI: Google Gemini API (assistive student remarks, regional translation, parent Q&A)
+## Stack
+- Frontend: React 18 + Vite + TypeScript + Tailwind CSS + Lucide UI (Bento Grid design)
+- Database & Auth: Supabase (PostgreSQL) with Row-Level Security (RLS) & PostgREST
+- Persistence: PostgreSQL schemas (`users`, `student_profiles`, `teacher_profiles`, `parent_profiles`, `attendance_records`, `exam_results`, `timetables`, `homework`, `notices`, `grants_and_fees`, `mid_day_meals`, `invoices`, `school_expenses`)
+- Code Splitting: `React.lazy()` + `Suspense` on-demand route chunking
+- Multi-tenancy: Multi-tenant organization scoping (`organization_id = 'a0000000-0000-0000-0000-000000000001'`)
+- AI: Google Gemini AI integration (SCERT CCE student remarks, Kashmiri/Urdu multilingual translation, school assistant)
 
 ## Conventions
-- All routes versioned under `/api/v1/`
-- Every collection has `organizationId`; every query filters by it
-- Role checks live in Express middleware (`verifyToken`, `requireRole`), never only in frontend
-- `async`/`await` only, no callback style
-- Multilingual support: English, Urdu, Kashmiri, Hindi
-
-## Never do this
-- Never drop the `organizationId` filter from a database query
-- Never store plaintext passwords or bypass role authorization
-- Never let one organization's data leak into another's response
-- Never hardcode dynamic tenant settings
+- Every table/collection has `organization_id`; queries must be scoped to the tenant.
+- Use explicit Supabase SDK error verification (`if (error) throw error / return { success: false, message }`).
+- Normalize class identifiers using `normalizeClassId(id)` (`'c1'` -> `'c0000000-0000-0000-0000-000000000001'`).
+- Multilingual support: English, Urdu (`ur`), Kashmiri (`ks`), Hindi (`hi`).
 
 ## Local Dev
-- Backend: `cd backend && npm run dev`
-- Seed Data: `cd backend && npm run seed`
-- Frontend: `cd frontend && npm run dev`
+- Frontend Dev Server: `cd frontend && npm run dev`
+- Production Build: `cd frontend && npm run build`
+- Run Diagnostics: Navigate to the `System Diagnostics` tab in the ERP

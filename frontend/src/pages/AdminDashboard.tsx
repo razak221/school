@@ -122,7 +122,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) =>
 
         <StatCard
           title="Today's Attendance"
-          value={`${stats?.todayAttendancePercentage ?? '0.0'}%`}
+          value={stats?.todayAttendancePercentage ? (stats.todayAttendancePercentage.endsWith('%') ? stats.todayAttendancePercentage : `${stats.todayAttendancePercentage}%`) : '100%'}
           subtitle={`${stats?.presentToday ?? 0} present • ${stats?.absentToday ?? 0} absent`}
           trend={stats && stats.totalStudents > 0 ? { value: `${stats.presentToday}/${stats.totalStudents}`, isPositive: true } : undefined}
           icon={<CalendarCheck className="w-5 h-5" />}

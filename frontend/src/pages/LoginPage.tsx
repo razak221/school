@@ -313,15 +313,31 @@ export const LoginPage: React.FC<LoginPageProps> = ({ initialAdminMode = false, 
                     className="px-2 py-1 rounded-lg bg-[#002147] hover:bg-[#0c6780] text-white text-[10px] font-bold shadow-xs transition-all flex items-center gap-1"
                   >
                     <Shield className="w-3 h-3 text-amber-300" />
-                    <span>Admin (admin@me / admin123)</span>
+                    <span>Admin</span>
                   </button>
                   <button
                     type="button"
-                    onClick={() => handleAutoFill('test.std799@gms.edu', 'Welcome@123', 'student')}
+                    onClick={() => handleAutoFill('teacher@gms.edu', 'teacher123', 'teacher')}
+                    className="px-2 py-1 rounded-lg bg-[#0c6780] hover:bg-[#095469] text-white text-[10px] font-bold shadow-xs transition-all flex items-center gap-1"
+                  >
+                    <UserCheck className="w-3 h-3 text-white" />
+                    <span>Teacher</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleAutoFill('parent@gms.edu', 'parent123', 'parent')}
+                    className="px-2 py-1 rounded-lg bg-[#FF8C00] hover:bg-[#ea580c] text-white text-[10px] font-bold shadow-xs transition-all flex items-center gap-1"
+                  >
+                    <Users className="w-3 h-3 text-white" />
+                    <span>Parent</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleAutoFill('student@gms.edu', 'student123', 'student')}
                     className="px-2 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-bold shadow-xs transition-all flex items-center gap-1"
                   >
                     <GraduationCap className="w-3 h-3 text-white" />
-                    <span>Student (test / Welcome@123)</span>
+                    <span>Student</span>
                   </button>
                 </div>
               </div>

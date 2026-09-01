@@ -226,6 +226,68 @@ CREATE TABLE homework (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
+-- 2.14 Invoices Table
+CREATE TABLE IF NOT EXISTS invoices (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    organization_id UUID NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
+    invoice_number VARCHAR(100) NOT NULL UNIQUE,
+    client_name VARCHAR(255) NOT NULL,
+    client_email VARCHAR(255),
+    client_phone VARCHAR(50),
+    items JSONB NOT NULL DEFAULT '[]'::jsonb,
+    subtotal NUMERIC(12,2) NOT NULL DEFAULT 0,
+    tax_rate NUMERIC(5,2) NOT NULL DEFAULT 0,
+    tax_amount NUMERIC(12,2) NOT NULL DEFAULT 0,
+    total_amount NUMERIC(12,2) NOT NULL DEFAULT 0,
+    status VARCHAR(50) DEFAULT 'paid' CHECK (status IN ('paid', 'pending', 'overdue')),
+    due_date DATE NOT NULL,
+    notes TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- 2.15 School Expenses Table
+CREATE TABLE IF NOT EXISTS school_expenses (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    organization_id UUID NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
+    category VARCHAR(100) NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    amount NUMERIC(12,2) NOT NULL,
+    vendor VARCHAR(255),
+    expense_date DATE NOT NULL DEFAULT CURRENT_DATE,
+    payment_method VARCHAR(50) DEFAULT 'Bank Transfer',
+    status VARCHAR(50) DEFAULT 'paid' CHECK (status IN ('paid', 'pending')),
+    receipt_url TEXT,
+    notes TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- 2.16 Audit Logs Table (Production Observability)
+CREATE TABLE IF NOT EXISTS audit_logs (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    organization_id UUID NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
+    actor_id UUID REFERENCES users(id) ON DELETE SET NULL,
+    action VARCHAR(100) NOT NULL,
+    entity_type VARCHAR(100) NOT NULL,
+    entity_id VARCHAR(255),
+    status VARCHAR(50) DEFAULT 'SUCCESS',
+    metadata JSONB DEFAULT '{}'::jsonb,
+    ip_address VARCHAR(50),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- ============================================================================
+-- 2.17 COMPOSITE B-TREE PERFORMANCE INDEXES
+-- ============================================================================
+CREATE INDEX IF NOT EXISTS idx_attendance_org_date_status ON attendance_records (organization_id, date, status);
+CREATE INDEX IF NOT EXISTS idx_exam_results_student_term ON exam_results (student_id, term);
+CREATE INDEX IF NOT EXISTS idx_homework_class_due ON homework (class_id, due_date);
+CREATE INDEX IF NOT EXISTS idx_users_org_role ON users (organization_id, role);
+CREATE INDEX IF NOT EXISTS idx_notices_org_pinned ON notices (organization_id, is_pinned, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_invoices_org_status ON invoices (organization_id, status);
+CREATE INDEX IF NOT EXISTS idx_expenses_org_date ON school_expenses (organization_id, expense_date DESC);
+CREATE INDEX IF NOT EXISTS idx_audit_logs_org_created ON audit_logs (organization_id, created_at DESC);
+
 -- ============================================================================
 -- 3. ENABLE ROW LEVEL SECURITY (RLS) ON ALL TABLES
 -- ============================================================================
@@ -242,6 +304,9 @@ ALTER TABLE grants_and_fees ENABLE ROW LEVEL SECURITY;
 ALTER TABLE mid_day_meals ENABLE ROW LEVEL SECURITY;
 ALTER TABLE timetables ENABLE ROW LEVEL SECURITY;
 ALTER TABLE homework ENABLE ROW LEVEL SECURITY;
+ALTER TABLE invoices ENABLE ROW LEVEL SECURITY;
+ALTER TABLE school_expenses ENABLE ROW LEVEL SECURITY;
+ALTER TABLE audit_logs ENABLE ROW LEVEL SECURITY;
 
 -- Create Open Read/Write Policies for authenticated and anon clients (Data API)
 DO $$
@@ -271,6 +336,65 @@ END $$;
 GRANT USAGE ON SCHEMA public TO anon, authenticated;
 GRANT ALL ON ALL TABLES IN SCHEMA public TO anon, authenticated;
 GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO anon, authenticated;
+
+-- ============================================================================
+-- 3. OPTIMIZED AGGREGATE STORED FUNCTIONS
+-- ============================================================================
+CREATE OR REPLACE FUNCTION get_organization_overview_stats(org_id UUID, today_date DATE)
+RETURNS JSONB LANGUAGE plpgsql SECURITY DEFINER AS $$
+DECLARE
+    result JSONB;
+    v_total_students INT;
+    v_total_teachers INT;
+    v_total_classes INT;
+    v_notices_count INT;
+    v_present_today INT;
+    v_absent_today INT;
+    v_mdm_served INT;
+    v_total_credits NUMERIC;
+    v_total_debits NUMERIC;
+BEGIN
+    SELECT COUNT(*) INTO v_total_students FROM student_profiles WHERE organization_id = org_id;
+    SELECT COUNT(*) INTO v_total_teachers FROM teacher_profiles WHERE organization_id = org_id;
+    SELECT COUNT(*) INTO v_total_classes FROM class_sections WHERE organization_id = org_id;
+    SELECT COUNT(*) INTO v_notices_count FROM notices WHERE organization_id = org_id;
+    
+    SELECT COUNT(*) FILTER (WHERE status = 'present'),
+           COUNT(*) FILTER (WHERE status = 'absent')
+    INTO v_present_today, v_absent_today
+    FROM attendance_records
+    WHERE organization_id = org_id AND date = today_date;
+
+    SELECT COALESCE(students_served, v_present_today, 0)
+    INTO v_mdm_served
+    FROM mid_day_meals
+    WHERE organization_id = org_id AND date = today_date;
+
+    SELECT COALESCE(SUM(amount) FILTER (WHERE transaction_type = 'credit'), 0),
+           COALESCE(SUM(amount) FILTER (WHERE transaction_type = 'debit'), 0)
+    INTO v_total_credits, v_total_debits
+    FROM grants_and_fees
+    WHERE organization_id = org_id;
+
+    result := json_build_object(
+        'totalStudents', v_total_students,
+        'totalTeachers', v_total_teachers,
+        'totalClasses', v_total_classes,
+        'noticesCount', v_notices_count,
+        'presentToday', COALESCE(v_present_today, 0),
+        'absentToday', COALESCE(v_absent_today, 0),
+        'midDayMealServedCount', COALESCE(v_mdm_served, 0),
+        'grants', json_build_object(
+            'allocated', v_total_credits,
+            'utilized', v_total_debits,
+            'balance', v_total_credits - v_total_debits
+        )
+    );
+
+    RETURN result;
+END;
+$$;
+
 
 -- ============================================================================
 -- 4. INSERT REAL INSTITUTIONAL SEED DATA (Valid Hex UUIDs: 0-9, a-f)

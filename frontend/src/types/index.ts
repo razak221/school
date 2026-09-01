@@ -108,3 +108,66 @@ export interface DashboardStats {
     balance: number;
   };
 }
+
+export interface InvoiceItem {
+  description: string;
+  quantity: number;
+  rate: number;
+  amount: number;
+}
+
+export interface InvoiceRecord {
+  id: string;
+  invoiceNumber: string;
+  clientName: string;
+  clientEmail?: string;
+  clientPhone?: string;
+  items: InvoiceItem[];
+  subtotal: number;
+  taxRate: number;
+  taxAmount: number;
+  totalAmount: number;
+  status: 'paid' | 'pending' | 'overdue';
+  dueDate: string;
+  createdAt: string;
+  notes?: string;
+}
+
+export interface ExpenseRecord {
+  id: string;
+  category: string;
+  title: string;
+  amount: number;
+  vendor?: string;
+  expenseDate: string;
+  paymentMethod: string;
+  status: 'paid' | 'pending';
+  receiptUrl?: string;
+  notes?: string;
+  createdAt: string;
+}
+
+export interface CreateUserPayload {
+  name: string;
+  username: string;
+  email?: string;
+  phone?: string;
+  password: string;
+  role: UserRole;
+  organizationId?: string;
+  classId?: string;
+  rollNumber?: number;
+  admissionNumber?: string;
+  fatherName?: string;
+  motherName?: string;
+  gender?: string;
+  address?: string;
+  bloodGroup?: string;
+  ssaCategory?: string;
+  designation?: string;
+  qualification?: string;
+  employeeCode?: string;
+  subjectsTaught?: string[];
+  relation?: string;
+  occupation?: string;
+}

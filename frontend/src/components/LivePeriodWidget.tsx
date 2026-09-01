@@ -34,6 +34,8 @@ export const LivePeriodWidget: React.FC = () => {
   const [currentStatus, setCurrentStatus] = useState<Omit<ScheduleSlot, 'maxTime'>>(DEFAULT_SLOT);
 
   useEffect(() => {
+    let interval: NodeJS.Timeout | null = null;
+
     const updateSchedule = () => {
       const now = new Date();
       const timeNum = now.getHours() * 100 + now.getMinutes();
@@ -41,9 +43,35 @@ export const LivePeriodWidget: React.FC = () => {
       setCurrentStatus(slot);
     };
 
-    updateSchedule();
-    const interval = setInterval(updateSchedule, 60000);
-    return () => clearInterval(interval);
+    const startTimer = () => {
+      updateSchedule();
+      if (!interval) {
+        interval = setInterval(updateSchedule, 60000);
+      }
+    };
+
+    const stopTimer = () => {
+      if (interval) {
+        clearInterval(interval);
+        interval = null;
+      }
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        stopTimer();
+      } else {
+        startTimer();
+      }
+    };
+
+    startTimer();
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      stopTimer();
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
   }, []);
 
   return (

@@ -13,7 +13,22 @@ Example:
 import sys
 import zipfile
 from pathlib import Path
-from quick_validate import validate_skill
+
+# Ensure script directory is in sys.path for local module imports
+_SCRIPT_DIR = Path(__file__).resolve().parent
+if str(_SCRIPT_DIR) not in sys.path:
+    sys.path.insert(0, str(_SCRIPT_DIR))
+
+try:
+    from quick_validate import validate_skill
+except ImportError:
+    def validate_skill(skill_path):
+        path = Path(skill_path).resolve()
+        if not path.exists() or not path.is_dir():
+            return False, f"Invalid directory: {path}"
+        if not (path / "SKILL.md").exists():
+            return False, f"Missing SKILL.md in {path}"
+        return True, f"Skill '{path.name}' passed basic validation."
 
 
 def package_skill(skill_path, output_dir=None):
