@@ -226,40 +226,23 @@ export const academicService = {
       }
 
       const { data, error } = await query.order('created_at', { ascending: false });
-      if (!error && data && data.length > 0) {
-        const homework = data.map((h) => ({
-          _id: h.id,
-          subject: h.subject,
-          title: h.title,
-          description: h.description,
-          assignedDate: h.assigned_date,
-          dueDate: h.due_date,
-        }));
-        return { success: true, homework };
-      }
-    } catch {}
+      if (error) throw error;
 
-    return {
-      success: true,
-      homework: [
-        {
-          _id: 'hw_1',
-          subject: 'Mathematics',
-          title: 'Daily Practice Sheet 5.1',
-          description: 'Solve arithmetic word problems from SCERT Class 1 textbook.',
-          assignedDate: new Date().toISOString().split('T')[0],
-          dueDate: new Date(Date.now() + 86400000 * 2).toISOString().split('T')[0],
-        },
-        {
-          _id: 'hw_2',
-          subject: 'Science',
-          title: 'Cell Structure & Functions Diagram',
-          description: 'Draw and label Plant and Animal cell diagrams with functional notes.',
-          assignedDate: new Date().toISOString().split('T')[0],
-          dueDate: new Date(Date.now() + 86400000 * 3).toISOString().split('T')[0],
-        },
-      ],
-    };
+      const homework = (data || []).map((h) => ({
+        _id: h.id,
+        subject: h.subject,
+        title: h.title,
+        description: h.description,
+        assignedDate: h.assigned_date,
+        dueDate: h.due_date,
+      }));
+      return { success: true, homework };
+    } catch {
+      return {
+        success: true,
+        homework: [],
+      };
+    }
   },
 
   addHomework: async (payload: any) => {

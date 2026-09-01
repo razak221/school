@@ -8,40 +8,7 @@ const getStoredInvoices = (): any[] => {
     const saved = localStorage.getItem('gms_finance_invoices');
     if (saved) return JSON.parse(saved);
   } catch {}
-  return [
-    {
-      _id: 'inv_1',
-      id: 'inv_1',
-      invoiceNumber: 'INV-2026-001',
-      clientName: 'SSA Scheme Student Welfare',
-      clientEmail: 'welfare@jkeducation.gov.in',
-      totalAmount: 18500,
-      amount: 18500,
-      paidAmount: 18500,
-      balance: 0,
-      status: 'paid',
-      issueDate: '2026-08-15',
-      dueDate: '2026-08-30',
-      method: 'Direct Bank Transfer',
-      createdAt: '2026-08-15T10:00:00.000Z',
-    },
-    {
-      _id: 'inv_2',
-      id: 'inv_2',
-      invoiceNumber: 'INV-2026-002',
-      clientName: 'PM-POSHAN Nutrition Consignment',
-      clientEmail: 'mdm.anantnag@jk.gov.in',
-      totalAmount: 12400,
-      amount: 12400,
-      paidAmount: 12400,
-      balance: 0,
-      status: 'paid',
-      issueDate: '2026-08-20',
-      dueDate: '2026-09-05',
-      method: 'Direct Bank Transfer',
-      createdAt: '2026-08-20T11:00:00.000Z',
-    },
-  ];
+  return [];
 };
 
 const saveStoredInvoices = (invoices: any[]) => {
@@ -57,36 +24,7 @@ const getStoredExpenses = (): any[] => {
     const saved = localStorage.getItem('gms_finance_expenses');
     if (saved) return JSON.parse(saved);
   } catch {}
-  return [
-    {
-      _id: 'exp_1',
-      id: 'exp_1',
-      title: 'Classroom Whitewash & Desk Repair',
-      category: 'Maintenance',
-      amount: 6200,
-      expenseDate: '2026-08-18',
-      date: '2026-08-18',
-      vendor: 'Salia Hardware & Woodworks',
-      paymentMethod: 'Bank Transfer',
-      description: 'Annual classroom repairs prior to academic inspection.',
-      paidBy: 'Headmaster Office',
-      createdAt: '2026-08-18T12:00:00.000Z',
-    },
-    {
-      _id: 'exp_2',
-      id: 'exp_2',
-      title: 'Science Lab Glassware & Charts',
-      category: 'Academic Supplies',
-      amount: 3850,
-      expenseDate: '2026-08-22',
-      date: '2026-08-22',
-      vendor: 'Kashmir Scientific Store, Mattan',
-      paymentMethod: 'Bank Transfer',
-      description: 'Science teaching kits under Samagra Shiksha grants.',
-      paidBy: 'Headmaster Office',
-      createdAt: '2026-08-22T14:30:00.000Z',
-    },
-  ];
+  return [];
 };
 
 const saveStoredExpenses = (expenses: any[]) => {
@@ -153,8 +91,8 @@ export const financeService = {
       return {
         success: true,
         stats: {
-          totalStudents: 4,
-          totalTeachers: 2,
+          totalStudents: 0,
+          totalTeachers: 0,
           totalClasses: 8,
           noticesCount: 0,
           todayAttendancePercentage: '100.0%',
@@ -212,7 +150,7 @@ export const financeService = {
       return {
         success: true,
         grants: [],
-        summary: { totalAllocated: 50000, totalUtilized: 32400, balance: 17600 },
+        summary: { totalAllocated: 0, totalUtilized: 0, balance: 0 },
       };
     }
   },
@@ -283,7 +221,7 @@ export const financeService = {
         .select('*')
         .order('created_at', { ascending: false });
 
-      if (!error && data && data.length > 0) {
+      if (!error && data) {
         const formatted = data.map((inv: any) => ({
           _id: inv.id,
           id: inv.id,
@@ -377,7 +315,7 @@ export const financeService = {
         .select('*')
         .order('expense_date', { ascending: false });
 
-      if (!error && data && data.length > 0) {
+      if (!error && data) {
         const formatted = data.map((exp: any) => ({
           _id: exp.id,
           id: exp.id,
